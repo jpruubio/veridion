@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Veridion AI</title>
+    <link rel="stylesheet" href="cadastro.css">
+    <script src="cadastro.js" defer></script>
+</head>
+
+<body>
+    <div class="container">
+        <main>
+            <div class="login-header">
+                <img src="LOGO VERIDION.png" alt="logo" class="logo-login">
+                <h1>Se cadastre no Veridion AI!</h1>
+            </div><br><br>
+            <label for="nome">Nome completo:</label>
+            <input type="text" id="nome" name="name" placeholder="Digite seu nome"> <br><br>
+
+            <label for="email">Email</label>
+            <input type="text" id="email" name="email" placeholder="Digite seu email"><br><br>
+
+            <label for="senha">Crie uma senha</label>
+            <input type="password" id="senha" name="senha" placeholder="Crie uma senha forte" minlength="8"
+                pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{8,}"
+                title="A senha deve ter no mínimo 8 caracteres, incluindo pelo menos uma letra maiúscula, uma minúscula, um número e um caractere especial."
+                required><br><br><br>
+
+            <input type="submit" id="criar" name="criar"  class="btn-outline" value="Crie sua conta">
+            <a href="../login/login.html" class="btn-outline"><input type="submit" id="Voltar" name="Voltar" class="btn-outline" value="Já tem uma conta? Faça login"></a>
+        </main>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,141 @@
+/* ── ÁREA DE LOGIN VERIDION ────────────────── */
+
+/* Centraliza o formulário na tela inteira caso seja uma página separada */
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: var(--bg); /* Usa o fundo azul bem clarinho do seu :root */
+}
+
+:root {
+        --dark: #171658;
+        --primary: #3533cb;
+        --white: #ffffff;
+        --primary-light: #5452e8;
+        --primary-glow: rgba(53, 51, 203, .18);
+        --bg: #f4f5ff;
+        --text: #1a1a2e;
+        --muted: #5a5a8a;
+    }
+
+
+/* Transforma o main em um card moderno com a mesma sombra do seu browser-mockup */
+main {
+    background: var(--white);
+    padding: 3rem 2.5rem;
+    border-radius: 18px;
+    box-shadow: 0 16px 48px rgba(23, 22, 88, 0.08), 0 0 0 1px rgba(23, 22, 88, 0.05);
+    max-width: 520px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+main h1 {
+    font-family: 'Questrial', sans-serif;
+    font-size: 1.6rem;
+    color: var(--dark);
+    margin: 0; /* Zera a margem superior e inferior para não empurrar o texto */
+    line-height: 1; /* Remove o espaço invisível extra ao redor da fonte */
+}
+
+/* Oculta os <br> do HTML para controlar o espaço perfeitamente pelo CSS */
+main br {
+    display: none;
+}
+
+/* Estilo das labels usando sua cor neutra */
+main label {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--dark);
+    margin-bottom: 0.4rem;
+    margin-top: 1.25rem;
+    display: block;
+}
+
+/* Campos de digitação com focus seguindo a identidade do Veridion */
+main input[type="text"],
+main input[type="password"] {
+    width: 100%;
+    padding: 0.85rem 1rem;
+    border-radius: 10px;
+    border: 2px solid rgba(23, 22, 88, 0.1);
+    font-family: 'Open Sans', sans-serif;
+    font-size: 0.95rem;
+    color: var(--text);
+    background: #fbfbff;
+    transition: border-color 0.25s, box-shadow 0.25s, background 0.25s;
+}
+
+main input[type="text"]:focus,
+main input[type="password"]:focus {
+    outline: none;
+    border-color: var(--primary);
+    background: var(--white);
+    box-shadow: 0 0 0 4px var(--primary-glow);
+}
+
+/* Base comum para os dois botões no final do form */
+main input[type="submit"] {
+    width: 100%;
+    padding: 0.85rem;
+    font-size: 0.99rem;
+    border-radius: 50px;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+/* Botão "Entrar" replicando o seu .btn-primary */
+main input#enviar {
+    margin-top: 2rem;
+    background: var(--primary);
+    color: var(--white);
+    border: none;
+    box-shadow: 0 4px 20px rgba(53, 51, 203, .35);
+}
+
+main input#enviar:hover {
+    background: #2a28b8;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(53, 51, 203, .45);
+    color: var(--white);
+}
+
+/* Apague os dois blocos de #criar e #Voltar e coloque isso: */
+main input.btn-outline {
+    margin-top: 0.8rem;
+    background: transparent;
+    color: var(--dark);
+    border: 2px solid rgba(23, 22, 88, .2);
+}
+
+main input.btn-outline:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+    background: var(--primary-glow);
+    transform: translateY(-2px);
+}
+
+/* ── CABEÇALHO DO LOGIN (LOGO + TÍTULO) ── */
+.login-header {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Mantém tudo centralizado no card */
+    gap: 12px; /* Espaço entre a logo e o título */
+    margin-bottom: 1.5rem;
+}
+
+.login-header img.logo-login {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%; /* É isso aqui que deixa a imagem perfeitamente redonda */
+    object-fit: cover; /* Evita que a logo fique esticada caso não seja quadrada */
+    background: var(--bg); /* Fundo clarinho caso a logo tenha transparência */
+    border: 2px solid var(--primary-glow); /* Uma borda sutil pra combinar com a identidade */
+    flex-shrink: 0; /* Impede que a imagem encolha se o texto for muito grande */
+}

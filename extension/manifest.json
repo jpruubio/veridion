@@ -1,0 +1,44 @@
+{
+  "manifest_version": 3,
+  "name": "Veridion",
+  "version": "1.0",
+  "description": "Extensão baseada em IA para analisar veracidade de notícias, imagens e anúncios em tempo real",
+
+  "permissions": [
+    "tabs",
+    "activeTab",
+    "scripting",
+    "storage"
+  ],
+
+  "host_permissions": [
+    "<all_urls>"
+  ],
+
+  "background": {
+    "service_worker": "background/service_worker.js",
+    "type": "module"
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "css": ["content_scripts/inject.css"],
+      "js": ["content_scripts/scanner.js"],
+      "run_at": "document_idle"
+    }
+  ],
+
+  "icons": {
+    "16": "assets/icons/icon16.png",
+    "48": "assets/icons/icon48.png",
+    "128": "assets/icons/icon128.png"
+  },
+
+  "action": {
+    "default_title": "Veridion - Segurança com IA",
+    "default_icon": {
+      "16": "assets/icons/icon16.png"
+    }
+  }
+}
