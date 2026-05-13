@@ -1,33 +1,63 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Veridion AI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Questrial&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
     <link rel="stylesheet" href="login.css">
     <script src="login.js" defer></script>
 </head>
 
 <body>
-    <div class="container">
-        <main>
-            <div class="login-header">
-                <img src="LOGO VERIDION.png" alt="logo" class="logo-login">
-                <h1>Faça login no Veridion AI!</h1>
-            </div><br><br>
-            <label for="email">Email</label>
-            <input type="text" id="email" name="email" placeholder="Digite seu email"><br><br>
+    <main>
 
-            <label for="senha">Crie uma senha</label>
-            <input type="password" id="senha" name="senha" placeholder="Digite sua senha"><br><br><br><br><br>
+        <div class="login-header">
+            <div class="logo-ring">
+                <img src="LOGO VERIDION.png" alt="Veridion" class="logo-login">
+            </div>
+            <h1>Veridion AI</h1>
+            <span class="login-subtitle">Entre na sua conta para continuar</span>
+        </div>
 
-            <input type="submit" name="entrar" id="entrar">
-            <a href="../cadastro/cadastro.html">
-                <input type="button" id="criar" name="criar" value="Crie sua conta">
-            </a>
-        </main>
-    </div>
+        <div class="field">
+            <input type="text" id="email" name="email" placeholder=" ">
+            <label for="email">E-mail</label>
+            <i class="ti ti-mail field-icon" aria-hidden="true"></i>
+        </div>
+
+        <div class="field">
+            <input type="password" id="senha" name="senha" placeholder=" ">
+            <label for="senha">Senha</label>
+            <i class="ti ti-lock field-icon" aria-hidden="true"></i>
+        </div>
+
+        <div class="form-row">
+            <a href="#" class="forgot">Esqueci minha senha</a>
+        </div>
+
+        <input type="submit" id="entrar" value="Entrar na conta">
+
+        <div class="sep">
+            <div class="sep-line"></div>
+            <span class="sep-text">ou</span>
+            <div class="sep-line"></div>
+        </div>
+
+        <a href="../cadastro/cadastro.html">
+            <input type="button" id="criar" value="Criar uma conta grátis">
+        </a>
+
+        <p class="footer-note">
+            Ao continuar, você concorda com os <a href="#">Termos de Uso</a><br>
+            e a <a href="#">Política de Privacidade</a> do Veridion.
+        </p>
+
+    </main>
 </body>
 
 </html>
