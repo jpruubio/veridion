@@ -92,8 +92,9 @@ Ou alerta:
 
 ### Frontend (extensão)
 
-* TypeScript
-* React
+* Javascript
+* CSS
+* html
 * Manifest V3
 
 ### Backend
