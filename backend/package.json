@@ -2,7 +2,7 @@
   "name": "veridion-backend",
   "version": "1.0.0",
   "description": "Back-end do Veridion — API Node.js + Express + PostgreSQL",
-  "main": "src/server.js",
+  "main": "src/server/server.js",
   "scripts": {
     "start": "node src/server/server.js",
     "dev": "nodemon src/server/server.js"
