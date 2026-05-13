@@ -1,7 +1,7 @@
 -- ============================================================
 --  Veridion — schema.sql
 --  Rode este arquivo UMA VEZ para criar as tabelas no banco.
---  Comando: psql -U postgres -d veridion_db -f src/models/schema.sql
+--  Comando: psql "<DATABASE_URL>" -f src/models/schema.sql
 -- ============================================================
 
 -- Tabela de usuários
