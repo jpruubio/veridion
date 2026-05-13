@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "Back-end do Veridion — API Node.js + Express + PostgreSQL",
   "main": "src/server.js",
- "scripts": {
-  "dev": "nodemon src/server.js"
-  },
+"scripts": {
+  "dev": "nodemon src/server/server.js"
+},
   "dependencies": {
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
