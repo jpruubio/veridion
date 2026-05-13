@@ -4,9 +4,14 @@
 // ============================================================
 
 require('dotenv').config();
-const express    = require('express');
-const cors       = require('cors');
-const authRoutes = require('../routes/authRoutes');
+const express        = require('express');
+const cors           = require('cors');
+const helmet         = require('helmet');
+const authRoutes     = require('../routes/authRoutes');
+const analyzeRoutes  = require('../routes/analyzeRoutes');
+const voteRoutes     = require('../routes/voteRoutes');
+const reportRoutes   = require('../routes/reportRoutes');
+const domainRoutes   = require('../routes/domainRoutes');
 
 const app  = express();
 const PORT = process.env.PORT || 3000;
@@ -15,13 +20,13 @@ const PORT = process.env.PORT || 3000;
 //  Middlewares globais
 // ------------------------------------------------------------
 
-// Libera requisições da extensão Chrome (origem diferente)
+app.use(helmet());
+
 app.use(cors({
-  origin: '*', // Em produção, troque por sua URL real
+  origin: '*',
   methods: ['GET', 'POST'],
 }));
 
-// Interpreta o corpo das requisições como JSON
 app.use(express.json());
 
 // ------------------------------------------------------------
@@ -29,6 +34,10 @@ app.use(express.json());
 // ------------------------------------------------------------
 
 app.use('/', authRoutes);
+app.use('/', analyzeRoutes);
+app.use('/', voteRoutes);
+app.use('/', reportRoutes);
+app.use('/', domainRoutes);
 
 // Rota de saúde — útil para testar se o servidor está vivo
 app.get('/ping', (req, res) => {
