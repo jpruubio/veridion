@@ -12,6 +12,7 @@ const analyzeRoutes  = require('../routes/analyzeRoutes');
 const voteRoutes     = require('../routes/voteRoutes');
 const reportRoutes   = require('../routes/reportRoutes');
 const domainRoutes   = require('../routes/domainRoutes');
+const paginaRoutes   = require('../routes/paginaRoutes');
 
 const app  = express();
 const PORT = process.env.PORT || 3000;
@@ -38,6 +39,7 @@ app.use('/', analyzeRoutes);
 app.use('/', voteRoutes);
 app.use('/', reportRoutes);
 app.use('/', domainRoutes);
+app.use('/', paginaRoutes);
 
 // Rota de saúde — útil para testar se o servidor está vivo
 app.get('/ping', (req, res) => {
