@@ -20,8 +20,22 @@ async function cadastrar(req, res) {
     return res.status(400).json({ erro: 'Preencha nome, email e senha.' });
   }
 
-  if (senha.length < 6) {
-    return res.status(400).json({ erro: 'A senha deve ter no mínimo 6 caracteres.' });
+  const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  if (!emailValido.test(email)) {
+  return res.status(400).json({
+    erro: 'Digite um e-mail válido.'
+  });
+  }
+
+  const senhaForte =
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+
+  if (!senhaForte.test(senha)) {
+  return res.status(400).json({
+    erro:
+      'A senha deve ter no mínimo 8 caracteres, incluindo letra maiúscula, minúscula, número e caractere especial.'
+  });
   }
 
   try {
