@@ -12,15 +12,12 @@ botaoEntrar.addEventListener('click', async (event) => {
     }
 
     try {
-        const resposta = await fetch('http://localhost:3000/login', {
+        const resposta = await fetch('https://veridion-5tjh.onrender.com/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
-                email,
-                senha
-            })
+            body: JSON.stringify({ email, senha })
         });
 
         const dados = await resposta.json();
@@ -30,19 +27,14 @@ botaoEntrar.addEventListener('click', async (event) => {
             return;
         }
 
-        // salva token
-        localStorage.setItem('token', dados.token);
-
-        // salva dados do usuário
-        localStorage.setItem('usuario', JSON.stringify(dados.usuario));
-
-        alert('Login realizado com sucesso!');
-
-        // futuramente:
-        // window.location.href = '../extensao/home.html';
+        chrome.runtime.sendMessage({
+            type: 'LOGIN_SUCCESS',
+            token: dados.token,
+            user: dados.usuario
+        });
 
     } catch (erro) {
         console.error(erro);
         alert('Erro ao conectar com o servidor.');
     }
-});
+}); 

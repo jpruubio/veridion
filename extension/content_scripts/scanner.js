@@ -8,7 +8,7 @@
 //    4. Enviar dados ao back-end e exibir o resultado
 // ============================================================
 
-const BACKEND_URL = 'http://localhost:3000'; // Trocar pela URL real quando definida
+const BACKEND_URL = 'https://veridion-5tjh.onrender.com'; // Trocar pela URL real quando definida
 
 // ------------------------------------------------------------
 //  1. HTML do widget — injetado no final do <body>

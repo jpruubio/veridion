@@ -7,7 +7,7 @@
 //    3. Gerenciar o token JWT no chrome.storage.local
 // ============================================================
 
-const BACKEND_URL = 'http://localhost:3000'; // Trocar pela URL real quando definida
+const BACKEND_URL = 'https://veridion-5tjh.onrender.com'; // Trocar pela URL real quando definida
 
 // ------------------------------------------------------------
 //  Helpers

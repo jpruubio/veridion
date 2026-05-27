@@ -1,7 +1,7 @@
 const botaoCriar = document.getElementById('criar');
 
 botaoCriar.addEventListener('click', async (event) => {
-    event.preventDefault();  
+    event.preventDefault();
 
     const nome = document.getElementById('nome').value.trim();
     const email = document.getElementById('email').value.trim();
@@ -13,7 +13,7 @@ botaoCriar.addEventListener('click', async (event) => {
     }
 
     try {
-        const resposta = await fetch('http://localhost:3000/cadastro', {
+        const resposta = await fetch('https://veridion-5tjh.onrender.com/cadastro', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
