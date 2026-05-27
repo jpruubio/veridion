@@ -1,5 +1,12 @@
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 
+function extrairJSON(text) {
+  const start = text.indexOf('{');
+  const end = text.lastIndexOf('}');
+  if (start === -1 || end <= start) throw new Error(`JSON não encontrado na resposta: ${text}`);
+  return text.slice(start, end + 1);
+}
+
 const SYSTEM_PROMPT = `Você é um especialista em verificação de fatos e segurança digital.
 Analise o título e o conteúdo de uma página web e avalie sua confiabilidade.
 
@@ -59,8 +66,7 @@ ${(conteudo || '(sem conteúdo)').slice(0, 3000)}`;
 
     const result = await model.generateContent(prompt);
     const text = result.response.text();
-    const jsonStr = text.replace(/^```(?:json)?\s*/m, '').replace(/\s*```\s*$/m, '').trim();
-    const parsed = JSON.parse(jsonStr);
+    const parsed = JSON.parse(extrairJSON(text));
 
     const score = Math.max(0, Math.min(100, parseInt(parsed.score)));
     const fatores = Array.isArray(parsed.fatores) ? parsed.fatores : [];
@@ -108,9 +114,7 @@ async function analisarImagens(imagens) {
       'Esta imagem foi gerada por inteligência artificial? Responda APENAS com JSON: {"gerada_por_ia": <true|false>, "confianca": <0 a 100>}',
     ]);
 
-    const rawImg = result.response.text();
-    const jsonImgStr = rawImg.replace(/^```(?:json)?\s*/m, '').replace(/\s*```\s*$/m, '').trim();
-    const parsed = JSON.parse(jsonImgStr);
+    const parsed = JSON.parse(extrairJSON(result.response.text()));
     return {
       imagem_ia:        Boolean(parsed.gerada_por_ia),
       imagem_confianca: Math.max(0, Math.min(100, parseInt(parsed.confianca) || 0)),
