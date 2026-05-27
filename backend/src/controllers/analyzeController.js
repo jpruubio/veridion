@@ -1,6 +1,7 @@
 const db                = require('../models/db');
 const { analisarTecnico, extrairDominio } = require('../services/technicalAnalysis');
 const { analisarConteudo }                = require('../services/aiAnalysis');
+const { calcularComunidade }              = require('../services/communityAnalysis');
 const trustScore                          = require('../services/trustScore');
 
 // POST /analyze
@@ -24,36 +25,7 @@ async function analisar(req, res) {
       analisarConteudo({ titulo, conteudo }),
     ]);
 
-    const votosResult = await db.query(
-      `SELECT
-         COUNT(*) FILTER (WHERE voto = 'confiavel') AS confiavel,
-         COUNT(*) FILTER (WHERE voto = 'suspeito')  AS suspeito,
-         COUNT(*) FILTER (WHERE voto = 'golpe')     AS golpe,
-         COUNT(*)                                   AS total
-       FROM votos WHERE dominio = $1`,
-      [dominio]
-    );
-
-    const votos = votosResult.rows[0];
-    const totalVotos = parseInt(votos.total);
-    let scoreComunidade = 50;
-    const fatoresComunidade = [];
-
-    if (totalVotos > 0) {
-      const confiavel = parseInt(votos.confiavel);
-      const golpe     = parseInt(votos.golpe);
-      const suspeito  = parseInt(votos.suspeito);
-      scoreComunidade = Math.round((confiavel / totalVotos) * 100);
-
-      if (confiavel > 0)
-        fatoresComunidade.push({ fator: `Comunidade: ${confiavel} voto(s) confiável`, impacto: `+${Math.round((confiavel / totalVotos) * 35)}` });
-      if (suspeito > 0)
-        fatoresComunidade.push({ fator: `Comunidade: ${suspeito} voto(s) suspeito`, impacto: `-${Math.round((suspeito / totalVotos) * 20)}` });
-      if (golpe > 0)
-        fatoresComunidade.push({ fator: `Comunidade: ${golpe} relato(s) de golpe`, impacto: `-${Math.round((golpe / totalVotos) * 35)}` });
-    } else {
-      fatoresComunidade.push({ fator: 'Sem votos da comunidade ainda', impacto: '0' });
-    }
+    const { scoreComunidade, fatoresComunidade } = await calcularComunidade(dominio);
 
     const resultado = trustScore.montar({
       scoreTecnico:       resultadoTecnico.score,
@@ -87,4 +59,23 @@ async function analisar(req, res) {
   }
 }
 
-module.exports = { analisar };
+// GET /analises
+// Requer autenticação. Retorna as últimas 50 análises do usuário.
+async function historico(req, res) {
+  try {
+    const result = await db.query(
+      `SELECT id, url, titulo, score, veredicto, analisado_em
+       FROM analises
+       WHERE usuario_id = $1
+       ORDER BY analisado_em DESC
+       LIMIT 50`,
+      [req.usuario.id]
+    );
+    return res.json({ analises: result.rows });
+  } catch (err) {
+    console.error('[analyzeController] Erro ao buscar histórico:', err.message);
+    return res.status(500).json({ erro: 'Erro interno no servidor.' });
+  }
+}
+
+module.exports = { analisar, historico };

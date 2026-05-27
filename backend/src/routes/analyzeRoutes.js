@@ -14,5 +14,6 @@ function tokenOpcional(req, res, next) {
 }
 
 router.post('/analyze', analiseLimiter, tokenOpcional, analyzeController.analisar);
+router.get('/analises', verificarToken, analyzeController.historico);
 
 module.exports = router;

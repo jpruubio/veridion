@@ -1,7 +1,8 @@
 const db                = require('../models/db');
 const { analisarTecnico, extrairDominio } = require('../services/technicalAnalysis');
-const { analisarConteudo }                = require('../services/aiAnalysis');
-const trustScore                          = require('../services/trustScore');
+const { analisarConteudo, analisarImagens } = require('../services/aiAnalysis');
+const { calcularComunidade }               = require('../services/communityAnalysis');
+const trustScore                           = require('../services/trustScore');
 
 // POST /analisar-pagina
 // Body: { url, titulo, texto, imagens }  — formato enviado pela extensão
@@ -19,42 +20,12 @@ async function analisarPagina(req, res) {
       return res.status(400).json({ erro: 'URL inválida.' });
     }
 
-    // Reutiliza o mesmo pipeline de análise do /analyze
-    const [resultadoTecnico, resultadoIa] = await Promise.all([
+    const [resultadoTecnico, resultadoIa, resultadoImagem, { scoreComunidade, fatoresComunidade }] = await Promise.all([
       analisarTecnico(url),
       analisarConteudo({ titulo, conteudo: texto }),
+      analisarImagens(imagens),
+      calcularComunidade(dominio),
     ]);
-
-    const votosResult = await db.query(
-      `SELECT
-         COUNT(*) FILTER (WHERE voto = 'confiavel') AS confiavel,
-         COUNT(*) FILTER (WHERE voto = 'suspeito')  AS suspeito,
-         COUNT(*) FILTER (WHERE voto = 'golpe')     AS golpe,
-         COUNT(*)                                   AS total
-       FROM votos WHERE dominio = $1`,
-      [dominio]
-    );
-
-    const votos = votosResult.rows[0];
-    const totalVotos = parseInt(votos.total);
-    let scoreComunidade = 50;
-    const fatoresComunidade = [];
-
-    if (totalVotos > 0) {
-      const confiavel = parseInt(votos.confiavel);
-      const golpe     = parseInt(votos.golpe);
-      const suspeito  = parseInt(votos.suspeito);
-      scoreComunidade = Math.round((confiavel / totalVotos) * 100);
-
-      if (confiavel > 0)
-        fatoresComunidade.push({ fator: `Comunidade: ${confiavel} voto(s) confiável`, impacto: `+${Math.round((confiavel / totalVotos) * 35)}` });
-      if (suspeito > 0)
-        fatoresComunidade.push({ fator: `Comunidade: ${suspeito} voto(s) suspeito`, impacto: `-${Math.round((suspeito / totalVotos) * 20)}` });
-      if (golpe > 0)
-        fatoresComunidade.push({ fator: `Comunidade: ${golpe} relato(s) de golpe`, impacto: `-${Math.round((golpe / totalVotos) * 35)}` });
-    } else {
-      fatoresComunidade.push({ fator: 'Sem votos da comunidade ainda', impacto: '0' });
-    }
 
     const resultado = trustScore.montar({
       scoreTecnico:    resultadoTecnico.score,
@@ -89,8 +60,8 @@ async function analisarPagina(req, res) {
       score:             resultado.score,
       veredicto:         resultado.veredicto,
       detalhe,
-      imagem_ia:         false,
-      imagem_confianca:  0,
+      imagem_ia:         resultadoImagem.imagem_ia,
+      imagem_confianca:  resultadoImagem.imagem_confianca,
     });
 
   } catch (err) {
