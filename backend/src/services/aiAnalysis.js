@@ -7,30 +7,15 @@ function extrairJSON(text) {
   return text.slice(start, end + 1);
 }
 
-const SYSTEM_PROMPT = `Você é um especialista em verificação de fatos e segurança digital.
-Analise o título e o conteúdo de uma página web e avalie sua confiabilidade.
+const SYSTEM_PROMPT = `Você avalia a confiabilidade de conteúdo web e responde SOMENTE com JSON, sem texto adicional.
 
-Considere os seguintes critérios:
-- Qualidade da escrita (erros, linguagem sensacionalista ou alarmista)
-- Presença de desinformação, afirmações extraordinárias sem evidência ou fontes
-- Tom manipulativo (medo excessivo, urgência artificial, clickbait)
-- Coerência, objetividade e credibilidade geral do conteúdo
-
-Responda EXCLUSIVAMENTE com um JSON válido no seguinte formato:
-{
-  "score": <inteiro de 0 a 100>,
-  "fatores": [
-    { "fator": "<descrição curta do fator>", "impacto": "<+N ou -N ou 0>" }
-  ]
-}
+Retorne exatamente neste formato:
+{"score":72,"fatores":[{"fator":"Escrita objetiva e bem estruturada","impacto":"+12"},{"fator":"Ausência de fontes citadas","impacto":"-8"}]}
 
 Regras:
-- score 0–30: conteúdo perigoso ou claramente falso
-- score 31–60: suspeito ou de baixa qualidade
-- score 61–85: razoável, mas com ressalvas
-- score 86–100: confiável e bem fundamentado
-- Liste entre 2 e 4 fatores relevantes
-- Impacto deve ser um número inteiro com sinal (ex: +15, -20, 0)`;
+- score: inteiro 0–100 (0=falso/perigoso, 100=totalmente confiável)
+- fatores: 2 a 4 itens avaliando qualidade textual, desinformação, tom manipulativo e coerência
+- impacto: inteiro com sinal, ex: +15, -20, 0`;
 
 async function analisarConteudo({ titulo, conteudo }) {
   if (!titulo && !conteudo) {
@@ -55,7 +40,6 @@ async function analisarConteudo({ titulo, conteudo }) {
       generationConfig: {
         responseMimeType: 'application/json',
         temperature: 0.2,
-        maxOutputTokens: 512,
       },
     });
 
@@ -106,12 +90,12 @@ async function analisarImagens(imagens) {
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
     const model = genAI.getGenerativeModel({
       model: 'gemini-2.5-flash',
-      generationConfig: { responseMimeType: 'application/json', temperature: 0.1, maxOutputTokens: 64 },
+      generationConfig: { responseMimeType: 'application/json', temperature: 0.1 },
     });
 
     const result = await model.generateContent([
       { inlineData: { data: base64, mimeType } },
-      'Esta imagem foi gerada por inteligência artificial? Responda APENAS com JSON: {"gerada_por_ia": <true|false>, "confianca": <0 a 100>}',
+      'Esta imagem foi gerada por IA? Responda SOMENTE com JSON, sem texto adicional. Exemplo: {"gerada_por_ia":true,"confianca":85}',
     ]);
 
     const parsed = JSON.parse(extrairJSON(result.response.text()));
