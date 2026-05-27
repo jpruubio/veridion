@@ -59,7 +59,8 @@ ${(conteudo || '(sem conteúdo)').slice(0, 3000)}`;
 
     const result = await model.generateContent(prompt);
     const text = result.response.text();
-    const parsed = JSON.parse(text);
+    const jsonStr = text.replace(/^```(?:json)?\s*/m, '').replace(/\s*```\s*$/m, '').trim();
+    const parsed = JSON.parse(jsonStr);
 
     const score = Math.max(0, Math.min(100, parseInt(parsed.score)));
     const fatores = Array.isArray(parsed.fatores) ? parsed.fatores : [];
@@ -107,7 +108,9 @@ async function analisarImagens(imagens) {
       'Esta imagem foi gerada por inteligência artificial? Responda APENAS com JSON: {"gerada_por_ia": <true|false>, "confianca": <0 a 100>}',
     ]);
 
-    const parsed = JSON.parse(result.response.text());
+    const rawImg = result.response.text();
+    const jsonImgStr = rawImg.replace(/^```(?:json)?\s*/m, '').replace(/\s*```\s*$/m, '').trim();
+    const parsed = JSON.parse(jsonImgStr);
     return {
       imagem_ia:        Boolean(parsed.gerada_por_ia),
       imagem_confianca: Math.max(0, Math.min(100, parseInt(parsed.confianca) || 0)),
