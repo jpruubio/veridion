@@ -1,6 +1,6 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,9 +12,24 @@
     <link rel="stylesheet" href="login.css">
     <script src="login.js" defer></script>
 </head>
-
 <body>
     <main>
+
+        <!-- ================================================
+             Overlay de sucesso — fica invisível até o login
+             ser confirmado pelo back-end; o JS adiciona a
+             classe "ver-ativo" para disparar as animações.
+             ================================================ -->
+        <div class="ver-login-overlay" id="ver-login-overlay" aria-live="polite" aria-hidden="true">
+            <div class="ver-check-circle">
+                <!-- Checkmark desenhado via SVG para poder animar o traço -->
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <polyline points="4,13 9,18 20,7" />
+                </svg>
+            </div>
+            <p class="ver-sucesso-titulo">Login realizado!</p>
+            <p class="ver-sucesso-sub">Redirecionando…</p>
+        </div>
 
         <div class="login-header">
             <div class="logo-ring">
@@ -23,41 +38,32 @@
             <h1>Veridion AI</h1>
             <span class="login-subtitle">Entre na sua conta para continuar</span>
         </div>
-
         <div class="field">
             <input type="text" id="email" name="email" placeholder=" ">
             <label for="email">E-mail</label>
             <i class="ti ti-mail field-icon" aria-hidden="true"></i>
         </div>
-
         <div class="field">
             <input type="password" id="senha" name="senha" placeholder=" ">
             <label for="senha">Senha</label>
             <i class="ti ti-lock field-icon" aria-hidden="true"></i>
         </div>
-
         <div class="form-row">
             <a href="#" class="forgot">Esqueci minha senha</a>
         </div>
-
         <input type="submit" id="entrar" value="Entrar na conta">
-
         <div class="sep">
             <div class="sep-line"></div>
             <span class="sep-text">ou</span>
             <div class="sep-line"></div>
         </div>
-
         <a href="../cadastro/cadastro.html">
             <input type="button" id="criar" value="Criar uma conta grátis">
         </a>
-
         <p class="footer-note">
             Ao continuar, você concorda com os <a href="#">Termos de Uso</a><br>
             e a <a href="#">Política de Privacidade</a> do Veridion.
         </p>
-
     </main>
 </body>
-
 </html>
