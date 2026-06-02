@@ -78,12 +78,31 @@ btnFloat.addEventListener('mousedown', (e) => {
 
 function onMouseMove(e) {
   isDragging = true;
+
   const dx = e.clientX - startX;
   const dy = e.clientY - startY;
+
+  // Posição candidata sem nenhuma restrição
+  let novoLeft = initialLeft + dx;
+  let novoTop  = initialTop  + dy;
+
+  // Dimensões do widget para não deixar ele sair pela borda oposta
+  const widgetW = widget.offsetWidth;
+  const widgetH = widget.offsetHeight;
+
+  // Limites da viewport: garante que o widget nunca ultrapasse
+  // nenhuma das quatro bordas da tela, independente do zoom.
+  const maxLeft = window.innerWidth  - widgetW;
+  const maxTop  = window.innerHeight - widgetH;
+
+  // Clamp: mantém o valor entre 0 e o máximo calculado acima
+  novoLeft = Math.max(0, Math.min(novoLeft, maxLeft));
+  novoTop  = Math.max(0, Math.min(novoTop,  maxTop));
+
   widget.style.bottom = 'auto';
   widget.style.right  = 'auto';
-  widget.style.left   = `${initialLeft + dx}px`;
-  widget.style.top    = `${initialTop  + dy}px`;
+  widget.style.left   = `${novoLeft}px`;
+  widget.style.top    = `${novoTop}px`;
 }
 
 function onMouseUp(e) {
