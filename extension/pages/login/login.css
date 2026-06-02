@@ -347,3 +347,109 @@ main a {
 .footer-note a:hover {
     text-decoration: underline;
 }
+
+/* ============================================================
+   Overlay de sucesso no login
+   Aparece sobre o <main> após autenticação bem-sucedida.
+   ============================================================ */
+
+/* Camada que escurece o card inteiro */
+.ver-login-overlay {
+    position: absolute;
+    inset: 0;
+    border-radius: 24px; /* mesmo raio do <main> */
+    background: rgba(255, 255, 255, .96);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    z-index: 10;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .3s ease;
+}
+
+/* Estado ativo: overlay visível e clicável */
+.ver-login-overlay.ver-ativo {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Círculo verde com o checkmark SVG */
+.ver-check-circle {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+    box-shadow: 0 8px 28px rgba(34, 197, 94, .40);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    /* Começa pequeno e escala até 1 quando a classe .ver-ativo for adicionada */
+    transform: scale(0);
+    transition: transform .45s cubic-bezier(.34, 1.56, .64, 1);
+}
+
+.ver-login-overlay.ver-ativo .ver-check-circle {
+    transform: scale(1);
+}
+
+/* O SVG do check dentro do círculo */
+.ver-check-circle svg {
+    width: 36px;
+    height: 36px;
+    stroke: white;
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+    overflow: visible;
+}
+
+/* Animação do traço do checkmark (stroke-dashoffset) */
+.ver-check-circle svg polyline {
+    stroke-dasharray: 50;   /* comprimento total do traço */
+    stroke-dashoffset: 50;  /* começa "apagado" */
+    transition: stroke-dashoffset .4s ease .35s; /* delay para entrar após o círculo */
+}
+
+.ver-login-overlay.ver-ativo .ver-check-circle svg polyline {
+    stroke-dashoffset: 0; /* traço se "desenha" */
+}
+
+/* Texto de boas-vindas */
+.ver-sucesso-titulo {
+    font-family: 'Questrial', sans-serif;
+    font-size: 1.25rem;
+    color: var(--dark);
+    letter-spacing: -0.3px;
+
+    /* Sobe de baixo com fade */
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity .35s ease .5s, transform .35s ease .5s;
+}
+
+.ver-login-overlay.ver-ativo .ver-sucesso-titulo {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Subtexto "Redirecionando…" */
+.ver-sucesso-sub {
+    font-size: 0.82rem;
+    color: var(--muted);
+
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity .35s ease .65s, transform .35s ease .65s;
+}
+
+.ver-login-overlay.ver-ativo .ver-sucesso-sub {
+    opacity: 1;
+    transform: translateY(0);
+}
