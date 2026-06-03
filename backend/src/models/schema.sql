@@ -47,3 +47,14 @@ CREATE TABLE IF NOT EXISTS analises (
     imagem_confianca INTEGER,          -- 0 a 100
     analisado_em     TIMESTAMP DEFAULT NOW()
 );
+
+-- Tabela de tokens para redefinição de senha
+-- token é UUID gerado no servidor, expira em 1 hora
+CREATE TABLE IF NOT EXISTS reset_tokens (
+    id          SERIAL PRIMARY KEY,
+    usuario_id  INTEGER REFERENCES usuarios(id) ON DELETE CASCADE NOT NULL,
+    token       VARCHAR(64) UNIQUE NOT NULL,
+    expira_em   TIMESTAMP NOT NULL,
+    usado       BOOLEAN DEFAULT FALSE,
+    criado_em   TIMESTAMP DEFAULT NOW()
+);
