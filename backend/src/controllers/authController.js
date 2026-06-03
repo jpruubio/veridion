@@ -2,6 +2,8 @@ const bcrypt  = require('bcrypt');
 const jwt     = require('jsonwebtoken');
 const crypto  = require('crypto');
 const db      = require('../models/db');
+const { Resend } = require('resend');
+const resend  = new Resend(process.env.RESEND_API_KEY);
 
 const SALT_ROUNDS = 10;
 
@@ -175,14 +177,15 @@ async function esqueceuSenha(req, res) {
       [usuario.id, token, expira]
     );
 
-    // Em produção, envie este token por e-mail (ex: SendGrid, Resend, Nodemailer).
-    // Por ora, retornamos o token diretamente — útil para dev/teste.
-    console.log(`[reset] Token para ${email}: ${token}`);
+    await resend.emails.send({
+      from: 'Veridion <onboarding@resend.dev>',
+      to: email,
+      subject: 'Redefinição de senha — Veridion',
+      html: `<div style="font-family:Inter,sans-serif;max-width:480px;margin:0 auto;padding:32px;background:#f4f5ff;border-radius:16px;"><h2 style="color:#171658;">Redefinição de senha</h2><p style="color:#6b6b9a;">Use o código abaixo para redefinir sua senha. Válido por <strong>1 hora</strong>.</p><div style="background:#fff;border-radius:10px;padding:20px;text-align:center;font-size:14px;font-weight:600;color:#3533cb;word-break:break-all;">${token}</div><p style="color:#6b6b9a;font-size:12px;margin-top:24px;">Se você não solicitou, ignore este e-mail.</p></div>`
+    });
 
     return res.status(200).json({
-      mensagem: 'Se este e-mail estiver cadastrado, você receberá o token em breve.',
-      // ⚠️  Remova o campo abaixo em produção e envie o token por e-mail
-      token_dev: process.env.NODE_ENV !== 'production' ? token : undefined,
+      mensagem: 'Se este e-mail estiver cadastrado, você receberá o código em breve.',
     });
 
   } catch (err) {
