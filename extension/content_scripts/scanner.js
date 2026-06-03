@@ -130,27 +130,11 @@ function coletarTexto() {
   return document.body.innerText.trim().slice(0, 4000);
 }
 
-/** Coleta as URLs das imagens presentes na página (máx. 5). */
-function coletarImagens() {
-  const imgs = Array.from(document.querySelectorAll('img'))
-    .map(img => img.src)
-    .filter(src => src && src.startsWith('http'))
-    .slice(0, 5);
-  return imgs;
-}
-
 // ------------------------------------------------------------
 //  5. Exibição de resultado
 // ------------------------------------------------------------
 
-/**
- * Aplica o resultado da análise no widget.
- * @param {number}   score      - 0 a 100
- * @param {string}   veredicto  - Texto curto do veredicto
- * @param {string}   detalhe    - Explicação da IA
- * @param {string|null} imagemMsg - Mensagem sobre as imagens (ou null)
- */
-function exibirResultado(score, veredicto, detalhe, imagemMsg = null) {
+function exibirResultado(score, veredicto, detalhe) {
   scoreCirculo.textContent = score;
 
   // Cor do score baseada no valor
@@ -161,12 +145,6 @@ function exibirResultado(score, veredicto, detalhe, imagemMsg = null) {
 
   veredictoEl.textContent = veredicto;
   detalheEl.textContent   = detalhe;
-
-  if (imagemMsg) {
-    imagemInfo.textContent = imagemMsg;
-    imagemInfo.style.display = 'block';
-  }
-
   resultado.style.display = 'block';
 }
 
@@ -201,10 +179,9 @@ btnAnalisar.addEventListener('click', async () => {
   btnAnalisar.disabled      = true;
   textoStatus.textContent   = 'Coletando dados da página...';
 
-  const texto   = coletarTexto();
-  const imagens = coletarImagens();
-  const url     = window.location.href;
-  const titulo  = document.title;
+  const texto  = coletarTexto();
+  const url    = window.location.href;
+  const titulo = document.title;
 
   textoStatus.textContent = 'Enviando para o servidor...';
 
@@ -215,7 +192,7 @@ btnAnalisar.addEventListener('click', async () => {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,
       },
-      body: JSON.stringify({ url, titulo, texto, imagens }),
+      body: JSON.stringify({ url, titulo, texto }),
     });
 
     if (!response.ok) {
@@ -228,11 +205,7 @@ btnAnalisar.addEventListener('click', async () => {
     // { score: number, veredicto: string, detalhe: string, imagem_ia: boolean, imagem_confianca: number }
     textoStatus.textContent = 'Análise concluída!';
 
-    const imagemMsg = dados.imagem_ia !== undefined
-      ? `Imagens: ${dados.imagem_ia ? `IA detectada (${dados.imagem_confianca}% de certeza)` : 'Nenhuma IA detectada'}`
-      : null;
-
-    exibirResultado(dados.score, dados.veredicto, dados.detalhe, imagemMsg);
+    exibirResultado(dados.score, dados.veredicto, dados.detalhe);
 
   } catch (err) {
     textoStatus.textContent = `Falha na análise: ${err.message}`;
@@ -248,4 +221,41 @@ btnAnalisar.addEventListener('click', async () => {
 
 btnLogout.addEventListener('click', async () => {
   await chrome.runtime.sendMessage({ type: 'LOGOUT' });
+});
+
+// ------------------------------------------------------------
+//  8. Resultado de análise de imagem (via botão direito)
+// ------------------------------------------------------------
+
+chrome.runtime.onMessage.addListener((message) => {
+  if (message.type === 'ANALISANDO_IMAGEM') {
+    widget.classList.add('open');
+    resultado.style.display   = 'none';
+    imagemInfo.style.display  = 'none';
+    textoStatus.textContent   = 'Analisando imagem com IA...';
+    return;
+  }
+
+  if (message.type === 'IMAGEM_ANALISADA') {
+    if (message.erro) {
+      textoStatus.textContent = `Erro: ${message.erro}`;
+      return;
+    }
+
+    const { imagem_ia, imagem_confianca, veredicto } = message.dados;
+
+    textoStatus.textContent = 'Análise de imagem concluída!';
+
+    scoreCirculo.textContent = imagem_ia ? '⚠' : '✓';
+    scoreCirculo.className   = 'ver-score-circulo';
+    scoreCirculo.classList.add(imagem_ia ? 'ver-score-baixo' : 'ver-score-alto');
+
+    veredictoEl.textContent = veredicto;
+    detalheEl.textContent   = imagem_ia
+      ? `Confiança de detecção: ${imagem_confianca}%`
+      : 'Imagem parece ter origem humana.';
+
+    imagemInfo.style.display = 'none';
+    resultado.style.display  = 'block';
+  }
 });

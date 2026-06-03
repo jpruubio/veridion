@@ -332,3 +332,96 @@ main input#voltar:active {
 .footer-note a:hover {
     text-decoration: underline;
 }
+
+/* ============================================================
+   Overlay de sucesso no cadastro
+   ============================================================ */
+
+.ver-login-overlay {
+    position: absolute;
+    inset: 0;
+    border-radius: 24px;
+    background: rgba(255, 255, 255, .96);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    z-index: 10;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .3s ease;
+}
+
+.ver-login-overlay.ver-ativo {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.ver-check-circle {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+    box-shadow: 0 8px 28px rgba(34, 197, 94, .40);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: scale(0);
+    transition: transform .45s cubic-bezier(.34, 1.56, .64, 1);
+}
+
+.ver-login-overlay.ver-ativo .ver-check-circle {
+    transform: scale(1);
+}
+
+.ver-check-circle svg {
+    width: 36px;
+    height: 36px;
+    stroke: white;
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+    overflow: visible;
+}
+
+.ver-check-circle svg polyline {
+    stroke-dasharray: 50;
+    stroke-dashoffset: 50;
+    transition: stroke-dashoffset .4s ease .35s;
+}
+
+.ver-login-overlay.ver-ativo .ver-check-circle svg polyline {
+    stroke-dashoffset: 0;
+}
+
+.ver-sucesso-titulo {
+    font-family: 'Questrial', sans-serif;
+    font-size: 1.25rem;
+    color: var(--dark);
+    letter-spacing: -0.3px;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity .35s ease .5s, transform .35s ease .5s;
+}
+
+.ver-login-overlay.ver-ativo .ver-sucesso-titulo {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.ver-sucesso-sub {
+    font-size: 0.82rem;
+    color: var(--muted);
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity .35s ease .65s, transform .35s ease .65s;
+}
+
+.ver-login-overlay.ver-ativo .ver-sucesso-sub {
+    opacity: 1;
+    transform: translateY(0);
+}

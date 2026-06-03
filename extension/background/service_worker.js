@@ -39,8 +39,17 @@ async function openLoginPage() {
 //  Gatilhos de instalação e ativação
 // ------------------------------------------------------------
 
-/** Na primeira instalação e em atualizações, verifica a sessão. */
+/** Na primeira instalação e em atualizações, verifica a sessão e recria o menu de contexto. */
 chrome.runtime.onInstalled.addListener(async () => {
+  // Remove antes de recriar para evitar erro de ID duplicado em atualizações
+  chrome.contextMenus.removeAll(() => {
+    chrome.contextMenus.create({
+      id:       'veridion-analisar-imagem',
+      title:    'Analisar imagem com IA (Veridion)',
+      contexts: ['image'],
+    });
+  });
+
   const loggedIn = await isLoggedIn();
   if (!loggedIn) {
     await openLoginPage();
@@ -109,5 +118,47 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       sendResponse({ user: user || null });
     });
     return true;
+  }
+});
+
+// ------------------------------------------------------------
+//  Botão direito em imagens → Analisar com IA
+// ------------------------------------------------------------
+
+chrome.contextMenus.onClicked.addListener(async (info, tab) => {
+  if (info.menuItemId !== 'veridion-analisar-imagem') return;
+
+  const loggedIn = await isLoggedIn();
+  if (!loggedIn) {
+    openLoginPage();
+    return;
+  }
+
+  // Avisa o scanner para abrir o widget e mostrar carregando
+  chrome.tabs.sendMessage(tab.id, { type: 'ANALISANDO_IMAGEM' });
+
+  const { token } = await chrome.storage.local.get('token');
+
+  try {
+    const response = await fetch(`${BACKEND_URL}/analisar-imagem`, {
+      method: 'POST',
+      headers: {
+        'Content-Type':  'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify({ url_imagem: info.srcUrl }),
+    });
+
+    const dados = await response.json();
+
+    if (!response.ok) {
+      chrome.tabs.sendMessage(tab.id, { type: 'IMAGEM_ANALISADA', erro: dados.erro || 'Erro no servidor.' });
+      return;
+    }
+
+    chrome.tabs.sendMessage(tab.id, { type: 'IMAGEM_ANALISADA', dados });
+
+  } catch (err) {
+    chrome.tabs.sendMessage(tab.id, { type: 'IMAGEM_ANALISADA', erro: 'Falha ao conectar ao servidor.' });
   }
 });

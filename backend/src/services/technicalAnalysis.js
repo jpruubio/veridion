@@ -8,17 +8,43 @@ function extrairDominio(url) {
   }
 }
 
+// WHOIS só funciona em domínios registrados, não subdomínios.
+// blog.example.com → example.com | sub.example.com.br → example.com.br
+function extrairDominioRaiz(hostname) {
+  const partes = hostname.split('.');
+  if (partes.length <= 2) return hostname;
+
+  const sufixosCompostos = [
+    'co.uk', 'org.uk', 'me.uk', 'net.uk',
+    'com.br', 'org.br', 'net.br', 'gov.br', 'edu.br',
+    'com.au', 'co.au', 'net.au',
+    'co.nz', 'com.ar', 'com.mx',
+  ];
+
+  if (sufixosCompostos.includes(partes.slice(-2).join('.'))) {
+    return partes.slice(-3).join('.');
+  }
+  return partes.slice(-2).join('.');
+}
+
 function parseDataWhois(texto) {
   const padroes = [
     /Creation Date:\s*(.+)/i,
-    /created:\s*(.+)/i,
-    /Registered on:\s*(.+)/i,
+    /Created(?:\s+on)?:\s*(.+)/i,
+    /Registered(?:\s+on)?:\s*(.+)/i,
+    /Registration Date:\s*(.+)/i,
+    /Registration Time:\s*(.+)/i,
+    /Domain Registration Date:\s*(.+)/i,
     /domain_dateregistered:\s*(.+)/i,
+    /activate:\s*(.+)/i,
   ];
+
   for (const padrao of padroes) {
     const match = texto.match(padrao);
     if (match) {
-      const data = new Date(match[1].trim());
+      // Remove informação extra após a data (ex: "2020-01-15  before 2021-01-15")
+      const candidato = match[1].trim().split(/\s{2,}|\s+before\s+/i)[0].trim();
+      const data = new Date(candidato);
       if (!isNaN(data)) return data;
     }
   }
@@ -27,7 +53,7 @@ function parseDataWhois(texto) {
 
 function consultarWhois(dominio) {
   return new Promise((resolve) => {
-    const timeout = setTimeout(() => resolve(null), 5000);
+    const timeout = setTimeout(() => resolve(null), 2000);
     whois.lookup(dominio, (err, data) => {
       clearTimeout(timeout);
       if (err || !data) return resolve(null);
@@ -55,7 +81,9 @@ async function analisarTecnico(url) {
     return { score: Math.max(0, Math.min(100, score)), fatores };
   }
 
-  const dadosWhois = await consultarWhois(dominio);
+  const dominioRaiz = extrairDominioRaiz(dominio);
+  const dadosWhois  = await consultarWhois(dominioRaiz);
+
   if (dadosWhois) {
     const dataCriacao = parseDataWhois(dadosWhois);
     if (dataCriacao) {

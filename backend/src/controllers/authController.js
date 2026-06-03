@@ -1,13 +1,14 @@
-// ============================================================
-//  Veridion — src/controllers/authController.js
-//  Lida com cadastro e login de usuários.
-// ============================================================
-
 const bcrypt = require('bcrypt');
 const jwt    = require('jsonwebtoken');
 const db     = require('../models/db');
 
 const SALT_ROUNDS = 10;
+
+// Limites alinhados com o schema do banco e com o limite interno do bcrypt (72 bytes)
+const LIMITES = { nome: 100, email: 150, senha: 72 };
+
+const RE_EMAIL  = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const RE_SENHA  = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
 
 // ------------------------------------------------------------
 //  POST /cadastro
@@ -20,35 +21,36 @@ async function cadastrar(req, res) {
     return res.status(400).json({ erro: 'Preencha nome, email e senha.' });
   }
 
-  const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-  if (!emailValido.test(email)) {
-  return res.status(400).json({
-    erro: 'Digite um e-mail válido.'
-  });
+  if (typeof nome !== 'string' || nome.length > LIMITES.nome) {
+    return res.status(400).json({ erro: `Nome deve ter no máximo ${LIMITES.nome} caracteres.` });
   }
 
-  const senhaForte =
-  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+  if (typeof email !== 'string' || email.length > LIMITES.email) {
+    return res.status(400).json({ erro: `E-mail deve ter no máximo ${LIMITES.email} caracteres.` });
+  }
 
-  if (!senhaForte.test(senha)) {
-  return res.status(400).json({
-    erro:
-      'A senha deve ter no mínimo 8 caracteres, incluindo letra maiúscula, minúscula, número e caractere especial.'
-  });
+  if (typeof senha !== 'string' || senha.length > LIMITES.senha) {
+    return res.status(400).json({ erro: `A senha deve ter no máximo ${LIMITES.senha} caracteres.` });
+  }
+
+  if (!RE_EMAIL.test(email)) {
+    return res.status(400).json({ erro: 'Digite um e-mail válido.' });
+  }
+
+  if (!RE_SENHA.test(senha)) {
+    return res.status(400).json({
+      erro: 'A senha deve ter no mínimo 8 caracteres, incluindo letra maiúscula, minúscula, número e caractere especial.',
+    });
   }
 
   try {
-    // Verifica se email já existe
     const existe = await db.query('SELECT id FROM usuarios WHERE email = $1', [email]);
     if (existe.rows.length > 0) {
       return res.status(409).json({ erro: 'Este e-mail já está cadastrado.' });
     }
 
-    // Criptografa a senha
     const senhaHash = await bcrypt.hash(senha, SALT_ROUNDS);
 
-    // Insere o usuário
     const result = await db.query(
       'INSERT INTO usuarios (nome, email, senha_hash) VALUES ($1, $2, $3) RETURNING id, nome, email',
       [nome, email, senhaHash]
@@ -56,7 +58,6 @@ async function cadastrar(req, res) {
 
     const usuario = result.rows[0];
 
-    // Gera o token JWT já no cadastro (usuário entra logado)
     const token = jwt.sign(
       { id: usuario.id, email: usuario.email },
       process.env.JWT_SECRET,
@@ -86,8 +87,16 @@ async function login(req, res) {
     return res.status(400).json({ erro: 'Preencha e-mail e senha.' });
   }
 
+  if (typeof email !== 'string' || email.length > LIMITES.email) {
+    return res.status(400).json({ erro: `E-mail deve ter no máximo ${LIMITES.email} caracteres.` });
+  }
+
+  // Bloqueia senhas acima do limite do bcrypt antes de chamar bcrypt.compare()
+  if (typeof senha !== 'string' || senha.length > LIMITES.senha) {
+    return res.status(401).json({ erro: 'E-mail ou senha incorretos.' });
+  }
+
   try {
-    // Busca o usuário pelo email
     const result = await db.query(
       'SELECT id, nome, email, senha_hash FROM usuarios WHERE email = $1',
       [email]
@@ -99,13 +108,11 @@ async function login(req, res) {
 
     const usuario = result.rows[0];
 
-    // Compara a senha enviada com o hash salvo
     const senhaCorreta = await bcrypt.compare(senha, usuario.senha_hash);
     if (!senhaCorreta) {
       return res.status(401).json({ erro: 'E-mail ou senha incorretos.' });
     }
 
-    // Gera o token JWT
     const token = jwt.sign(
       { id: usuario.id, email: usuario.email },
       process.env.JWT_SECRET,

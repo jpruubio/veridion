@@ -25,4 +25,14 @@ function verificarToken(req, res, next) {
   }
 }
 
-module.exports = { verificarToken };
+// JWT opcional: se presente e válido, popula req.usuario; se ausente, continua sem autenticação.
+// Use em rotas que salvam histórico quando logado mas funcionam sem login também.
+function tokenOpcional(req, res, next) {
+  const authHeader = req.headers['authorization'];
+  if (authHeader && authHeader.startsWith('Bearer ')) {
+    return verificarToken(req, res, next);
+  }
+  next();
+}
+
+module.exports = { verificarToken, tokenOpcional };
