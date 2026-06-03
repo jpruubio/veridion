@@ -87,11 +87,13 @@ paginaRoutes.js
 `services/communityAnalysis.js` — weighted average by vote type: `confiavel` = 100, `suspeito` = 25, `golpe` = 0. When no votes exist, community is excluded from the Trust Score formula and its weight is redistributed proportionally to IA and Técnica.
 
 ### AI integration
-`services/aiAnalysis.js` uses Google Gemini 2.5 Flash via `GEMINI_API_KEY`. Exports:
-- `analisarConteudo({ titulo, conteudo })` — text analysis, returns `{ score, fatores }`
-- `analisarImagens([url])` — AI-generated image detection, returns `{ imagem_ia, imagem_confianca }`
+`services/aiAnalysis.js` uses Google Gemini 2.5 Flash via `GEMINI_API_KEY`. The `GoogleGenerativeAI` client is instantiated once at module load (not per request).
 
-Both fall back gracefully (score 50 / false) if the key is missing or the API fails.
+Exports:
+- `analisarConteudo({ titulo, conteudo, dominio })` — text analysis; `dominio` is optional context for the model; returns `{ score, fatores }`
+- `analisarImagens([url])` — AI-generated image detection; fetches image, sends as base64 inline data; returns `{ imagem_ia, imagem_confianca }`
+
+Scoring prompt anchors: 0–20 fraud/disinfo, 21–40 suspicious, 41–60 neutral, 61–80 probably trustworthy, 81–100 high credibility. Scores outside 20–85 require explicit evidence in the text. Both functions fall back gracefully (score 50 / false) if the key is missing or the API fails.
 
 ### WHOIS domain age
 `services/technicalAnalysis.js` — queries WHOIS on the **root domain** (strips subdomains before lookup). Timeout: 2 seconds. Recognizes 8 date formats across major registrars.

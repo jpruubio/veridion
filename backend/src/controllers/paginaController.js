@@ -22,7 +22,7 @@ async function analisarPagina(req, res) {
 
     const [resultadoTecnico, resultadoIa, comunidade] = await Promise.all([
       analisarTecnico(url),
-      analisarConteudo({ titulo, conteudo: texto }),
+      analisarConteudo({ titulo, conteudo: texto, dominio }),
       calcularComunidade(dominio),
     ]);
 
