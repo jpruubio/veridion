@@ -453,3 +453,215 @@ main a {
     opacity: 1;
     transform: translateY(0);
 }
+
+/* ============================================================
+   Modal de Redefinição de Senha
+   ============================================================ */
+
+.ver-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(17, 16, 60, 0.55);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    z-index: 100;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.22s ease;
+}
+
+.ver-modal-overlay.ver-modal--aberto {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.ver-modal {
+    position: relative;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 24px 64px rgba(23, 22, 88, 0.18), 0 0 0 1px rgba(23, 22, 88, 0.06);
+    padding: 2.25rem 2rem 2rem;
+    width: 100%;
+    max-width: 420px;
+    transform: translateY(16px) scale(0.97);
+    transition: transform 0.25s cubic-bezier(.34,1.36,.64,1), opacity 0.22s ease;
+    opacity: 0;
+}
+
+.ver-modal-overlay.ver-modal--aberto .ver-modal {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+}
+
+/* Botão fechar */
+.ver-modal-fechar {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--muted);
+    font-size: 1.2rem;
+    line-height: 1;
+    padding: 4px;
+    border-radius: 6px;
+    transition: color 0.15s, background 0.15s;
+}
+.ver-modal-fechar:hover {
+    color: var(--text);
+    background: var(--primary-glow2);
+}
+
+/* Ícone decorativo do modal */
+.ver-modal-icone {
+    width: 52px;
+    height: 52px;
+    background: var(--primary-glow);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: var(--primary);
+    margin-bottom: 1rem;
+}
+.ver-modal-icone--chave { background: rgba(234, 179, 8, 0.12); color: #b45309; }
+
+.ver-modal-titulo {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--dark);
+    margin-bottom: .35rem;
+}
+
+.ver-modal-desc {
+    font-size: .85rem;
+    color: var(--muted);
+    line-height: 1.55;
+    margin-bottom: 1.25rem;
+}
+
+/* Erro inline */
+.ver-modal-erro {
+    font-size: .8rem;
+    color: #dc2626;
+    margin: -.25rem 0 .75rem;
+    display: none;
+}
+
+/* Botão primário dentro do modal */
+.ver-btn-primary {
+    width: 100%;
+    padding: .75rem 1rem;
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-size: .95rem;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+    transition: background 0.15s, opacity 0.15s;
+    margin-top: .25rem;
+}
+.ver-btn-primary:hover  { background: var(--primary-deep); }
+.ver-btn-primary:disabled { opacity: .6; cursor: not-allowed; }
+
+/* Botão ghost (voltar) */
+.ver-btn-ghost {
+    width: 100%;
+    padding: .6rem 1rem;
+    background: none;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-size: .88rem;
+    font-weight: 500;
+    color: var(--muted);
+    cursor: pointer;
+    margin-top: .5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .4rem;
+    transition: border-color 0.15s, color 0.15s;
+    font-family: 'Inter', sans-serif;
+}
+.ver-btn-ghost:hover { border-color: var(--primary); color: var(--primary); }
+
+/* Spinner de loading dentro do botão */
+.ver-btn-loader {
+    display: none;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255,255,255,.4);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: ver-spin .7s linear infinite;
+}
+.ver-btn--loading .ver-btn-txt   { display: none; }
+.ver-btn--loading .ver-btn-loader { display: block; }
+@keyframes ver-spin { to { transform: rotate(360deg); } }
+
+/* Lista de requisitos da senha */
+.ver-req-lista {
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: .3rem .75rem;
+    font-size: .78rem;
+    color: var(--muted);
+    margin: .25rem 0 .9rem;
+    padding: 0;
+}
+.ver-req { display: flex; align-items: center; gap: .3rem; transition: color .15s; }
+.ver-req--ok   { color: #16a34a; }
+.ver-req--fail { color: #dc2626; }
+
+/* Toggle de visibilidade da senha */
+.ver-field-senha { position: relative; }
+.ver-toggle-senha {
+    position: absolute;
+    right: 2.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--muted);
+    font-size: 1rem;
+    padding: 4px;
+    line-height: 1;
+    z-index: 2;
+    transition: color .15s;
+}
+.ver-toggle-senha:hover { color: var(--primary); }
+
+/* Check circle dentro do modal (passo 3) */
+.ver-check-circle--modal {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 1.25rem;
+    background: #dcfce7;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.ver-check-circle--modal svg {
+    width: 32px;
+    height: 32px;
+    stroke: #16a34a;
+    stroke-width: 2.5;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
