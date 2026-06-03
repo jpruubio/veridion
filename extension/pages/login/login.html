@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -49,7 +48,7 @@
             <i class="ti ti-lock field-icon" aria-hidden="true"></i>
         </div>
         <div class="form-row">
-            <a href="#" class="forgot">Esqueci minha senha</a>
+            <a href="#" class="forgot" id="btn-esqueci-senha">Esqueci minha senha</a>
         </div>
         <input type="submit" id="entrar" value="Entrar na conta">
         <div class="sep">
@@ -65,5 +64,105 @@
             e a <a href="#">Política de Privacidade</a> do Veridion.
         </p>
     </main>
+
+    <!-- ====================================================
+         Modal de Redefinição de Senha
+         Passo 1: solicitar token via e-mail
+         Passo 2: inserir token + nova senha
+         ==================================================== -->
+    <div class="ver-modal-overlay" id="ver-modal-overlay" aria-hidden="true">
+        <div class="ver-modal" role="dialog" aria-modal="true" aria-labelledby="ver-modal-titulo">
+
+            <!-- Botão fechar -->
+            <button class="ver-modal-fechar" id="ver-modal-fechar" aria-label="Fechar">
+                <i class="ti ti-x" aria-hidden="true"></i>
+            </button>
+
+            <!-- ── Passo 1: solicitar token ── -->
+            <div id="ver-passo-1">
+                <div class="ver-modal-icone">
+                    <i class="ti ti-lock-open" aria-hidden="true"></i>
+                </div>
+                <h2 class="ver-modal-titulo" id="ver-modal-titulo">Esqueceu sua senha?</h2>
+                <p class="ver-modal-desc">
+                    Digite o e-mail da sua conta e enviaremos um código para redefinir sua senha.
+                </p>
+                <div class="field">
+                    <input type="email" id="reset-email" placeholder=" " autocomplete="email">
+                    <label for="reset-email">E-mail cadastrado</label>
+                    <i class="ti ti-mail field-icon" aria-hidden="true"></i>
+                </div>
+                <p class="ver-modal-erro" id="ver-erro-p1" role="alert"></p>
+                <button class="ver-btn-primary" id="btn-solicitar-token">
+                    <span class="ver-btn-txt">Enviar código</span>
+                    <span class="ver-btn-loader" aria-hidden="true"></span>
+                </button>
+            </div>
+
+            <!-- ── Passo 2: token + nova senha ── -->
+            <div id="ver-passo-2" hidden>
+                <div class="ver-modal-icone ver-modal-icone--chave">
+                    <i class="ti ti-key" aria-hidden="true"></i>
+                </div>
+                <h2 class="ver-modal-titulo">Redefinir senha</h2>
+                <p class="ver-modal-desc">
+                    Cole o código recebido e escolha uma nova senha.
+                </p>
+                <div class="field">
+                    <input type="text" id="reset-token" placeholder=" " autocomplete="off" spellcheck="false">
+                    <label for="reset-token">Código de redefinição</label>
+                    <i class="ti ti-shield-check field-icon" aria-hidden="true"></i>
+                </div>
+                <div class="field ver-field-senha">
+                    <input type="password" id="reset-nova-senha" placeholder=" " autocomplete="new-password">
+                    <label for="reset-nova-senha">Nova senha</label>
+                    <i class="ti ti-lock field-icon" aria-hidden="true"></i>
+                    <button type="button" class="ver-toggle-senha" id="toggle-nova-senha" aria-label="Mostrar senha">
+                        <i class="ti ti-eye" aria-hidden="true"></i>
+                    </button>
+                </div>
+                <div class="field ver-field-senha">
+                    <input type="password" id="reset-confirmar-senha" placeholder=" " autocomplete="new-password">
+                    <label for="reset-confirmar-senha">Confirmar nova senha</label>
+                    <i class="ti ti-lock field-icon" aria-hidden="true"></i>
+                    <button type="button" class="ver-toggle-senha" id="toggle-confirmar-senha" aria-label="Mostrar senha">
+                        <i class="ti ti-eye" aria-hidden="true"></i>
+                    </button>
+                </div>
+                <!-- Requisitos visuais da senha -->
+                <ul class="ver-req-lista" aria-label="Requisitos da senha" id="ver-req-lista">
+                    <li id="req-min"   class="ver-req"><i class="ti ti-circle" aria-hidden="true"></i> Mínimo 8 caracteres</li>
+                    <li id="req-upper" class="ver-req"><i class="ti ti-circle" aria-hidden="true"></i> Uma letra maiúscula</li>
+                    <li id="req-lower" class="ver-req"><i class="ti ti-circle" aria-hidden="true"></i> Uma letra minúscula</li>
+                    <li id="req-num"   class="ver-req"><i class="ti ti-circle" aria-hidden="true"></i> Um número</li>
+                    <li id="req-esp"   class="ver-req"><i class="ti ti-circle" aria-hidden="true"></i> Um caractere especial</li>
+                </ul>
+                <p class="ver-modal-erro" id="ver-erro-p2" role="alert"></p>
+                <button class="ver-btn-primary" id="btn-redefinir-senha">
+                    <span class="ver-btn-txt">Redefinir senha</span>
+                    <span class="ver-btn-loader" aria-hidden="true"></span>
+                </button>
+                <button class="ver-btn-ghost" id="btn-voltar-p1">
+                    <i class="ti ti-arrow-left" aria-hidden="true"></i> Voltar
+                </button>
+            </div>
+
+            <!-- ── Passo 3: sucesso ── -->
+            <div id="ver-passo-3" hidden>
+                <div class="ver-check-circle ver-check-circle--modal">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <polyline points="4,13 9,18 20,7" />
+                    </svg>
+                </div>
+                <h2 class="ver-modal-titulo">Senha redefinida!</h2>
+                <p class="ver-modal-desc">
+                    Sua senha foi alterada com sucesso. Agora você já pode entrar na sua conta.
+                </p>
+                <button class="ver-btn-primary" id="btn-fechar-sucesso">Fazer login</button>
+            </div>
+
+        </div>
+    </div>
+
 </body>
 </html>
