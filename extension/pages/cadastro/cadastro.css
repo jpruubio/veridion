@@ -11,7 +11,7 @@
     --primary-light: #5452e8;
     --primary-glow:  rgba(53, 51, 203, .14);
     --primary-glow2: rgba(53, 51, 203, .08);
-    --bg:            #eef0ff;
+    --bg:            #f4f6f9;
     --surface:       #ffffff;
     --text:          #1a1a2e;
     --muted:         #6b6b9a;
@@ -26,7 +26,7 @@ body {
     justify-content: center;
     background: radial-gradient(ellipse 80% 55% at 50% 0%, #dddeff 0%, var(--bg) 65%);
     padding: 2rem 1rem;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Open Sans', sans-serif;
 }
 
 body::before {
@@ -148,7 +148,7 @@ main h1 {
     padding: 18px 44px 6px 14px;
     border-radius: 14px;
     border: 1.5px solid var(--border);
-    font-family: 'Inter', sans-serif;
+    font-family: 'Open Sans', sans-serif;
     font-size: 0.95rem;
     color: var(--text);
     background: #fafbff;
@@ -165,7 +165,7 @@ main h1 {
     left: 14px;
     top: 50%;
     transform: translateY(-50%);
-    font-family: 'Inter', sans-serif;
+    font-family: 'Open Sans', sans-serif;
     font-size: 0.92rem;
     color: var(--muted);
     pointer-events: none;
@@ -234,7 +234,7 @@ main input#criar {
     color: var(--surface);
     border: none;
     border-radius: 14px;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Open Sans', sans-serif;
     font-size: 0.96rem;
     font-weight: 600;
     letter-spacing: 0.2px;
@@ -296,7 +296,7 @@ main input#voltar {
     color: var(--dark);
     border: 1.5px solid rgba(23, 22, 88, .14);
     border-radius: 14px;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Open Sans', sans-serif;
     font-size: 0.93rem;
     font-weight: 600;
     letter-spacing: 0.1px;

@@ -135,7 +135,7 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
   }
 
   // Avisa o scanner para abrir o widget e mostrar carregando
-  chrome.tabs.sendMessage(tab.id, { type: 'ANALISANDO_IMAGEM' });
+  chrome.tabs.sendMessage(tab.id, { type: 'ANALISANDO_IMAGEM', url: info.srcUrl });
 
   const { token } = await chrome.storage.local.get('token');
 
