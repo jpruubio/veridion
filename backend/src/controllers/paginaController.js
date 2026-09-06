@@ -40,12 +40,11 @@ async function analisarPagina(req, res) {
 
     if (req.usuario) {
       await db.query(
-        `INSERT INTO analises (usuario_id, url, titulo, score, veredicto, detalhe, analisado_em)
-         VALUES ($1, $2, $3, $4, $5, $6, NOW())`,
+        `INSERT INTO analises (usuario_id, url, score, veredicto, detalhe, criado_em)
+         VALUES ($1, $2, $3, $4, $5, NOW())`,
         [
           req.usuario.id,
-          url,
-          titulo || null,
+          dominio,
           resultado.score,
           resultado.veredicto,
           JSON.stringify(resultado.breakdown),

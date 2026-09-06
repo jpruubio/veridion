@@ -8,7 +8,7 @@ const VOTOS_VALIDOS = ['confiavel', 'suspeito', 'golpe'];
 // Requer autenticação. Anti-spam: 1 voto por usuário por domínio (UPSERT).
 // Depende de: UNIQUE (usuario_id, dominio) na tabela votos.
 async function votar(req, res) {
-  const { url, voto } = req.body;
+  const { url, voto, comentario = null } = req.body;
 
   if (!url || !voto) {
     return res.status(400).json({ erro: 'Os campos "url" e "voto" são obrigatórios.' });
@@ -24,13 +24,25 @@ async function votar(req, res) {
   }
 
   try {
-    await db.query(
-      `INSERT INTO votos (usuario_id, dominio, voto)
-       VALUES ($1, $2, $3)
-       ON CONFLICT (usuario_id, dominio)
-       DO UPDATE SET voto = EXCLUDED.voto, criado_em = NOW()`,
-      [req.usuario.id, dominio, voto]
+    // Verificar se o usuário já votou neste domínio
+    const votoExistente = await db.query(
+      'SELECT id FROM votos WHERE usuario_id = $1 AND dominio = $2',
+      [req.usuario.id, dominio]
     );
+
+    if (votoExistente.rows.length > 0) {
+      // Atualizar o voto existente
+      await db.query(
+        'UPDATE votos SET voto = $1, comentario = $2, criado_em = NOW() WHERE id = $3',
+        [voto, comentario, votoExistente.rows[0].id]
+      );
+    } else {
+      // Inserir novo voto
+      await db.query(
+        'INSERT INTO votos (usuario_id, dominio, voto, comentario) VALUES ($1, $2, $3, $4)',
+        [req.usuario.id, dominio, voto, comentario]
+      );
+    }
 
     const contagem = await db.query(
       `SELECT
@@ -47,9 +59,9 @@ async function votar(req, res) {
       mensagem: 'Voto registrado!',
       dominio,
       contagem: {
-        confiavel: parseInt(confiavel),
-        suspeito:  parseInt(suspeito),
-        golpe:     parseInt(golpe),
+        confiavel: parseInt(confiavel || 0),
+        suspeito:  parseInt(suspeito || 0),
+        golpe:     parseInt(golpe || 0),
       },
     });
 

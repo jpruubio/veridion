@@ -27,18 +27,12 @@ async function consultarDominio(req, res) {
         [dominio]
       ),
       db.query(
-        `SELECT score, veredicto, analisado_em
+        `SELECT score, veredicto, criado_em
          FROM analises
-         WHERE url LIKE $1 OR url LIKE $2
-            OR url LIKE $3 OR url LIKE $4
-         ORDER BY analisado_em DESC
+         WHERE url = $1
+         ORDER BY criado_em DESC
          LIMIT 1`,
-        [
-          `%://${dominio}/%`,
-          `%://${dominio}`,
-          `%://www.${dominio}/%`,
-          `%://www.${dominio}`,
-        ]
+        [dominio]
       ),
     ]);
 

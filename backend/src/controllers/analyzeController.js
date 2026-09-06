@@ -5,10 +5,10 @@ const db = require('../models/db');
 async function historico(req, res) {
   try {
     const result = await db.query(
-      `SELECT id, url, titulo, score, veredicto, analisado_em
+      `SELECT id, url AS dominio, score, veredicto, detalhe, criado_em
        FROM analises
        WHERE usuario_id = $1
-       ORDER BY analisado_em DESC
+       ORDER BY criado_em DESC
        LIMIT 50`,
       [req.usuario.id]
     );

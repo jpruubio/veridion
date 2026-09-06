@@ -45,7 +45,18 @@
 
   "web_accessible_resources": [
     {
-      "resources": ["assets/icons/icon48.png"],
+      "resources": [
+        "assets/icons/icon48.png",
+        "pages/comunidade/comunidade.html",
+        "pages/comunidade/comunidade.css",
+        "pages/comunidade/comunidade.js",
+        "pages/config/config.html",
+        "pages/config/config.css",
+        "pages/config/config.js",
+        "pages/portal/portal.html",
+        "pages/portal/portal.css",
+        "pages/portal/portal.js"
+      ],
       "matches": ["<all_urls>"]
     }
   ]

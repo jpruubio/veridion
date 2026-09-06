@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Veridion Trust — Plataforma de Reputação Ativa e Proteção Antifraude por IA</title>
+    <meta name="description" content="Verifique a reputação de qualquer site, e-commerce ou CNPJ em tempo real com inteligência artificial e consenso comunitário. Evite golpes e Pix falsos.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Questrial&family=Open+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+    <link rel="stylesheet" href="portal.css">
+    <script src="portal.js" defer></script>
+</head>
+<body>
+
+    <!-- 1. HEADER E BARRA DE NAVEGAÇÃO SUPERIOR -->
+    <header class="portal-header">
+        <div class="header-container">
+            <div class="brand-group">
+                <div class="logo-ring">
+                    <img src="../login/LOGO VERIDION.png" alt="Veridion" class="logo-img">
+                </div>
+                <div class="brand-titles">
+                    <span class="brand-name">VERIDION <span class="accent-trust">TRUST</span></span>
+                    <span class="brand-tagline">Plataforma Oficial de Reputação por IA</span>
+                </div>
+            </div>
+
+            <nav class="portal-nav">
+                <a href="#search-section" class="nav-link"><i class="ti ti-search"></i> Pesquisar URL/Loja</a>
+                <a href="#report-section" class="nav-link" id="nav-report-link"><i class="ti ti-alert-triangle"></i> Fazer Reclamação</a>
+                <a href="#rankings-section" class="nav-link"><i class="ti ti-star"></i> Melhores Lojas</a>
+                <a href="#rankings-section" class="nav-link"><i class="ti ti-trophy"></i> Top 10 por Nicho</a>
+                <a href="#my-reports-section" class="nav-link" id="nav-my-reports"><i class="ti ti-history"></i> Minhas Reclamações</a>
+                <a href="#enterprise-section" class="nav-link nav-enterprise-link"><i class="ti ti-building-store"></i> Veridion Enterprise</a>
+            </nav>
+
+            <div class="header-actions">
+                <button id="btn-theme-toggle" class="icon-btn" title="Alternar Modo Escuro/Claro"><i class="ti ti-moon"></i></button>
+                <a href="https://chrome.google.com/webstore" target="_blank" class="btn-chrome-download">
+                    <i class="ti ti-brand-chrome"></i> Baixar Extensão no Chrome
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- 2. HERO SECTION COM BUSCA UNIVERSAL E MÉTRICAS DE IMPACTO -->
+        <section id="search-section" class="hero-section">
+            <div class="hero-glow-backdrop"></div>
+            <div class="hero-container">
+                <div class="hero-badge">
+                    <i class="ti ti-shield-check-filled"></i> Escudo Ativo contra Golpes & Sites Clonados
+                </div>
+                <h1 class="hero-title">A Maior Plataforma de Reputação Ativa e Proteção Antifraude por IA do Brasil</h1>
+                <p class="hero-subtitle">Antes de comprar ou digitar seus dados, verifique a reputação do site em tempo real com auditoria de inteligência artificial e relatos da comunidade.</p>
+
+                <!-- CAIXA DE BUSCA UNIVERSAL -->
+                <div class="search-card">
+                    <form id="universal-search-form" class="universal-search-form">
+                        <div class="search-input-wrapper">
+                            <i class="ti ti-world-search search-icon"></i>
+                            <input type="text" id="universal-search-input" placeholder="Cole qualquer URL, CNPJ, E-mail ou Nome de Loja..." autocomplete="off" required>
+                            <button type="submit" class="btn-search-ai" id="btn-search-ai">
+                                <i class="ti ti-sparkles"></i> Consultar com IA
+                            </button>
+                        </div>
+                    </form>
+                    <div class="search-tags">
+                        <span class="tag-title">Consultados recentemente:</span>
+                        <button class="quick-tag-btn" data-query="mercadolivre.com.br">mercadolivre.com.br</button>
+                        <button class="quick-tag-btn" data-query="amazon.com.br">amazon.com.br</button>
+                        <button class="quick-tag-btn" data-query="promocao-iphone-insta.xyz">promocao-iphone.xyz ⚠️</button>
+                        <button class="quick-tag-btn" data-query="nubank.com.br">nubank.com.br</button>
+                    </div>
+                </div>
+
+                <!-- CARD RESULTADO DA CONSULTA (Oculto Inicialmente) -->
+                <div id="portal-search-result" class="result-modal-card hidden">
+                    <div class="result-card-header">
+                        <div>
+                            <span id="res-domain-title" class="res-domain-name">dominio.com</span>
+                            <span id="res-status-badge" class="res-status-badge">Verificando...</span>
+                        </div>
+                        <div class="res-score-badge">
+                            <span id="res-score-number">--</span>
+                            <small>/ 100</small>
+                        </div>
+                    </div>
+                    <div class="res-card-body">
+                        <div class="res-details-box">
+                            <h4><i class="ti ti-microscope"></i> Resumo da Auditoria IA:</h4>
+                            <p id="res-summary-text">Realizando varredura de infraestrutura e reputação...</p>
+                        </div>
+                        <div class="res-metrics-grid">
+                            <div class="res-metric-item">
+                                <span class="res-metric-val text-success" id="res-votes-safe">0</span>
+                                <span class="res-metric-label">Avaliações Confiáveis</span>
+                            </div>
+                            <div class="res-metric-item">
+                                <span class="res-metric-val text-danger" id="res-votes-danger">0</span>
+                                <span class="res-metric-label">Relatos de Golpe</span>
+                            </div>
+                            <div class="res-metric-item">
+                                <span class="res-metric-val" id="res-cnpj-extracted">Verificado</span>
+                                <span class="res-metric-label">Situação Cadastral</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAIXA DE MÉTRICAS DE IMPACTO -->
+                <div class="impact-metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-icon-box blue-glow"><i class="ti ti-rocket"></i></div>
+                        <div class="metric-data">
+                            <span class="metric-number">2.4M+</span>
+                            <span class="metric-desc">Sites e URLs Analisados</span>
+                        </div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon-box green-glow"><i class="ti ti-shield-check"></i></div>
+                        <div class="metric-data">
+                            <span class="metric-number">840K+</span>
+                            <span class="metric-desc">Usuários Protegidos no Brasil</span>
+                        </div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon-box purple-glow"><i class="ti ti-target"></i></div>
+                        <div class="metric-data">
+                            <span class="metric-number">98.7%</span>
+                            <span class="metric-desc">Precisão da IA de Auditoria</span>
+                        </div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon-box orange-glow"><i class="ti ti-bolt"></i></div>
+                        <div class="metric-data">
+                            <span class="metric-number">R$ 14.2M+</span>
+                            <span class="metric-desc">em Golpes e Pix Falsos Evitados</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. SEÇÃO: COMO FUNCIONA O VERIDION TRUST (3 ETAPAS DE IA) -->
+        <section class="how-it-works-section">
+            <div class="section-container">
+                <div class="section-header center">
+                    <span class="sub-badge">Metodologia Exclusiva</span>
+                    <h2>Como Funciona o Escudo Veridion Trust em 3 Etapas</h2>
+                    <p>Nossa inteligência artificial analisa a fundo a infraestrutura do site antes de você concluir qualquer pagamento.</p>
+                </div>
+
+                <div class="steps-grid">
+                    <div class="step-card">
+                        <div class="step-number">01</div>
+                        <div class="step-icon"><i class="ti ti-microscope"></i></div>
+                        <h3>1. Varredura de Infraestrutura & CNPJ</h3>
+                        <p>Chamada automática para a API da Receita Federal (QSA/CNAE), validação de certificado SSL, servidor de hospedagem e tempo de existência do domínio.</p>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="step-number">02</div>
+                        <div class="step-icon"><i class="ti ti-tag"></i></div>
+                        <h3>2. Auditoria Preditiva de Preços & Catálogo</h3>
+                        <p>Comparação instantânea de preços com a média real de mercado e análise de fotos clonadas por algoritmos de difusão de IA.</p>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="step-number">03</div>
+                        <div class="step-icon"><i class="ti ti-users-group"></i></div>
+                        <h3>3. Consenso Colaborativo Comunitário</h3>
+                        <p>Cruzamento em tempo real de denúncias, alertas de leitores de QR Code Pix e relatos da comunidade no portal Veridion Trust.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. SEÇÃO: GUIA DE RANKINGS E TOP 10 POR NICHO -->
+        <section id="rankings-section" class="rankings-section">
+            <div class="section-container">
+                <div class="section-header">
+                    <span class="sub-badge">Reputação Verificada</span>
+                    <h2>Guia de Rankings e Top 10 por Nicho</h2>
+                    <p>Confira as lojas e e-commerces mais seguros e recomendados do Brasil segundo a auditoria de IA.</p>
+                </div>
+
+                <!-- ABAS DE NAVEGAÇÃO DOS RANKINGS -->
+                <div class="niche-tabs">
+                    <button class="niche-tab-btn active" data-niche="eletronicos"><i class="ti ti-device-laptop"></i> Eletrônicos</button>
+                    <button class="niche-tab-btn" data-niche="moda"><i class="ti ti-shirt"></i> Moda & Vestuário</button>
+                    <button class="niche-tab-btn" data-niche="educacao"><i class="ti ti-school"></i> Educação & Cursos</button>
+                    <button class="niche-tab-btn" data-niche="financeiro"><i class="ti ti-building-bank"></i> Serviços Financeiros</button>
+                </div>
+
+                <!-- TABELA DE RANKINGS -->
+                <div class="table-responsive-wrapper">
+                    <table class="rankings-table">
+                        <thead>
+                            <tr>
+                                <th># Posição</th>
+                                <th>Empresa / Loja</th>
+                                <th>Score Veridion</th>
+                                <th>Status de Segurança</th>
+                                <th>Avaliações da Comunidade</th>
+                                <th>Ação</th>
+                            </tr>
+                        </thead>
+                        <tbody id="rankings-table-body">
+                            <!-- Injetado dinamicamente via portal.js -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. SEÇÃO: AVALIAÇÕES E DEPOIMENTOS SOBRE A EXTENSÃO (SOCIAL PROOF) -->
+        <section class="testimonials-section">
+            <div class="section-container">
+                <div class="section-header center">
+                    <span class="sub-badge">Depoimentos Reais</span>
+                    <h2>O que dizem os usuários protegidos pelo Veridion AI</h2>
+                    <p>Veja como o nosso escudo de IA e o portal Veridion Trust salvaram pessoas reais de golpes digitais.</p>
+                </div>
+
+                <div class="testimonials-grid">
+                    <div class="testimonial-card">
+                        <div class="stars-row"><i class="ti ti-star-filled"></i><i class="ti ti-star-filled"></i><i class="ti ti-star-filled"></i><i class="ti ti-star-filled"></i><i class="ti ti-star-filled"></i></div>
+                        <p class="testimonial-text">"Quase paguei R$ 1.200 num Pix para uma loja clonada no Instagram. O alerta do Veridion saltou na tela e mostrou que o CNPJ era de uma empresa fantasma. Salvei meu dinheiro!"</p>
+                        <div class="author-info">
+                            <div class="avatar-circle">CM</div>
+                            <div>
+                                <strong>Carlos M.</strong>
+                                <span>São Paulo, SP</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="testimonial-card">
+                        <div class="stars-row"><i class="ti ti-star-filled"></i><i class="ti ti-star-filled"></i><i class="ti ti-star-filled"></i><i class="ti ti-star-filled"></i><i class="ti ti-star-filled"></i></div>
+                        <p class="testimonial-text">"Uso a extensão no Chrome todos os dias. Ela injeta o selinho ao lado dos anúncios no Google e eu já sei qual site é confiável antes mesmo de clicar no link."</p>
+                        <div class="author-info">
+                            <div class="avatar-circle">FR</div>
+                            <div>
+                                <strong>Fernanda R.</strong>
+                                <span>Rio de Janeiro, RJ</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="testimonial-card">
+                        <div class="stars-row"><i class="ti ti-star-filled"></i><i class="ti ti-star-filled"></i><i class="ti ti-star-filled"></i><i class="ti ti-star-filled"></i><i class="ti ti-star-filled"></i></div>
+                        <p class="testimonial-text">"Os relatórios de reputação do Veridion Trust são os mais rápidos e precisos do mercado. Recomendo para toda a minha equipe de TI e compras."</p>
+                        <div class="author-info">
+                            <div class="avatar-circle">LT</div>
+                            <div>
+                                <strong>Lucas T.</strong>
+                                <span>Gestor de TI & Segurança</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. SEÇÃO B2B: POR QUE ESTAR NO VERIDION TRUST (EMPRESAS ENTERPRISE) -->
+        <section id="enterprise-section" class="enterprise-b2b-section">
+            <div class="section-container">
+                <div class="enterprise-banner">
+                    <div class="enterprise-content">
+                        <span class="enterprise-badge"><i class="ti ti-building-store"></i> Para Empresas & Marcas Oficiais</span>
+                        <h2>Transforme Confiança em Vendas com o Veridion Enterprise</h2>
+                        <p class="enterprise-desc">Lojas legítimas e marcas oficiais usam o Selo Veridion Trust para aumentar a conversão no checkout e derrubar sites clones de golpistas em minutos.</p>
+
+                        <div class="b2b-benefits-grid">
+                            <div class="benefit-card">
+                                <div class="benefit-icon"><i class="ti ti-shield-check"></i></div>
+                                <h4>Selo de Autenticidade Oficial</h4>
+                                <p>Exiba o Selo Veridion Verificado na sua loja e transmita 100% de segurança aos seus compradores no momento do pagamento.</p>
+                            </div>
+
+                            <div class="benefit-card">
+                                <div class="benefit-icon"><i class="ti ti-chart-line flex-shrink-0"></i></div>
+                                <h4>Aumento de Conversão no Checkout</h4>
+                                <p>Reduza o abandono de carrinho eliminando a desconfiança do comprador na primeira compra com garantia criptográfica.</p>
+                            </div>
+
+                            <div class="benefit-card">
+                                <div class="benefit-icon"><i class="ti ti-bolt"></i></div>
+                                <h4>Takedown Automático via WebMCP</h4>
+                                <p>Nosso agente varre a internet e derruba anúncios e e-commerces clones da sua marca em menos de 2 minutos.</p>
+                            </div>
+                        </div>
+
+                        <div class="enterprise-cta">
+                            <button id="btn-enterprise-contact" class="btn-enterprise-cta">
+                                <i class="ti ti-rocket"></i> Conhecer o Veridion Enterprise para Empresas
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal de Formulário de Reclamação / Denúncia -->
+    <div id="portal-report-modal" class="portal-modal-overlay hidden">
+        <div class="portal-modal-card">
+            <button id="btn-close-portal-modal" class="modal-close-btn">&times;</button>
+            <h3><i class="ti ti-alert-triangle"></i> Registrar Denúncia no Veridion Trust</h3>
+            <p class="modal-desc">Informe a URL e selecione a categoria da denúncia para alertar a comunidade:</p>
+
+            <form id="portal-report-form">
+                <div class="form-group">
+                    <label for="report-domain-input">URL ou Domínio da Loja</label>
+                    <input type="text" id="report-domain-input" placeholder="Ex: promocao-falsa-loja.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Categoria do Problema</label>
+                    <div class="modal-category-chips">
+                        <button type="button" class="chip-btn active" data-cat="GOLPE_PIX">🛑 Golpe no Pix / Checkout</button>
+                        <button type="button" class="chip-btn" data-cat="SITE_CLONADO">🕵️ Site Clonado / Typosquatting</button>
+                        <button type="button" class="chip-btn" data-cat="FAKE_NEWS">📰 Fake News / Desinformação</button>
+                        <button type="button" class="chip-btn" data-cat="CONTEUDO_18">🔞 Conteúdo Adulto / +18</button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="report-text-input">Descreva o ocorrido (opcional)</label>
+                    <textarea id="report-text-input" rows="3" placeholder="Explique por que esta loja ou link é suspeito..."></textarea>
+                </div>
+
+                <div class="modal-form-actions">
+                    <button type="submit" class="btn-submit-denuncia"><i class="ti ti-send"></i> Enviar Denúncia</button>
+                    <button type="button" id="btn-cancel-portal-modal" class="btn-cancel">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 7. FOOTER COMPLETO (RODAPÉ) -->
+    <footer class="portal-footer">
+        <div class="footer-container">
+            <div class="footer-grid">
+                <div class="footer-col brand-col">
+                    <div class="logo-group">
+                        <img src="../login/LOGO VERIDION.png" alt="Veridion" class="footer-logo">
+                        <span class="footer-brand">VERIDION TRUST</span>
+                    </div>
+                    <p class="footer-desc">Plataforma líder em auditoria preditiva por IA e reputação ativa contra golpes e fraudes digitais.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="ti ti-brand-twitter"></i></a>
+                        <a href="#"><i class="ti ti-brand-instagram"></i></a>
+                        <a href="#"><i class="ti ti-brand-linkedin"></i></a>
+                        <a href="#"><i class="ti ti-brand-github"></i></a>
+                    </div>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Para Usuários</h4>
+                    <ul>
+                        <li><a href="#search-section">Consultar Domínio</a></li>
+                        <li><a href="#report-section" class="footer-report-link">Fazer Denúncia</a></li>
+                        <li><a href="#rankings-section">Melhores Lojas</a></li>
+                        <li><a href="https://chrome.google.com/webstore" target="_blank">Extensão do Chrome</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Para Empresas</h4>
+                    <ul>
+                        <li><a href="#enterprise-section">Selo Veridion Verificado</a></li>
+                        <li><a href="#enterprise-section">Proteção de Marca B2B</a></li>
+                        <li><a href="#enterprise-section">Derrubada de Clones (Takedown)</a></li>
+                        <li><a href="#enterprise-section">API de Reputação</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Suporte & LGPD</h4>
+                    <ul>
+                        <li><a href="#">Termos de Uso</a></li>
+                        <li><a href="#">Política de Privacidade LGPD</a></li>
+                        <li><a href="#">Central de Ajuda</a></li>
+                        <li><a href="#">Contato da Ouvidoria</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 Veridion AI Technologies. Todos os direitos reservados. Protegendo o comércio eletrônico brasileiro em tempo real.</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

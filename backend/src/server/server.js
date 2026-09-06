@@ -13,6 +13,9 @@ const voteRoutes     = require('../routes/voteRoutes');
 const reportRoutes   = require('../routes/reportRoutes');
 const domainRoutes   = require('../routes/domainRoutes');
 const paginaRoutes   = require('../routes/paginaRoutes');
+const communityRoutes = require('../routes/communityRoutes');
+const imageReportRoutes = require('../routes/imageReportRoutes');
+const userRoutes     = require('../routes/userRoutes');
 
 const app  = express();
 const PORT = process.env.PORT || 3000;
@@ -25,10 +28,7 @@ app.set('trust proxy', 1);
 
 app.use(helmet());
 
-app.use(cors({
-  origin: '*',
-  methods: ['GET', 'POST'],
-}));
+app.use(cors());
 
 app.use(express.json());
 
@@ -42,6 +42,9 @@ app.use('/', voteRoutes);
 app.use('/', reportRoutes);
 app.use('/', domainRoutes);
 app.use('/', paginaRoutes);
+app.use('/', communityRoutes);
+app.use('/', imageReportRoutes);
+app.use('/', userRoutes);
 
 // Rota de saúde — útil para testar se o servidor está vivo
 app.get('/ping', (req, res) => {

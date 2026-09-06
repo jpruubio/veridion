@@ -1,0 +1,1575 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Veridion AI — Plataforma de Reputação & Segurança</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+    <link rel="stylesheet" href="comunidade.css">
+    <script src="comunidade.js" defer></script>
+</head>
+<body>
+    <!-- HEADER SUPERIOR COM LOGO VERIDION AI, AS 3 ABAS E BOTÃO SAIR DA CONTA -->
+    <header class="app-header">
+        <div class="header-container">
+            <div class="logo-group">
+                <div class="logo-ring">
+                    <img src="../login/LOGO VERIDION.png" alt="Veridion AI" class="logo-img">
+                </div>
+                <div>
+                    <h1>Veridion AI</h1>
+                    <span class="subtitle">Plataforma de Reputação & Proteção Ativa</span>
+                </div>
+            </div>
+            
+            <!-- AS ABAS OFICIAIS (COM PAINEL EMPRESA B2B & SHIELD RADAR EM VERIDION TRUST) -->
+            <div class="header-right-group">
+                <nav class="nav-links">
+                    <button id="nav-btn-painel-empresa" class="nav-btn btn-company-panel-nav hidden"><i class="ti ti-building-store"></i> Painel Empresa</button>
+                    <button id="nav-btn-trust" class="nav-btn active"><i class="ti ti-shield-lock"></i> Veridion Trust</button>
+                    <button id="nav-btn-search" class="nav-btn"><i class="ti ti-search"></i> Pesquisar URL</button>
+                    <button id="nav-btn-config" class="nav-btn"><i class="ti ti-settings"></i> Configuração</button>
+                </nav>
+                <button id="btn-config-logout" class="btn-logout-header">
+                    <i class="ti ti-logout"></i> Sair da Conta
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <!-- ============================================================
+             ABA 1: VERIDION TRUST (ABA PADRÃO E PRINCIPAL)
+             ============================================================ -->
+        <section id="section-trust" class="content-section active">
+            
+            <!-- A) TOPO DA ABA (HERO SEARCH) -->
+            <div class="trust-hero-card">
+                <h2>Seja para pesquisar ou reclamar, facilitamos o caminho para você</h2>
+                
+                <form id="trust-hero-search-form" class="hero-search-form">
+                    <div class="hero-input-group">
+                        <input type="text" id="trust-hero-search-input" placeholder="Qual empresa ou site você quer pesquisar?" required>
+                        <button type="submit" class="btn-hero-search">Pesquisar</button>
+                    </div>
+                </form>
+
+                <div class="quick-tags-row">
+                    <span class="quick-title">Pesquisados recentemente:</span>
+                    <button class="quick-chip" data-query="mercadolivre.com.br">mercadolivre.com.br</button>
+                    <button class="quick-chip" data-query="amazon.com.br">amazon.com.br</button>
+                    <button class="quick-chip" data-query="promocao-falsa-insta.xyz">promocao-falsa-insta.xyz</button>
+                </div>
+            </div>
+
+            <!-- B) SEÇÃO "FERRAMENTAS PARA VOCÊ" (CARDS DE AÇÃO) -->
+            <div class="tools-section">
+                <h3 class="section-subtitle">FERRAMENTAS PARA VOCÊ</h3>
+                <div class="tools-grid-4">
+                    
+                    <!-- Card 1: Destacado Verde Escuro #044E3A -->
+                    <div id="card-action-reclamar" class="tool-card tool-card-highlight">
+                        <div class="tool-content">
+                            <strong>Fazer reclamação</strong>
+                            <span>Alertar a comunidade sobre um site suspeito ou fraude</span>
+                        </div>
+                    </div>
+
+                    <!-- Card 2: Branco Neutro (Borda azul apenas no Hover) -->
+                    <div id="card-action-minhas" class="tool-card tool-card-white">
+                        <div class="tool-content">
+                            <strong>Minhas reclamações</strong>
+                            <span>Ver histórico de denúncias e respostas enviadas</span>
+                        </div>
+                    </div>
+
+                    <!-- Card 3: Branco Neutro -->
+                    <div id="card-action-detectar" class="tool-card tool-card-white">
+                        <div class="tool-content">
+                            <strong>Detectar site confiável</strong>
+                            <span>Consultar reputação e dados da Receita Federal</span>
+                        </div>
+                    </div>
+
+                    <!-- Card 4: Branco Neutro -->
+                    <div id="card-action-guia" class="tool-card tool-card-white">
+                        <div class="tool-content">
+                            <strong>Guia Melhores Empresas</strong>
+                            <span>Lojas e serviços mais recomendados do Brasil</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- C) FAIXA DE MÉTRICAS DE IMPACTO -->
+            <div class="impact-metrics-banner">
+                <div class="metrics-grid-4">
+                    <div class="metric-card">
+                        <div class="metric-icon blue-glow"><i class="ti ti-rocket"></i></div>
+                        <div>
+                            <span class="metric-num">2.4M+</span>
+                            <span class="metric-lbl">Sites Analisados</span>
+                        </div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon green-glow"><i class="ti ti-shield-check"></i></div>
+                        <div>
+                            <span class="metric-num">840K+</span>
+                            <span class="metric-lbl">Usuários Protegidos</span>
+                        </div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon purple-glow"><i class="ti ti-target"></i></div>
+                        <div>
+                            <span class="metric-num">98.7%</span>
+                            <span class="metric-lbl">Precisão da IA</span>
+                        </div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon orange-glow"><i class="ti ti-bolt"></i></div>
+                        <div>
+                            <span class="metric-num">R$ 14.2M+</span>
+                            <span class="metric-lbl">em Golpes Evitados</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- D) SEÇÃO RANKINGS POR NICHO -->
+            <div class="niche-comparison-section">
+                <h3 class="section-title">Descubra quais são as empresas mais confiáveis</h3>
+                <p style="font-size:13.5px; color:var(--text-muted); margin-top:-8px; margin-bottom:1.25rem;">Estas são as empresas mais bem ou mal avaliadas pelos seus serviços de atendimento.</p>
+
+                <div class="niche-wrap-bar">
+                    <button class="niche-scroll-btn" data-niche="perfumarias">Perfumarias</button>
+                    <button class="niche-scroll-btn" data-niche="eletrodomesticos">Eletrodomésticos</button>
+                    <button class="niche-scroll-btn" data-niche="cursos">Cursos Preparatórios</button>
+                    <button class="niche-scroll-btn" data-niche="moda">E-commerce - Moda</button>
+                    <button class="niche-scroll-btn" data-niche="calcados">Marcas de Calçados</button>
+                    <button class="niche-scroll-btn" data-niche="fitness">Moda Fitness e Esportiva</button>
+                    <button class="niche-scroll-btn" data-niche="infantil">Moda Infantil</button>
+                    <button class="niche-scroll-btn" data-niche="outlets">Outlets</button>
+                    <button class="niche-scroll-btn active" data-niche="cama_mesa_banho">Cama, mesa e banho</button>
+                </div>
+
+                <div class="best-worst-grid">
+                    <!-- CARD ESQUERDA: MELHORES EMPRESAS -->
+                    <div class="ranking-comparison-card">
+                        <div class="card-ranking-header header-best">
+                            <h4>Melhores empresas</h4>
+                        </div>
+                        <div class="ranking-items-list" id="best-companies-list">
+                            <div class="ranking-row-item">
+                                <span class="badge-rank rank-green">1º</span>
+                                <div class="company-info-col">
+                                    <strong class="company-name">Karsten</strong>
+                                    <span class="company-domain">karsten.com.br</span>
+                                </div>
+                                <div class="score-status-col text-right">
+                                    <span class="badge-status-verified">Selo Verificado</span>
+                                    <strong class="score-green-val">9.2 / 10</strong>
+                                </div>
+                            </div>
+
+                            <div class="ranking-row-item">
+                                <span class="badge-rank rank-green">2º</span>
+                                <div class="company-info-col">
+                                    <strong class="company-name">Altenburg</strong>
+                                    <span class="company-domain">altenburg.com.br</span>
+                                </div>
+                                <div class="score-status-col text-right">
+                                    <span class="badge-status-verified">Selo Verificado</span>
+                                    <strong class="score-green-val">9.1 / 10</strong>
+                                </div>
+                            </div>
+
+                            <div class="ranking-row-item">
+                                <span class="badge-rank rank-green">3º</span>
+                                <div class="company-info-col">
+                                    <strong class="company-name">Linda Casa</strong>
+                                    <span class="company-domain">lindacasa.com.br</span>
+                                </div>
+                                <div class="score-status-col text-right">
+                                    <span class="badge-status-verified">Selo Verificado</span>
+                                    <strong class="score-green-val">8.9 / 10</strong>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-ranking-footer">
+                            <a href="#section-search" class="link-access-list">Acessar lista &rarr;</a>
+                        </div>
+                    </div>
+
+                    <!-- CARD DIREITA: PIORES EMPRESAS -->
+                    <div class="ranking-comparison-card">
+                        <div class="card-ranking-header header-worst">
+                            <h4>Piores empresas</h4>
+                        </div>
+                        <div class="ranking-items-list" id="worst-companies-list">
+                            <div class="ranking-row-item">
+                                <span class="badge-rank rank-red">1º</span>
+                                <div class="company-info-col">
+                                    <strong class="company-name">Zara Home</strong>
+                                    <span class="company-domain">zarahome.com</span>
+                                </div>
+                                <div class="score-status-col text-right">
+                                    <span class="badge-status-not-rec">Não Recomendada</span>
+                                </div>
+                            </div>
+
+                            <div class="ranking-row-item">
+                                <span class="badge-rank rank-red">2º</span>
+                                <div class="company-info-col">
+                                    <strong class="company-name">Araújo</strong>
+                                    <span class="company-domain">araujo.commercesuite.com...</span>
+                                </div>
+                                <div class="score-status-col text-right">
+                                    <span class="badge-status-not-rec">Não Recomendada</span>
+                                </div>
+                            </div>
+
+                            <div class="ranking-row-item">
+                                <span class="badge-rank rank-red">3º</span>
+                                <div class="company-info-col">
+                                    <strong class="company-name">Narciso Enxovais</strong>
+                                    <span class="company-domain">narcisoenxovais.com</span>
+                                </div>
+                                <div class="score-status-col text-right">
+                                    <span class="badge-status-not-rec">Não Recomendada</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-ranking-footer">
+                            <a href="#section-search" class="link-access-list">Acessar lista &rarr;</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- FEED DE RECLAMAÇÕES -->
+            <div id="feed-container-box" class="trust-feed-container">
+                <div class="feed-header-row">
+                    <h3 id="feed-title-label"><i class="ti ti-messages"></i> Últimos Relatos da Comunidade</h3>
+                    <div class="category-filter-chips">
+                        <button class="chip-filter active" data-filter="ALL">Todos</button>
+                        <button class="chip-filter" data-filter="GOLPE_PIX">Golpe no Pix</button>
+                        <button class="chip-filter" data-filter="SITE_CLONADO">Site Clonado</button>
+                        <button class="chip-filter" data-filter="FAKE_NEWS">Fake News</button>
+                        <button class="chip-filter" data-filter="CONTEUDO_18">+18</button>
+                    </div>
+                </div>
+                <div id="trust-comments-list" class="comments-list">
+                    <div class="comment-card flex-comment-row">
+                        <div>
+                            <span class="category-badge">GOLPE PIX</span>
+                            <p>"Tentei comprar uma fritadeira Air Fryer por R$ 89 num link patrocinado do Facebook e o valor foi transferido para uma conta física de larvas no Pix."</p>
+                            <small><i class="ti ti-clock"></i> 14/02/2026 — Domínio: <strong>eletro-promocoes.xyz</strong></small>
+                        </div>
+                        <button class="btn-report-details"><i class="ti ti-info-circle"></i> Ver detalhes</button>
+                    </div>
+
+                    <div class="comment-card flex-comment-row">
+                        <div>
+                            <span class="category-badge">SITE CLONADO</span>
+                            <p>"Clonaram o site da Renner com os mesmos produtos e preços 70% mais baratos. O Veridion disparou o alerta vermelho de fraude a tempo."</p>
+                            <small><i class="ti ti-clock"></i> 14/02/2026 — Domínio: <strong>renner-outlet.online</strong></small>
+                        </div>
+                        <button class="btn-report-details"><i class="ti ti-info-circle"></i> Ver detalhes</button>
+                    </div>
+
+                    <div class="comment-card flex-comment-row">
+                        <div>
+                            <span class="category-badge">TYPOSQUATTING</span>
+                            <p>"Recebi uma mensagem no WhatsApp com o link nubaunk-fatura.com. A IA identificou o golpe de escrita parecida imediatamente."</p>
+                            <small><i class="ti ti-clock"></i> 13/02/2026 — Domínio: <strong>nubaunk-fatura.com</strong></small>
+                        </div>
+                        <button class="btn-report-details"><i class="ti ti-info-circle"></i> Ver detalhes</button>
+                    </div>
+                </div>
+
+                <div class="see-all-reports-wrapper">
+                    <button class="btn-see-all-reports"><i class="ti ti-eye"></i> Ver todos os relatos da comunidade (1.240)</button>
+                </div>
+            </div>
+
+            <!-- SEÇÃO B2B ENTERPRISE -->
+            <div class="enterprise-b2b-banner">
+                <div class="b2b-banner-content">
+                    <span class="b2b-badge">Para Marcas e E-Commerces Oficiais</span>
+                    <h3>Veridion Trust para Empresas</h3>
+                    <p>Lojas legítimas e marcas oficiais usam o Selo Veridion Trust para aumentar a conversão no checkout e derrubar automaticamente páginas e anúncios clones de golpistas.</p>
+                    <button id="btn-b2b-enterprise-trigger" class="btn-b2b-cta">
+                        Conhecer Plano Veridion Enterprise (R$ 54,90/mês)
+                    </button>
+                    
+                    <div class="b2b-partners-img-wrapper" style="margin-top: 1.25rem;">
+                        <img src="../../assets/icons/empresas.png" alt="Empresas Parceiras Veridion Trust" style="width: 100%; max-width: 100%; height: auto; aspect-ratio: 1100 / 500; border-radius: 10px; display: block;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ============================================================
+             ABA 2: PESQUISAR URL (RANKINGS + BUSCA + PÁGINA RECLAME AQUI DA EMPRESA)
+             ============================================================ -->
+        <section id="section-search" class="content-section">
+            
+            <!-- CAIXA DE BUSCA SUPERIOR -->
+            <div class="search-box-container">
+                <h2><i class="ti ti-search text-indigo"></i> Pesquisar Reputação de Qualquer URL / Loja</h2>
+                <p class="search-desc">Insira o domínio ou URL completa para consultar dados da Receita Federal, SSL, tempo de registro e auditoria de IA.</p>
+                
+                <form id="search-form" class="search-form">
+                    <div class="field-search">
+                        <input type="text" id="search-input" placeholder="Ex: mercadolivre.com.br ou nike" required>
+                        <button type="submit" class="search-submit-btn"><i class="ti ti-shield-search"></i> Auditar URL</button>
+                    </div>
+                </form>
+
+                <div class="quick-tags-row" style="justify-content: flex-start; margin-top: 1rem;">
+                    <span class="quick-title">Exemplos rápidos:</span>
+                    <button class="quick-chip search-shortcut-chip" data-query="nike">nike</button>
+                    <button class="quick-chip search-shortcut-chip" data-query="mercadolivre.com.br">mercadolivre.com.br</button>
+                    <button class="quick-chip search-shortcut-chip" data-query="amazon.com.br">amazon.com.br</button>
+                    <button class="quick-chip search-shortcut-chip" data-query="promocao-falsa-insta.xyz">promocao-falsa-insta.xyz</button>
+                </div>
+            </div>
+
+            <!-- VISTA 1: 4 COLUNAS DE RANKING PADRÃO (EXIBIDAS QUANDO NÃO HÁ BUSCA ATIVA) -->
+            <div id="search-default-rankings-container" class="search-default-rankings">
+                <div class="rankings-4-columns-grid">
+                    
+                    <!-- Coluna 1: Top 10 Marketplaces -->
+                    <div class="ranking-column-box">
+                        <div class="column-header">
+                            <h4><i class="ti ti-building-store text-indigo"></i> Top 10 Marketplaces</h4>
+                        </div>
+                        <div class="column-items-list" id="rank-marketplaces-list">
+                            <!-- JS preenche 10 empresas -->
+                        </div>
+                    </div>
+
+                    <!-- Coluna 2: Top 10 Sites de Notícias -->
+                    <div class="ranking-column-box">
+                        <div class="column-header">
+                            <h4><i class="ti ti-news text-indigo"></i> Top 10 Sites Notícias</h4>
+                        </div>
+                        <div class="column-items-list" id="rank-noticias-list">
+                            <!-- JS preenche 10 empresas -->
+                        </div>
+                    </div>
+
+                    <!-- Coluna 3: Top 10 Sites no Geral -->
+                    <div class="ranking-column-box">
+                        <div class="column-header">
+                            <h4><i class="ti ti-trophy text-indigo"></i> Top 10 Sites no Geral</h4>
+                        </div>
+                        <div class="column-items-list" id="rank-geral-list">
+                            <!-- JS preenche 10 empresas -->
+                        </div>
+                    </div>
+
+                    <!-- Coluna 4: Top 10 Piores Sites -->
+                    <div class="ranking-column-box box-worst-sites">
+                        <div class="column-header header-worst-red">
+                            <h4><i class="ti ti-alert-octagon text-danger"></i> Top 10 Piores Sites</h4>
+                        </div>
+                        <div class="column-items-list" id="rank-piores-list">
+                            <!-- JS preenche 10 empresas -->
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- VISTA 2: RESULTADOS DA BUSCA (ESTILO RECLAME AQUI PRINT 2 - GRID DE EMPRESAS) -->
+            <div id="search-company-results-container" class="search-company-results hidden">
+                
+                <div class="search-results-subbar">
+                    <span id="search-results-query-title" class="query-title-label">Resultados da busca por "nike"</span>
+                </div>
+
+                <div class="search-filter-pills-row">
+                    <div class="filter-tab-buttons">
+                        <button id="btn-tab-companies-count" class="tab-filter-btn active">Empresas <span id="count-found-companies">4</span></button>
+                        <button class="tab-filter-btn">Reclamações 0</button>
+                    </div>
+
+                    <div class="filter-dropdown-chips">
+                        <span class="f-chip">Estado <i class="ti ti-chevron-down"></i></span>
+                        <span class="f-chip">Reputação <i class="ti ti-chevron-down"></i></span>
+                        <span class="f-chip">Verificadas <i class="ti ti-chevron-down"></i></span>
+                        <span class="f-chip">Segmento <i class="ti ti-chevron-down"></i></span>
+                        <span class="f-chip">Sub-segmento <i class="ti ti-chevron-down"></i></span>
+                    </div>
+                </div>
+
+                <div class="showing-count-text" id="showing-count-text">Exibindo 4 de 4 empresas</div>
+
+                <!-- GRADE DE EMPRESAS ENCONTRADAS (PRINT 2 RECLAME AQUI) -->
+                <div class="companies-results-grid" id="companies-results-grid">
+                    <!-- JS gera os cards de empresas -->
+                </div>
+            </div>
+
+            <!-- VISTA 3: PÁGINA RECLAME AQUI DA EMPRESA SELECIONADA (PRINT 3 DA NIKE) -->
+            <div id="company-profile-full-page" class="company-profile-full-page hidden">
+                
+                <button id="btn-back-to-search-results" class="btn-back-link">
+                    <i class="ti ti-arrow-left"></i> Voltar para os resultados da pesquisa
+                </button>
+
+                <!-- HERO CARD DA EMPRESA (TIPO NIKE) -->
+                <div class="company-hero-profile-card">
+                    <div class="company-hero-left">
+                        <div class="company-logo-avatar" id="company-logo-avatar">
+                            <span class="brand-logo-text">NIKE</span>
+                        </div>
+                        <div class="company-hero-details">
+                            <h2 id="company-name-title">Nike</h2>
+                            <span class="company-category-meta" id="company-category-meta">
+                                Esportes - Produtos e Artigos Esportivos • +291 mil visualizações • Informações de marca
+                            </span>
+                            
+                            <div class="reputation-badge-pill" id="company-rep-pill">
+                                <i class="ti ti-mood-smile-beam"></i> Reputação <strong id="company-rep-status">Boa (8.2 / 10)</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="company-hero-right">
+                        <div class="hero-actions-row">
+                            <button class="btn-hero-visit-site" id="btn-hero-visit-site">
+                                <i class="ti ti-external-link"></i> Acessar site
+                            </button>
+                            <button class="btn-hero-compare">Compare</button>
+                            <button class="btn-hero-report-red" id="btn-hero-claim"><i class="ti ti-megaphone"></i> Reclamar</button>
+                            <button class="btn-hero-veridion-ia"><i class="ti ti-sparkles"></i> Verificar com Veridion IA</button>
+                        </div>
+                        <span class="resolution-rate-text" id="company-resolution-rate">
+                            <i class="ti ti-check"></i> Resolve <strong>77.5%</strong> das reclamações
+                        </span>
+                    </div>
+                </div>
+
+                <!-- ABAS INTERNAS DE NAVEGAÇÃO DA EMPRESA -->
+                <div class="company-profile-tabs-bar">
+                    <button class="c-tab-btn active" data-company-tab="geral">Geral</button>
+                    <button class="c-tab-btn" data-company-tab="sobre">Sobre</button>
+                    <button class="c-tab-btn" data-company-tab="reclamacoes">Reclamações</button>
+                    <button class="c-tab-btn" data-company-tab="descontos">Descontos</button>
+                    <button class="c-tab-btn" data-company-tab="problemas">Principais problemas</button>
+                </div>
+
+                <!-- 1. ABA GERAL (PRINT 3 DA NIKE - 3 COLUNAS) -->
+                <div id="company-tab-panel-geral" class="company-tab-panel active">
+                    <div class="company-profile-3col-grid">
+                        
+                        <!-- COLUNA 1: Desempenho / Confiabilidade -->
+                        <div class="profile-col-box">
+                            <h3><span id="company-is-safe-title">Nike</span> é confiável?</h3>
+                            
+                            <div class="time-range-pills">
+                                <button class="t-pill active">6 meses</button>
+                                <button class="t-pill">12 meses</button>
+                                <button class="t-pill">2025</button>
+                                <button class="t-pill">2024</button>
+                                <button class="t-pill">Geral</button>
+                            </div>
+
+                            <div class="performance-score-card">
+                                <div class="score-large-val" id="company-score-large">8.2<small>/10</small></div>
+                                <span class="score-status-desc text-success" id="company-score-status-lbl">REPUTAÇÃO BOA</span>
+                                
+                                <div class="stats-progress-list">
+                                    <div class="stat-bar-item">
+                                        <div class="stat-label-row">
+                                            <span>Reclamações respondidas</span>
+                                            <strong id="company-responded-pct">98.4%</strong>
+                                        </div>
+                                        <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: 98.4%;"></div></div>
+                                    </div>
+
+                                    <div class="stat-label-row">
+                                        <span>Voltariam a fazer negócio</span>
+                                        <strong id="company-repeat-pct">74.2%</strong>
+                                    </div>
+                                    <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: 74.2%;"></div></div>
+
+                                    <div class="stat-label-row">
+                                        <span>Índice de solução</span>
+                                        <strong id="company-solution-pct">77.5%</strong>
+                                    </div>
+                                    <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: 77.5%;"></div></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- COLUNA 2: Reclamações Recentes da Empresa -->
+                        <div class="profile-col-box">
+                            <h3>O que dizem sobre <span id="company-say-title">Nike</span></h3>
+                            
+                            <div class="complaint-status-tabs">
+                                <button class="comp-tab active">Últimas</button>
+                                <button class="comp-tab">Não respondidas</button>
+                                <button class="comp-tab">Respondidas</button>
+                                <button class="comp-tab">Avaliadas</button>
+                            </div>
+
+                            <div class="company-complaints-list" id="company-complaints-list">
+                                <!-- JS preenche a lista de reclamações -->
+                            </div>
+                        </div>
+
+                        <!-- COLUNA 3: Mais informações da empresa -->
+                        <div class="profile-col-box">
+                            <h3>Mais informações sobre <span id="company-info-title">Nike</span></h3>
+                            
+                            <div class="company-about-card">
+                                <p id="company-about-text">
+                                    A Nike é uma das maiores marcas do mundo no segmento esportivo. Comercializa em seu site itens como roupas, calçados, acessórios e mais.
+                                </p>
+
+                                <div class="company-tech-specs">
+                                    <div class="spec-row">
+                                        <i class="ti ti-building text-indigo"></i>
+                                        <div><strong>CNPJ Cadastrado</strong><span id="company-cnpj-val">00.000.000/0001-00 (Ativo)</span></div>
+                                    </div>
+
+                                    <div class="spec-row">
+                                        <i class="ti ti-calendar text-indigo"></i>
+                                        <div><strong>Tempo de Verificação</strong><span id="company-years-val">12 anos no Veridion</span></div>
+                                    </div>
+
+                                    <div class="spec-row">
+                                        <i class="ti ti-shield-lock text-indigo"></i>
+                                        <div><strong>Segurança SSL</strong><span>Criptografia Válida</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- 2. ABA SOBRE (HISTÓRIA CORPORATIVA & CNPJ DA RECEITA) -->
+                <div id="company-tab-panel-sobre" class="company-tab-panel hidden">
+                    <div class="panel-card">
+                        <div class="about-corporate-header">
+                            <span class="badge-status-verified"><i class="ti ti-shield-check"></i> Empresa Auditada & Verificada pelo Veridion Trust</span>
+                            <h3 style="margin-top:10px;">Sobre <span class="target-company-name-span">Nike do Brasil</span></h3>
+                        </div>
+                        <p class="about-corp-desc" id="target-company-full-about">
+                            A Nike do Brasil Ltda (FISIA COMÉRCIO DE PRODUTOS ESPORTIVOS) é a distribuidora oficial da marca no país. Comercializa calçados de performance esportiva, artigos de moda urbana (Streetwear), acessórios esportivos e vestuário de alta tecnologia.
+                        </p>
+                        <div class="corporate-details-grid">
+                            <div class="corp-detail-card">
+                                <strong>RAZÃO SOCIAL</strong>
+                                <span id="target-company-razao">FISIA COMÉRCIO DE PRODUTOS ESPORTIVOS LTDA</span>
+                            </div>
+                            <div class="corp-detail-card">
+                                <strong>CNPJ RECEITA FEDERAL</strong>
+                                <span id="target-company-cnpj-full">59.546.515/0001-34 (SITUAÇÃO ATIVA)</span>
+                            </div>
+                            <div class="corp-detail-card">
+                                <strong>SEDE CORPORATIVA</strong>
+                                <span>Al. Araguaia, 2044 - Alphaville, Barueri - SP, 06455-000</span>
+                            </div>
+                            <div class="corp-detail-card">
+                                <strong>DOMÍNIO OFICIAL</strong>
+                                <span id="target-company-domain-full">nike.com.br (Certificado SSL EV Válido)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. ABA RECLAMAÇÕES COMPLETA (PAINEL DE CONSUMIDORES) -->
+                <div id="company-tab-panel-reclamacoes" class="company-tab-panel hidden">
+                    <div class="panel-card">
+                        <div class="complaints-header-flex">
+                            <h3>Central de Reclamações de Consumidores</h3>
+                            <div class="complaint-filter-chips">
+                                <button class="c-filter-chip active" data-cfilter="ALL">Todas (1.240)</button>
+                                <button class="c-filter-chip" data-cfilter="UNANSWERED">Não Respondidas (18)</button>
+                                <button class="c-filter-chip" data-cfilter="ANSWERED">Respondidas (1.210)</button>
+                                <button class="c-filter-chip" data-cfilter="RESOLVED">Resolvidas (1.050)</button>
+                            </div>
+                        </div>
+                        <div class="full-complaints-feed-list" id="full-complaints-feed-list">
+                            <!-- Injetado dinamicamente via JS -->
+                        </div>
+                        <div class="history-see-all-wrapper" style="margin-top:1.25rem;">
+                            <button class="btn-history-see-all">
+                                <i class="ti ti-list"></i> Ver todas as reclamações (1.240)
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. ABA DESCONTOS (CUPONS VERIFICADOS) -->
+                <div id="company-tab-panel-descontos" class="company-tab-panel hidden">
+                    <div class="panel-card">
+                        <h3>Cupons e Descontos Verificados para <span class="target-company-name-span">Nike</span></h3>
+                        <p class="panel-sub-desc">Cupons auditados e válidos para utilização exclusiva no site oficial.</p>
+                        <div class="coupons-grid">
+                            <div class="coupon-card">
+                                <div class="coupon-tag-badge"><i class="ti ti-ticket"></i> 10% OFF</div>
+                                <h4>Primeira Compra no Site</h4>
+                                <p>Ganhe 10% de desconto em todo o site oficial no seu primeiro pedido.</p>
+                                <div class="coupon-code-row">
+                                    <code>VERIDION10</code>
+                                    <button class="btn-copy-coupon" data-code="VERIDION10"><i class="ti ti-copy"></i> Copiar</button>
+                                </div>
+                            </div>
+
+                            <div class="coupon-card">
+                                <div class="coupon-tag-badge green-badge"><i class="ti ti-truck-delivery"></i> FRETE GRÁTIS</div>
+                                <h4>Frete Grátis Brasil</h4>
+                                <p>Frete grátis para compras acima de R$ 299 em qualquer categoria.</p>
+                                <div class="coupon-code-row">
+                                    <code>FRETEGRATIS</code>
+                                    <button class="btn-copy-coupon" data-code="FRETEGRATIS"><i class="ti ti-copy"></i> Copiar</button>
+                                </div>
+                            </div>
+
+                            <div class="coupon-card">
+                                <div class="coupon-tag-badge purple-badge"><i class="ti ti-sparkles"></i> 20% EXTRA</div>
+                                <h4>Desconto Extra no Outlet</h4>
+                                <p>Economize mais 20% em produtos já com preço promocional no Outlet.</p>
+                                <div class="coupon-code-row">
+                                    <code>OUTLET20</code>
+                                    <button class="btn-copy-coupon" data-code="OUTLET20"><i class="ti ti-copy"></i> Copiar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5. ABA PRINCIPAIS PROBLEMAS (ESTATÍSTICAS DA BANCA) -->
+                <div id="company-tab-panel-problemas" class="company-tab-panel hidden">
+                    <div class="panel-card">
+                        <h3>Principais Categorias de Problemas Relatados</h3>
+                        <p class="panel-sub-desc">Métricas preditivas de suporte extraídas da IA de análise de reclamações.</p>
+                        
+                        <div class="problems-stats-grid">
+                            <div class="problem-stat-box">
+                                <div class="prob-stat-header">
+                                    <span>🚚 Atraso na Entrega / Logística de Envio</span>
+                                    <strong>42% (520 casos)</strong>
+                                </div>
+                                <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: 42%; background:#F59E0B;"></div></div>
+                            </div>
+
+                            <div class="problem-stat-box">
+                                <div class="prob-stat-header">
+                                    <span>👟 Tamanho Incorreto / Troca de Numeração</span>
+                                    <strong>28% (347 casos)</strong>
+                                </div>
+                                <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: 28%; background:#3533CB;"></div></div>
+                            </div>
+
+                            <div class="problem-stat-box">
+                                <div class="prob-stat-header">
+                                    <span>💳 Estorno de Cartão / Demora no Reembolso</span>
+                                    <strong>18% (223 casos)</strong>
+                                </div>
+                                <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: 18%; background:#10B981;"></div></div>
+                            </div>
+
+                            <div class="problem-stat-box">
+                                <div class="prob-stat-header">
+                                    <span>🧵 Defeito de Fabricação / Costura</span>
+                                    <strong>12% (150 casos)</strong>
+                                </div>
+                                <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: 12%; background:#8B5CF6;"></div></div>
+                            </div>
+                        </div>
+
+                        <div class="benchmark-info-banner">
+                            <i class="ti ti-chart-dots-filled text-indigo"></i>
+                            <div>
+                                <strong>Análise Preditiva de Concorrência (Veridion IA):</strong>
+                                <span>A Nike apresenta taxa de resolução 15% superior à média do segmento de Artigos Esportivos no Brasil, destacando-se pela rapidez nas trocas e resposta em até 24h.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ============================================================
+             ABA 3: CONFIGURAÇÃO (COM EXIBIÇÃO DO PLANO ATUAL & TOGGLES ENTERPRISE REFORMULADOS)
+             ============================================================ -->
+        <section id="section-config" class="content-section">
+            <div class="config-grid-layout">
+
+                <!-- COLUNA ESQUERDA: Perfil e Preferências -->
+                <div class="config-col-left">
+                    
+                    <!-- 1. Card de Perfil do Usuário com Indicador Dinâmico de Plano -->
+                    <div class="panel-card profile-panel-card">
+                        <h3>Perfil do Usuário</h3>
+                        
+                        <div class="profile-avatar-center">
+                            <div class="blue-avatar-circle">
+                                <i class="ti ti-user-filled"></i>
+                            </div>
+                            <button id="btn-change-avatar" class="link-mudar-avatar">MUDAR AVATAR</button>
+                        </div>
+
+                        <!-- EXIBIÇÃO DINÂMICA DO PLANO ATUAL DO USUÁRIO (ÍCONE APENAS NA ESQUERDA) -->
+                        <div class="field-group">
+                            <label>SEU PLANO ATUAL</label>
+                            <div id="user-current-plan-display" class="user-plan-badge-box plan-free-active">
+                                <i class="ti ti-shield"></i> Plano Veridion Free
+                            </div>
+                        </div>
+
+                        <form id="profile-form" class="profile-form-box">
+                            <div class="field-group">
+                                <label for="profile-name">NOME COMPLETO</label>
+                                <input type="text" id="profile-name" value="Antonio Oliveira" required>
+                            </div>
+                            <div class="field-group">
+                                <label for="profile-email">E-MAIL (NÃO EDITÁVEL)</label>
+                                <input type="email" id="profile-email" value="yuri@gmail.com" disabled>
+                            </div>
+                            <button type="submit" class="btn-primary-blue-full">Salvar Alterações</button>
+                        </form>
+                    </div>
+
+                    <!-- 2. Card Preferências da Extensão -->
+                    <div class="panel-card preferences-panel-card">
+                        <h3>Preferências da Extensão</h3>
+                        
+                        <!-- Toggle Ativar Veridion AI -->
+                        <div class="toggle-item-row">
+                            <div class="toggle-text-info">
+                                <strong>Ativar Veridion AI</strong>
+                                <span>Ativar ou desativar a aparição do widget flutuante nas páginas.</span>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="toggle-active-extension" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+
+                        <!-- Toggle Alerta de Domínios Falsos -->
+                        <div class="toggle-item-row">
+                            <div class="toggle-text-info">
+                                <strong>Alerta de Domínios Falsos</strong>
+                                <span>Avisar contra golpes de escrita semelhante (typosquatting).</span>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="toggle-typo-blocker" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+
+                        <!-- Toggle Bloqueador +18 -->
+                        <div class="toggle-item-row">
+                            <div class="toggle-text-info">
+                                <strong>Bloqueador +18 (Filtro Familiar)</strong>
+                                <span>Bloquear o acesso a sites de conteúdo adulto automaticamente.</span>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="toggle-adult-blocker">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+
+                        <!-- TOGGLE EXCLUSIVO PLANO VIP PREMIUM -->
+                        <div class="toggle-item-row toggle-premium-locked" id="row-toggle-pix-checker">
+                            <div class="toggle-text-info">
+                                <strong>Identificador de Pix Fake & CNPJ Laranja <span class="badge-tag-vip-premium"><i class="ti ti-crown-filled"></i> Exclusivo VIP Premium</span></strong>
+                                <span>Verificação preditiva para identificar se o Pix ou CNPJ pertence a conta laranja ou empresa de fachada.</span>
+                            </div>
+                            <label class="switch switch-disabled">
+                                <input type="checkbox" id="toggle-pix-checker" disabled>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+
+                        <!-- TOGGLES EXCLUSIVOS DO PLANO ENTERPRISE -->
+                        <div class="toggle-item-row toggle-enterprise-locked" id="row-toggle-meetings">
+                            <div class="toggle-text-info">
+                                <strong>Resumo de Reuniões no Navegador <span class="badge-tag-ent-lock"><i class="ti ti-briefcase"></i> Exclusivo Enterprise B2B</span></strong>
+                                <span>Transcrição e atas automáticas no Google Meet/Zoom.</span>
+                            </div>
+                            <label class="switch switch-disabled">
+                                <input type="checkbox" id="toggle-meetings-summary" disabled>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="toggle-item-row toggle-enterprise-locked" id="row-toggle-proposal">
+                            <div class="toggle-text-info">
+                                <strong>Redator Automático de E-mails & Propostas <span class="badge-tag-ent-lock"><i class="ti ti-briefcase"></i> Exclusivo Enterprise B2B</span></strong>
+                                <span>IA gera e-mails comerciais e preenche formulários via WebMCP.</span>
+                            </div>
+                            <label class="switch switch-disabled">
+                                <input type="checkbox" id="toggle-proposal-writer" disabled>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- COLUNA DIREITA: Upgrades & Histórico de Atividade -->
+                <div class="config-col-right">
+                    
+                    <!-- 3. Card Upgrades e Planos (Grade de 3 Planos) -->
+                    <div class="panel-card plans-panel-card">
+                        <h3>Upgrades e Planos</h3>
+                        <p class="panel-sub-desc">Desbloqueie todos os recursos corporativos e monitoramento contínuo com IA.</p>
+
+                        <div class="plans-three-grid">
+                            
+                            <!-- Veridion Free -->
+                            <div class="plan-single-box">
+                                <h4>Veridion Free</h4>
+                                <div class="plan-price-tag">R$ 0<small>/mês</small></div>
+                                <ul class="plan-bullets">
+                                    <li><i class="ti ti-check text-green"></i> Análise de páginas com IA</li>
+                                    <li><i class="ti ti-check text-green"></i> Detecção de typosquatting</li>
+                                    <li><i class="ti ti-check text-green"></i> Rankings da comunidade</li>
+                                </ul>
+                                <button class="btn-plan-status disabled" disabled>Plano Atual</button>
+                            </div>
+
+                            <!-- Veridion Premium -->
+                            <div class="plan-single-box plan-box-popular">
+                                <div class="badge-tag-popular">MAIS POPULAR</div>
+                                <h4>Veridion Premium</h4>
+                                <div class="plan-price-tag">R$ 9,90<small>/mês</small></div>
+                                <ul class="plan-bullets">
+                                    <li><i class="ti ti-check text-green"></i> Tudo do plano gratuito</li>
+                                    <li><i class="ti ti-check text-green"></i> Detecção prioritária de deepfakes</li>
+                                    <li><i class="ti ti-check text-green"></i> Selo verificado para marcas</li>
+                                    <li><i class="ti ti-check text-green"></i> Suporte prioritário 24/7</li>
+                                </ul>
+                                <button class="btn-plan-action btn-open-payment-modal" data-plan="Premium" data-price="9,90">Fazer Upgrade</button>
+                            </div>
+
+                            <!-- Veridion Enterprise -->
+                            <div class="plan-single-box plan-box-enterprise">
+                                <div class="badge-tag-enterprise">RECOMENDADO</div>
+                                <h4>Veridion Enterprise</h4>
+                                <div class="plan-price-tag">R$ 54,90<small>/mês</small></div>
+                                <ul class="plan-bullets">
+                                    <li><i class="ti ti-check text-green"></i> Tudo do plano Premium</li>
+                                    <li><i class="ti ti-check text-green"></i> Veridion Premium para funcionários <strong>(50 pessoas por plano)</strong></li>
+                                    <li><i class="ti ti-check text-green"></i> Agente WebMCP de Takedown</li>
+                                </ul>
+                                <div class="enterprise-buttons-stack">
+                                    <button class="btn-plan-action btn-enterprise-action btn-open-payment-modal" data-plan="Enterprise" data-price="54,90">Assinar Enterprise</button>
+                                    <button id="btn-open-enterprise-details" class="btn-small-details-link">
+                                        <i class="ti ti-info-circle"></i> Ver detalhes completos
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- 4. Card Seu Histórico de Atividade -->
+                    <div class="panel-card activity-history-card">
+                        <div class="activity-header-row">
+                            <h3>Seu Histórico de Atividade</h3>
+                            <div class="activity-tab-buttons">
+                                <button id="tab-btn-comments" class="act-tab-btn active">Minhas Denúncias</button>
+                                <button id="tab-btn-analyses" class="act-tab-btn">Minhas Verificações</button>
+                            </div>
+                        </div>
+
+                        <!-- Estado pré-populado com dados fictícios de exemplo para a banca -->
+                        <div id="history-comments-section" class="activity-tab-view active">
+                            <div id="personal-denuncias-list">
+                                <div class="activity-item-card">
+                                    <div class="act-item-header">
+                                        <strong class="act-domain-name"><i class="ti ti-world"></i> promocao-falsa-insta.xyz</strong>
+                                        <span class="act-date">14/02/2026 às 14:32</span>
+                                    </div>
+                                    <div class="act-marked-row">
+                                        <span class="act-marked-label">O que você marcou:</span>
+                                        <span class="c-rep-badge badge-danger">🛑 Voto: Golpe no Pix</span>
+                                    </div>
+                                    <p class="act-user-comment">"Site clonado do Instagram prometendo iPhone 15 Pro Max por R$ 199 no Pix. Cuidado!"</p>
+                                    <div class="act-actions-row">
+                                        <button class="btn-view-ai-response"><i class="ti ti-sparkles"></i> Ver resposta da IA</button>
+                                    </div>
+                                </div>
+
+                                <div class="activity-item-card">
+                                    <div class="act-item-header">
+                                        <strong class="act-domain-name"><i class="ti ti-world"></i> nike-outlet-desconto.online</strong>
+                                        <span class="act-date">10/02/2026 às 09:15</span>
+                                    </div>
+                                    <div class="act-marked-row">
+                                        <span class="act-marked-label">O que você marcou:</span>
+                                        <span class="c-rep-badge badge-danger">🕵️ Voto: Site Clonado</span>
+                                    </div>
+                                    <p class="act-user-comment">"E-commerce falso utilizando fotos e logotipo da Nike sem autorização."</p>
+                                    <div class="act-actions-row">
+                                        <button class="btn-view-ai-response"><i class="ti ti-sparkles"></i> Ver resposta da IA</button>
+                                    </div>
+                                </div>
+
+                                <div class="activity-item-card">
+                                    <div class="act-item-header">
+                                        <strong class="act-domain-name"><i class="ti ti-world"></i> leilao-detran.org</strong>
+                                        <span class="act-date">05/02/2026 às 18:20</span>
+                                    </div>
+                                    <div class="act-marked-row">
+                                        <span class="act-marked-label">O que você marcou:</span>
+                                        <span class="c-rep-badge badge-danger">🛑 Voto: Golpe no Pix</span>
+                                    </div>
+                                    <p class="act-user-comment">"Página falsa de leilão de veículos cobrando taxa antecipada de transferência."</p>
+                                    <div class="act-actions-row">
+                                        <button class="btn-view-ai-response"><i class="ti ti-sparkles"></i> Ver resposta da IA</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="history-see-all-wrapper">
+                                <button class="btn-history-see-all" id="btn-see-all-denuncias">
+                                    <i class="ti ti-list"></i> Ver lista completa de denúncias
+                                </button>
+                            </div>
+                        </div>
+
+                        <div id="history-analyses-section" class="activity-tab-view hidden">
+                            <div id="personal-analises-list">
+                                <div class="activity-item-card">
+                                    <div class="act-item-header">
+                                        <strong class="act-domain-name"><i class="ti ti-world"></i> mercadolivre.com.br</strong>
+                                        <span class="act-date">Hoje às 11:05</span>
+                                    </div>
+                                    <div class="act-marked-row">
+                                        <span class="act-marked-label">O que você marcou:</span>
+                                        <span class="c-rep-badge">✅ Confiável (Score 95/100)</span>
+                                    </div>
+                                    <p class="act-user-comment">Domínio oficial verificado com SSL EV, CNPJ ativo na Receita Federal e reputação colaborativa ativa.</p>
+                                    <div class="act-actions-row">
+                                        <button class="btn-view-ai-response"><i class="ti ti-sparkles"></i> Ver resposta da IA</button>
+                                    </div>
+                                </div>
+
+                                <div class="activity-item-card">
+                                    <div class="act-item-header">
+                                        <strong class="act-domain-name"><i class="ti ti-world"></i> amazon.com.br</strong>
+                                        <span class="act-date">Ontem às 19:40</span>
+                                    </div>
+                                    <div class="act-marked-row">
+                                        <span class="act-marked-label">O que você marcou:</span>
+                                        <span class="c-rep-badge">✅ Confiável (Score 94/100)</span>
+                                    </div>
+                                    <p class="act-user-comment">E-commerce oficial auditado com 100% de integridade de catálogo e pagamentos seguros.</p>
+                                    <div class="act-actions-row">
+                                        <button class="btn-view-ai-response"><i class="ti ti-sparkles"></i> Ver resposta da IA</button>
+                                    </div>
+                                </div>
+
+                                <div class="activity-item-card">
+                                    <div class="act-item-header">
+                                        <strong class="act-domain-name"><i class="ti ti-world"></i> promocao-falsa-insta.xyz</strong>
+                                        <span class="act-date">14/02/2026 às 14:32</span>
+                                    </div>
+                                    <div class="act-marked-row">
+                                        <span class="act-marked-label">O que você marcou:</span>
+                                        <span class="c-rep-badge badge-danger">🛑 Perigo (Score 12/100)</span>
+                                    </div>
+                                    <p class="act-user-comment">Domínio malicioso com servidores anônimos no exterior e alto risco de fraude financeira.</p>
+                                    <div class="act-actions-row">
+                                        <button class="btn-view-ai-response"><i class="ti ti-sparkles"></i> Ver resposta da IA</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="history-see-all-wrapper">
+                                <button class="btn-history-see-all" id="btn-see-all-analises">
+                                    <i class="ti ti-list"></i> Ver lista completa de verificações
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ============================================================
+             ABA 4: PAINEL EMPRESA (DASHBOARD CORPORATIVO B2B - GROWTH)
+             ============================================================ -->
+        <section id="section-painel-empresa" class="content-section hidden">
+            <!-- 1. HERO BANNER DO PAINEL EMPRESA GROWTH -->
+            <div class="company-panel-hero-card">
+                <div class="company-hero-left">
+                    <div class="company-hero-logo-box">
+                        <span class="company-logo-text">GROWTH</span>
+                    </div>
+                    <div>
+                        <div class="company-title-badges">
+                            <h2>Growth Suplementos & E-Commerce</h2>
+                            <span class="badge-status-verified"><i class="ti ti-building-store"></i> Conta Enterprise B2B</span>
+                            <span class="badge-tag-vip-premium"><i class="ti ti-certificate"></i> Selo Veridion IA Ativo</span>
+                        </div>
+                        <p class="company-hero-sub">Painel Corporativo de Proteção de Marca, Atendimento a Clientes & Monitoramento de Funcionários</p>
+                    </div>
+                </div>
+
+                <div class="company-hero-actions-col">
+                    <div class="company-score-pill">
+                        <span class="score-label">Score Veridion IA</span>
+                        <strong class="score-val">8.7 <small>/10</small></strong>
+                        <span class="score-status-badge">Reputação Ótima</span>
+                    </div>
+                    <div class="company-hero-btn-group">
+                        <button id="btn-edit-company-info" class="btn-company-hero-action"><i class="ti ti-edit"></i> Editar Informações</button>
+
+                        <button id="btn-contact-support-vip" class="btn-company-hero-action"><i class="ti ti-headset"></i> Suporte VIP 24/7</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. MÉTRICAS E DESEMPENHO CORPORATIVO (GRID DE 4 CARDS) -->
+            <div class="company-metrics-grid-4">
+                <div class="metric-box">
+                    <span class="metric-title"><i class="ti ti-messages"></i> Reclamações Totais</span>
+                    <strong class="metric-value">1.420</strong>
+                    <span class="metric-sub text-green"><i class="ti ti-check"></i> 98.4% Respondidas</span>
+                </div>
+                <div class="metric-box">
+                    <span class="metric-title"><i class="ti ti-clock"></i> Tempo Médio de Resposta</span>
+                    <strong class="metric-value">3h 12m</strong>
+                    <span class="metric-sub text-green"><i class="ti ti-trending-down"></i> 45% mais rápido que a média</span>
+                </div>
+                <div class="metric-box">
+                    <span class="metric-title"><i class="ti ti-thumb-up"></i> Índice de Solução</span>
+                    <strong class="metric-value">89.2%</strong>
+                    <span class="metric-sub text-green"><i class="ti ti-star"></i> Selo de Excelência</span>
+                </div>
+                <div class="metric-box">
+                    <span class="metric-title"><i class="ti ti-users"></i> Funcionários Protegidos</span>
+                    <strong class="metric-value">142</strong>
+                    <span class="metric-sub text-indigo"><i class="ti ti-shield-check"></i> Licença Premium Ativa</span>
+                </div>
+            </div>
+
+            <!-- 3. LAYOUT DE 2 COLUNAS: RECLAMAÇÕES DA GROWTH & MOTOR DE TAKEDOWN DE CLONES -->
+            <div class="company-main-2col-grid">
+                <!-- COLUNA ESQUERDA: RECLAMAÇÕES DA GROWTH DA BANCA -->
+                <div class="panel-card" style="display:flex; flex-direction:column; justify-content:space-between;">
+                    <div>
+                        <div class="panel-header-row">
+                            <h3><i class="ti ti-messages"></i> Gestão de Reclamações da Growth</h3>
+                            <span class="badge-status-not-rec">23 Pendentes</span>
+                        </div>
+                        
+                        <div class="company-complaints-feed">
+                            <div class="company-complaint-card">
+                                <div class="comp-card-header">
+                                    <div>
+                                        <strong class="comp-cust-name">Lucas M. — Cliente Verificado</strong>
+                                        <span class="comp-date">14/02/2026 às 10:15</span>
+                                    </div>
+                                    <span class="c-rep-badge badge-danger">Não Respondida</span>
+                                </div>
+                                <p class="comp-text">"Atraso no rastreio do pedido #88219 do Whey Protein e falta de atualização no código dos Correios."</p>
+                                <button class="btn-reply-complaint" data-cust-name="Lucas M."><i class="ti ti-message-dots"></i> Responder Cliente (1 Clique)</button>
+                            </div>
+
+                            <div class="company-complaint-card">
+                                <div class="comp-card-header">
+                                    <div>
+                                        <strong class="comp-cust-name">Amanda R. — Cliente Verificado</strong>
+                                        <span class="comp-date">12/02/2026 às 16:40</span>
+                                    </div>
+                                    <span class="c-rep-badge" style="background:#ECFDF5; color:#047857;">Respondida & Resolvida</span>
+                                </div>
+                                <p class="comp-text">"Embalagem de suplemento chegou danificada no transporte, mas o suporte enviou um novo produto em 24h!"</p>
+                                <div class="comp-reply-box">
+                                    <strong style="color:var(--indigo);">Resposta Oficial da Growth:</strong>
+                                    <p style="margin:2px 0 0; font-size:12px; color:var(--text-primary);">"Olá Amanda, disponibilizamos novo envio prioritário e cupom de frete grátis para sua próxima compra."</p>
+                                </div>
+                            </div>
+
+                            <div class="company-complaint-card">
+                                <div class="comp-card-header">
+                                    <div>
+                                        <strong class="comp-cust-name">Gabriel S. — Cliente Verificado</strong>
+                                        <span class="comp-date">10/02/2026 às 14:20</span>
+                                    </div>
+                                    <span class="c-rep-badge badge-danger">Não Respondida</span>
+                                </div>
+                                <p class="comp-text">"Dúvida sobre a data de validade do lote de creatina 500g recebido."</p>
+                                <button class="btn-reply-complaint" data-cust-name="Gabriel S."><i class="ti ti-message-dots"></i> Responder Cliente (1 Clique)</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="history-see-all-wrapper">
+                        <button class="btn-history-see-all">
+                            <i class="ti ti-list"></i> Ver todas as reclamações (23)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- COLUNA DIREITA: MOTOR DE TAKEDOWN DE CLONES & ADs FAKES WEBMCP -->
+                <div class="panel-card">
+                    <div class="panel-header-row">
+                        <h3><i class="ti ti-shield-x text-red"></i> Proteção de Marca & Denúncias Takedown</h3>
+                        <span class="badge-tag-enterprise">MOTOR WEBMCP</span>
+                    </div>
+                    
+                    <p style="font-size:12px; color:var(--text-muted); margin-bottom:1rem;">O agente WebMCP do Veridion monitora a web 24/7 e derruba automaticamente anúncios fakes e domínios que clonam a marca Growth.</p>
+
+                    <div class="takedown-items-list">
+                        <!-- DOMÍNIOS CLONADOS -->
+                        <div class="takedown-item-box">
+                            <div class="takedown-info">
+                                <strong class="takedown-domain text-red">growth-suplementos-desconto.online</strong>
+                                <span class="takedown-reason">Site Clonado — Golpe no Pix com Fotos Oficiais</span>
+                                <small class="takedown-time">Detectado há 2 horas</small>
+                            </div>
+                            <button class="btn-takedown-action done"><i class="ti ti-shield-x"></i> Derrubar Site com Veridion IA</button>
+                        </div>
+
+                        <div class="takedown-item-box">
+                            <div class="takedown-info">
+                                <strong class="takedown-domain text-red">promocao-growth-whey.xyz</strong>
+                                <span class="takedown-reason">Phishing — Roleta de Prêmios Falsa</span>
+                                <small class="takedown-time">Detectado há 5 horas</small>
+                            </div>
+                            <button class="btn-takedown-action done"><i class="ti ti-shield-x"></i> Derrubar Site com Veridion IA</button>
+                        </div>
+
+                        <!-- ANÚNCIOS ADs FAKES -->
+                        <div class="takedown-item-box" style="background:#FEF3C7; border-color:#FDE68A;">
+                            <div class="takedown-info">
+                                <strong class="takedown-domain text-amber" style="color:#B45309;"><i class="ti ti-brand-google-big"></i> Anúncio Patrocinado Falso no Google Ads</strong>
+                                <span class="takedown-reason">"Whey Growth 1kg R$ 29,90" (Link patrocinado golpista)</span>
+                                <small class="takedown-time">Detectado no Google Ads há 45min</small>
+                            </div>
+                            <button class="btn-takedown-action done" style="background:#B45309;"><i class="ti ti-shield-x"></i> Derrubar Anúncio com Veridion IA</button>
+                        </div>
+
+                        <div class="takedown-item-box" style="background:#FEF3C7; border-color:#FDE68A;">
+                            <div class="takedown-info">
+                                <strong class="takedown-domain text-amber" style="color:#B45309;"><i class="ti ti-brand-instagram"></i> Anúncio Falso no Meta / Instagram Ads</strong>
+                                <span class="takedown-reason">"Roleta da Sorte Growth — Creatina Grátis" (Coleta de CPF)</span>
+                                <small class="takedown-time">Detectado no Instagram Ads há 1h</small>
+                            </div>
+                            <button class="btn-takedown-action done" style="background:#B45309;"><i class="ti ti-shield-x"></i> Derrubar Anúncio com Veridion IA</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. GESTÃO DE CUPONS DE DESCONTO & MONITORAMENTO DE FUNCIONÁRIOS -->
+            <div class="company-main-2col-grid" style="margin-top: 1.5rem;">
+                <!-- ESQUERDA: GESTÃO DE CUPONS DE DESCONTO DA GROWTH -->
+                <div class="panel-card">
+                    <div class="panel-header-row">
+                        <h3><i class="ti ti-ticket"></i> Cupons de Desconto Oficiais da Growth</h3>
+                        <button id="btn-open-add-coupon-modal" class="btn-add-coupon-action"><i class="ti ti-plus"></i> + Novo cupom</button>
+                    </div>
+                    
+                    <div id="company-coupons-list" class="company-coupons-grid">
+                        <div class="company-coupon-box">
+                            <div class="coupon-box-top">
+                                <strong class="coupon-code-title">GROWTH10</strong>
+                                <span class="coupon-badge-active">Ativo</span>
+                            </div>
+                            <p class="coupon-desc">10% OFF em todo o site oficial para compras com Selo Veridion.</p>
+                            <small class="coupon-used">Utilizado 1.482 vezes</small>
+                        </div>
+
+                        <div class="company-coupon-box">
+                            <div class="coupon-box-top">
+                                <strong class="coupon-code-title">BLACKGROWTH</strong>
+                                <span class="coupon-badge-active">Ativo</span>
+                            </div>
+                            <p class="coupon-desc">20% OFF na linha de Creatinas e Whey Protein Isolado.</p>
+                            <small class="coupon-used">Utilizado 3.890 vezes</small>
+                        </div>
+
+                        <div class="company-coupon-box">
+                            <div class="coupon-box-top">
+                                <strong class="coupon-code-title">VIPGROWTH</strong>
+                                <span class="coupon-badge-active">Ativo</span>
+                            </div>
+                            <p class="coupon-desc">Frete Grátis para todo o Brasil em compras acima de R$ 99.</p>
+                            <small class="coupon-used">Utilizado 920 vezes</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DIREITA: MONITORAMENTO DE FUNCIONÁRIOS DA REDE CORPORATIVA -->
+                <div class="panel-card" style="display:flex; flex-direction:column; justify-content:space-between;">
+                    <div>
+                        <div class="panel-header-row">
+                            <h3><i class="ti ti-users"></i> Monitoramento de Funcionários & TI</h3>
+                            <span class="badge-status-verified">142 Licenças Ativas</span>
+                        </div>
+
+                        <div class="employees-list-table">
+                            <div class="emp-row-item">
+                                <div class="emp-info">
+                                    <strong>Ana Silva — Vendas</strong>
+                                    <small>42 sites analisados hoje • <span style="color:#DC2626; font-weight:800;"><i class="ti ti-alert-triangle"></i> 1 Alerta de Phishing</span></small>
+                                </div>
+                                <button class="btn-report-details"><i class="ti ti-info-circle"></i> Ver detalhes</button>
+                            </div>
+
+                            <div class="emp-row-item">
+                                <div class="emp-info">
+                                    <strong>Carlos Eduardo — TI & Infra</strong>
+                                    <small>89 sites analisados hoje • <span style="color:#059669; font-weight:800;"><i class="ti ti-shield-check"></i> 0 Ameaças Encontradas</span></small>
+                                </div>
+                                <button class="btn-report-details"><i class="ti ti-info-circle"></i> Ver detalhes</button>
+                            </div>
+
+                            <div class="emp-row-item">
+                                <div class="emp-info">
+                                    <strong>Mariana Costa — Marketing</strong>
+                                    <small>31 sites analisados • <span style="color:#D97706; font-weight:800;"><i class="ti ti-shield-alert"></i> 1 Alerta de Pop-up Malicioso</span></small>
+                                </div>
+                                <button class="btn-report-details"><i class="ti ti-info-circle"></i> Ver detalhes</button>
+                            </div>
+
+                            <div class="emp-row-item">
+                                <div class="emp-info">
+                                    <strong>Roberto Mendes — Financeiro</strong>
+                                    <small>15 verificações • <span style="color:#DC2626; font-weight:800;"><i class="ti ti-alert-circle"></i> 1 Alerta de Pix Laranja Bloqueado</span></small>
+                                </div>
+                                <button class="btn-report-details"><i class="ti ti-info-circle"></i> Ver detalhes</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="history-see-all-wrapper">
+                        <button class="btn-history-see-all">
+                            <i class="ti ti-list"></i> Ver lista completa de funcionários (142)
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER VERIDION IA -->
+    <footer class="veridion-footer">
+        <div class="footer-inner">
+
+            <!-- COLUNA 1: BRAND -->
+            <div class="footer-col footer-brand-col">
+                <div class="footer-logo-row">
+                    <img src="../../assets/icons/icon48.png" alt="Veridion IA" class="footer-logo-img">
+                    <span class="footer-brand-name">Veridion <span class="footer-brand-ia">IA</span></span>
+                </div>
+                <p class="footer-tagline">Inteligência Artificial protegendo suas compras e sua empresa na internet.</p>
+                <div class="footer-social-row">
+                    <a href="#" class="footer-social-btn" title="LinkedIn"><i class="ti ti-brand-linkedin"></i></a>
+                    <a href="#" class="footer-social-btn" title="WhatsApp"><i class="ti ti-brand-whatsapp"></i></a>
+                    <a href="#" class="footer-social-btn" title="Instagram"><i class="ti ti-brand-instagram"></i></a>
+                    <a href="#" class="footer-social-btn" title="E-mail"><i class="ti ti-mail"></i></a>
+                    <a href="#" class="footer-social-btn" title="YouTube"><i class="ti ti-brand-youtube"></i></a>
+                </div>
+            </div>
+
+            <!-- COLUNA 2: PRODUTO -->
+            <div class="footer-col">
+                <h4 class="footer-col-title">Produto</h4>
+                <ul class="footer-links-list">
+                    <li><a href="#">Veridion Trust</a></li>
+                    <li><a href="#">Bloqueador de Phishing</a></li>
+                    <li><a href="#">Detector de Pix Laranja</a></li>
+                    <li><a href="#">WebMCP Takedown Engine</a></li>
+                    <li><a href="#">Extensão para Chrome</a></li>
+                </ul>
+            </div>
+
+            <!-- COLUNA 3: EMPRESA -->
+            <div class="footer-col">
+                <h4 class="footer-col-title">Empresa</h4>
+                <ul class="footer-links-list">
+                    <li><a href="#">Sobre a Veridion</a></li>
+                    <li><a href="#">Planos & Preços</a></li>
+                    <li><a href="#">Veridion Enterprise B2B</a></li>
+                    <li><a href="#">Seja um Parceiro</a></li>
+                    <li><a href="#">Blog & Novidades</a></li>
+                </ul>
+            </div>
+
+            <!-- COLUNA 4: COMUNIDADE -->
+            <div class="footer-col">
+                <h4 class="footer-col-title">Comunidade</h4>
+                <ul class="footer-links-list">
+                    <li><a href="#">Rankings de Confiança</a></li>
+                    <li><a href="#">Denunciar um Site</a></li>
+                    <li><a href="#">Últimos Relatos</a></li>
+                    <li><a href="#">Top Contribuidores</a></li>
+                    <li><a href="#">Fórum de Segurança</a></li>
+                </ul>
+            </div>
+
+            <!-- COLUNA 5: SUPORTE -->
+            <div class="footer-col">
+                <h4 class="footer-col-title">Suporte</h4>
+                <ul class="footer-links-list">
+                    <li><a href="#">Central de Ajuda</a></li>
+                    <li><a href="#">Fale Conosco</a></li>
+                    <li><a href="#">Política de Privacidade</a></li>
+                    <li><a href="#">Termos de Uso</a></li>
+                    <li><a href="#">Status dos Serviços</a></li>
+                </ul>
+            </div>
+
+        </div>
+
+        <!-- LINHA DE COPYRIGHT -->
+        <div class="footer-copyright-bar">
+            <span>© 2026 Veridion IA — Todos os direitos reservados.</span>
+            <span class="footer-copyright-right">Feito com <i class="ti ti-heart-filled" style="color:#F43F5E;"></i> para um internet mais segura.</span>
+        </div>
+    </footer>
+
+    <!-- MODAL DE DETALHES COMPLETOS DO PLANO ENTERPRISE B2B (WEBMCP & RECURSOS) -->
+    <div id="enterprise-details-modal" class="modal-overlay hidden">
+        <div class="modal-card enterprise-details-modal-card">
+            <button id="btn-close-enterprise-details" class="modal-close-btn">&times;</button>
+            
+            <div class="enterprise-modal-header">
+                <span class="badge-tag-enterprise">RECURSOS B2B & WEBMCP</span>
+                <h2>Plano Veridion Enterprise B2B</h2>
+                <p class="modal-subtext">Produtividade, Monitoramento de Funcionários & Segurança do Trabalho</p>
+            </div>
+
+            <div class="enterprise-modal-scroll-body">
+                <div class="details-section-box">
+                    <h4><i class="ti ti-briefcase text-indigo"></i> Produtividade & Monitoramento Corporativo</h4>
+                    
+                    <div class="detail-feature-item">
+                        <strong>Copilot de Prospecção & Busca de Clientes B2B</strong>
+                        <p>Extensão que analisa sites de empresas e LinkedIn no navegador, identificando oportunidades de negócios e necessidades do cliente.</p>
+                    </div>
+
+                    <div class="detail-feature-item">
+                        <strong>Redator Automático de E-mails & Propostas (via WebMCP)</strong>
+                        <p>A IA gera rascunhos de e-mails comerciais e preenche formulários de propostas em 1 clique direto do navegador/CRM.</p>
+                    </div>
+
+                    <div class="detail-feature-item">
+                        <strong>Resumo de Reuniões no Navegador (Meet/Zoom)</strong>
+                        <p>Transcrição e resumo de reuniões de trabalho gerando atas e listas de tarefas automaticamente.</p>
+                    </div>
+
+                    <div class="detail-feature-item">
+                        <strong>Filtro de Segurança Corporativo & Painel da "Conta Chefe"</strong>
+                        <p>Monitoramento de funcionários, bloqueio de sites com vírus/malware, conteúdo adulto (+18) e phishing, com dashboard de alertas de segurança para o gestor de TI (100% em conformidade com a LGPD).</p>
+                    </div>
+
+                    <div class="detail-feature-item">
+                        <strong>Agente WebMCP de Remoção em 1 Clique (Takedown Engine)</strong>
+                        <p>Identificação de sites clones da empresa e envio automático de formulários formais de denúncia (DMCA/Abuse) em menos de 2 minutos.</p>
+                    </div>
+
+                    <div class="detail-feature-item">
+                        <strong>Análise & Varredura de Vídeos Deepfake</strong>
+                        <p>Varredura de IA preditiva para identificar manipulacões em vídeos comerciais, anúncios e transmissões corporativas.</p>
+                    </div>
+
+                    <div class="detail-feature-item">
+                        <strong>Feedback Exclusivo no Veridion Trust & Suporte Prioritário 24/7</strong>
+                        <p>Acesso ao painel da empresa para receber feedbacks instantâneos de clientes e suporte técnico prioritário com gerente de conta.</p>
+                    </div>
+                </div>
+
+                <div class="details-section-box tech-box">
+                    <h4><i class="ti ti-brand-chrome text-indigo"></i> Detalhamento do Padrão WebMCP na Extensão Veridion</h4>
+                    
+                    <p class="tech-intro">
+                        <strong>Padrão Oficial do Google Chrome (WebMCP - Web Model Context Protocol):</strong> Padrão do navegador para orientar agentes de IA a interagir com formulários, botões e campos de páginas web com 100% de precisão de clique e preenchimento.
+                    </p>
+
+                    <ul class="tech-list-bullets">
+                        <li><strong>Envio Automático de Denúncias:</strong> Agente de IA que preenche automaticamente relatórios de denúncia e takedown de sites golpistas, phishing e fake news nos formulários oficiais de provedores em 1 clique.</li>
+                        <li><strong>Destaque de Campos Suspeitos:</strong> Anotação automática de campos perigosos em formulários de sites clonados.</li>
+                        <li><strong>Suíte Enterprise:</strong> Geração de propostas e preenchimento de e-mails comerciais no navegador.</li>
+                    </ul>
+
+                    <div class="webmcp-source-box">
+                        <i class="ti ti-link"></i> Fonte Oficial: <a href="https://developer.chrome.com/docs/ai/webmcp" target="_blank" rel="noopener">https://developer.chrome.com/docs/ai/webmcp</a>
+                    </div>
+
+                    <div class="detail-feature-item" style="margin-top: 12px;">
+                        <strong>Registro Automático de Denúncias no Veridion Trust em 1 Clique (via WebMCP):</strong>
+                        <p>Quando o usuário encontra um site malicioso ou golpista e deseja denunciar no portal Veridion Trust, o WebMCP elimina a necessidade de preenchimento manual de formulários longos. O agente captura automaticamente a URL ativa, a pontuação de risco da auditoria, os metadados do domínio e o print da tela, submetendo a denúncia diretamente para o banco de dados do Veridion com apenas 1 clique.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-actions" style="margin-top: 1.25rem;">
+                <button type="button" class="btn-success btn-open-payment-modal" data-plan="Enterprise" data-price="54,90" style="width: 100%; padding: 12px; font-size: 13.5px;"><i class="ti ti-qrcode"></i> Assinar Plano Enterprise (R$ 54,90/mês)</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE PAGAMENTO PIX -->
+    <div id="payment-pix-modal" class="modal-overlay hidden">
+        <div class="modal-card payment-modal-card">
+            <button id="btn-close-payment-modal" class="modal-close-btn">&times;</button>
+            
+            <div class="payment-header-row">
+                <i class="ti ti-qrcode text-indigo" style="font-size: 28px;"></i>
+                <div>
+                    <h3 id="payment-modal-title">Ativação do Plano Veridion</h3>
+                    <span id="payment-modal-subtitle" style="font-size: 12px; color: var(--text-muted);">Pagamento via Pix instantâneo</span>
+                </div>
+            </div>
+
+            <p class="modal-desc" style="margin-top: 10px;">Escaneie o QR Code Pix abaixo no seu aplicativo do banco para realizar o pagamento e liberar os recursos instantaneamente:</p>
+
+            <div class="qr-code-box" style="text-align: center; margin: 1.25rem 0;">
+                <img src="../config/pix_qr_code.svg" alt="QR Code Pix Fictício" class="pix-qr-image" style="width: 170px; height: 170px; border: 2px solid var(--indigo); border-radius: 14px; padding: 6px; background: white;">
+            </div>
+
+            <div class="form-group">
+                <label for="pix-key-input">Chave Pix Copia e Cola (Fictícia):</label>
+                <div class="field-search" style="margin-top: 4px;">
+                    <input type="text" id="pix-key-input" readonly value="00020126580014br.gov.bcb.pix0136veridion-premium-pix-pagamento520400005303986540529.905802BR5919Veridion AI Premium6009SAO PAULO62070503***6304E2B1" style="font-size: 11px; font-family: monospace;">
+                    <button type="button" id="btn-copy-pix-key" class="search-submit-btn" style="padding: 8px 14px; font-size: 12px;"><i class="ti ti-copy"></i> Copiar</button>
+                </div>
+            </div>
+
+            <div class="modal-actions" style="margin-top: 1.25rem;">
+                <button type="button" id="btn-confirm-pix-payment" class="btn-success" style="width: 100%; padding: 12px; font-size: 13.5px;"><i class="ti ti-check"></i> Já efetuei o pagamento</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE DENÚNCIA -->
+    <div id="report-modal" class="modal-overlay hidden">
+        <div class="modal-card">
+            <button id="btn-close-modal" class="modal-close-btn">&times;</button>
+            <h3>Nova Denúncia no Veridion Trust</h3>
+            <p class="modal-desc">Selecione a categoria da fraude encontrada no site:</p>
+            
+            <div class="form-group">
+                <label for="modal-report-domain">URL ou Domínio da Loja</label>
+                <input type="text" id="modal-report-domain" placeholder="Ex: promocao-falsa-loja.com" required>
+            </div>
+
+            <div class="category-buttons">
+                <button type="button" class="btn-category selected" data-category="GOLPE_PIX">Golpe no Pix / Checkout</button>
+                <button type="button" class="btn-category" data-category="SITE_CLONADO">Site Clonado / Falso</button>
+                <button type="button" class="btn-category" data-category="FAKE_NEWS">Fake News / Desinformação</button>
+                <button type="button" class="btn-category" data-category="CONTEUDO_18">Conteúdo Adulto / +18</button>
+            </div>
+
+            <textarea id="report-comment" placeholder="Escreva um comentário opcional sobre a fraude..." rows="3"></textarea>
+
+            <div class="modal-actions">
+                <button id="btn-submit-report" class="btn-success">Enviar Denúncia</button>
+                <button id="btn-cancel-modal" class="btn-secondary">Cancelar</button>
+            </div>
+    <!-- MODAL DE EDIÇÃO DE INFORMAÇÕES DA EMPRESA GROWTH -->
+    <div id="modal-company-edit" class="modal-overlay hidden">
+        <div class="modal-card">
+            <button id="btn-close-company-edit" class="modal-close-btn">&times;</button>
+            <h3><i class="ti ti-building"></i> Editar Informações da Empresa</h3>
+            <p class="modal-desc">Atualize os dados públicos da sua marca no portal Veridion Trust:</p>
+            
+            <div class="form-group" style="margin-top:10px;">
+                <label>Nome Fantasia da Empresa</label>
+                <input type="text" id="input-edit-company-name" value="Growth Suplementos">
+            </div>
+            <div class="form-group">
+                <label>CNPJ Oficial</label>
+                <input type="text" id="input-edit-company-cnpj" value="59.546.515/0001-34">
+            </div>
+            <div class="form-group">
+                <label>E-mail do SAC / Atendimento</label>
+                <input type="email" id="input-edit-company-email" value="sac@gsuplementos.com.br">
+            </div>
+
+            <div class="modal-actions" style="margin-top:1rem;">
+                <button type="button" id="btn-save-company-edit" class="btn-success" style="width:100%;"><i class="ti ti-check"></i> Salvar Alterações Fictícias</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE ADICIONAR NOVO CUPOM FICTÍCIO -->
+    <div id="modal-company-coupon" class="modal-overlay hidden">
+        <div class="modal-card">
+            <button id="btn-close-company-coupon" class="modal-close-btn">&times;</button>
+            <h3><i class="ti ti-ticket"></i> Criar Novo Cupom Fictício</h3>
+            <p class="modal-desc">Cadastre um cupom oficial para clientes verificados no Veridion:</p>
+            
+            <div class="form-group" style="margin-top:10px;">
+                <label>Código do Cupom (Ex: PROMO20)</label>
+                <input type="text" id="input-coupon-code" placeholder="EX: GROWTHOFF" style="text-transform:uppercase;">
+            </div>
+            <div class="form-group">
+                <label>Descrição da Oferta</label>
+                <input type="text" id="input-coupon-desc" placeholder="Ex: 15% OFF na primeira compra">
+            </div>
+
+            <div class="modal-actions" style="margin-top:1rem;">
+                <button type="button" id="btn-save-company-coupon" class="btn-success" style="width:100%;"><i class="ti ti-plus"></i> Publicar Cupom no Perfil</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE RESPONDER RECLAMAÇÃO -->
+    <div id="modal-company-reply" class="modal-overlay hidden">
+        <div class="modal-card">
+            <button id="btn-close-company-reply" class="modal-close-btn">&times;</button>
+            <h3><i class="ti ti-message-dots"></i> Responder Reclamação do Cliente</h3>
+            <p id="reply-modal-target-cust" class="modal-desc">Cliente: Lucas M.</p>
+            
+            <div class="form-group" style="margin-top:10px;">
+                <label>Sua Resposta Oficial (Growth Suplementos):</label>
+                <textarea id="input-reply-text" rows="4" placeholder="Escreva a solução formal oferecida ao cliente..."></textarea>
+            </div>
+
+            <div class="modal-actions" style="margin-top:1rem;">
+                <button type="button" id="btn-send-complaint-reply" class="btn-success" style="width:100%;"><i class="ti ti-send"></i> Enviar Resposta e Marcar Resolvido</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE SOLICITAÇÃO DO SELO VERIDION IA -->
+    <div id="modal-company-seal" class="modal-overlay hidden">
+        <div class="modal-card" style="text-align:center;">
+            <button id="btn-close-company-seal" class="modal-close-btn">&times;</button>
+            <i class="ti ti-certificate text-indigo" style="font-size:48px; margin-bottom:10px;"></i>
+            <h3>Solicitar Selo Oficial "Verificado por Veridion IA"</h3>
+            <p class="modal-desc" style="margin-top:6px;">A auditoria preditiva da Veridion IA fará a varredura automática do seu e-commerce (SSL EV, CNPJ Receita Federal, gateway de pagamento seguro e reputação no Reclame Aqui).</p>
+            
+            <div style="background:#F5F3FF; border:1px solid #C7D2FE; border-radius:12px; padding:12px; margin:1rem 0; text-align:left; font-size:12px; color:var(--text-primary);">
+                <i class="ti ti-check text-green"></i> <strong>Benefícios do Selo:</strong><br>
+                • Exibição do distintivo "Verificado por Veridion IA" no widget do navegador de todos os usuários.<br>
+                • Prioridade máxima no motor WebMCP de remoção de clones (takedown em menos de 2 minutos).<br>
+                • Aumento médio de 24% na conversão do checkout.
+            </div>
+
+            <div class="modal-actions">
+                <button type="button" id="btn-confirm-seal-request" class="btn-success" style="width:100%; padding:12px;"><i class="ti ti-sparkles"></i> Confirmar Auditoria e Emitir Selo IA</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

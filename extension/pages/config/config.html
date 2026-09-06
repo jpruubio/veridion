@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configurações Veridion AI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Questrial&family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+    <link rel="stylesheet" href="config.css">
+    <script src="config.js" defer></script>
+</head>
+<body>
+    <header class="app-header">
+        <div class="header-container">
+            <div class="logo-group">
+                <div class="logo-ring">
+                    <img src="../login/LOGO VERIDION.png" alt="Veridion" class="logo-img">
+                </div>
+                <div>
+                    <h1>Veridion AI</h1>
+                    <span class="subtitle">Configurações & Perfil</span>
+                </div>
+            </div>
+            
+            <nav class="nav-links">
+                <button id="nav-btn-comunidade" class="nav-btn"><i class="ti ti-users"></i> Comunidade</button>
+                <button id="btn-config-logout" class="nav-btn btn-logout-danger"><i class="ti ti-logout"></i> Sair da Conta</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="config-grid">
+            
+            <!-- COLUNA ESQUERDA: Perfil e Configurações -->
+            <div class="config-sidebar">
+                <!-- Card de Perfil -->
+                <div class="panel-card profile-panel">
+                    <h3>Perfil do Usuário</h3>
+                    <div class="profile-avatar-section">
+                        <div class="avatar-container">
+                            <img id="profile-avatar-img" src="avatars/avatar1.svg" alt="Avatar" class="avatar-img">
+                        </div>
+                        <button id="btn-change-avatar" class="change-avatar-btn">Mudar Avatar</button>
+                    </div>
+
+                    <form id="profile-form">
+                        <div class="field-group">
+                            <label for="profile-name">Nome Completo</label>
+                            <input type="text" id="profile-name" placeholder="Seu nome completo" required>
+                        </div>
+                        <div class="field-group">
+                            <label>E-mail (Não editável)</label>
+                            <input type="email" id="profile-email" disabled>
+                        </div>
+                        <button type="submit" class="save-profile-btn">Salvar Alterações</button>
+                    </form>
+                </div>
+
+                <!-- Card de Toggles de Configurações -->
+                <div class="panel-card toggles-panel">
+                    <h3>Preferências da Extensão</h3>
+                    
+                    <div class="toggle-item">
+                        <div class="toggle-info">
+                            <span class="toggle-title">Ativar Veridion AI</span>
+                            <span class="toggle-desc">Ativar ou desativar a aparição do widget flutuante nas páginas.</span>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="toggle-active-extension" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="toggle-item">
+                        <div class="toggle-info">
+                            <span class="toggle-title">Alerta de Domínios Falsos</span>
+                            <span class="toggle-desc">Avisar contra golpes de escrita semelhante (typosquatting).</span>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="toggle-typo-blocker" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="toggle-item">
+                        <div class="toggle-info">
+                            <span class="toggle-title">Bloqueador +18 (Filtro Familiar)</span>
+                            <span class="toggle-desc">Bloquear o acesso a sites de conteúdo adulto automaticamente.</span>
+                        </div>
+                        <label class="switch">
+                            <!-- Toggle Mockado conforme solicitado no roadmap -->
+                            <input type="checkbox" id="toggle-adult-blocker">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="toggle-item">
+                        <div class="toggle-info">
+                            <span class="toggle-title">Modo Escuro (Dark Mode)</span>
+                            <span class="toggle-desc">Mudar o tema das páginas da comunidade e configurações.</span>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="toggle-dark-mode">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- COLUNA DIREITA: Histórico Pessoal & Planos -->
+            <div class="config-content">
+                <!-- Seção de Planos Simbólicos -->
+                <div class="panel-card plans-panel">
+                    <h3>Upgrades e Planos</h3>
+                    <p class="panel-subtitle">Desbloqueie todos os recursos corporativos e monitoramento contínuo com IA.</p>
+                    
+                    <div class="plans-grid">
+                        <div class="plan-card">
+                            <h4>Veridion Free</h4>
+                            <span class="plan-price">R$ 0<small>/mês</small></span>
+                            <ul class="plan-features">
+                                <li><i class="ti ti-check"></i> Análise de páginas com IA</li>
+                                <li><i class="ti ti-check"></i> Detecção de typosquatting</li>
+                                <li><i class="ti ti-check"></i> Rankings da comunidade</li>
+                            </ul>
+                            <button class="plan-btn disabled" disabled>Plano Atual</button>
+                        </div>
+
+                        <div class="plan-card plan-premium">
+                            <div class="premium-badge">Mais Popular</div>
+                            <h4>Veridion Premium</h4>
+                            <span class="plan-price">R$ 9,90<small>/mês</small></span>
+                            <ul class="plan-features">
+                                <li><i class="ti ti-check"></i> Tudo do plano gratuito</li>
+                                <li><i class="ti ti-check"></i> Detecção prioritária de deepfakes</li>
+                                <li><i class="ti ti-check"></i> Selo verificado para marcas</li>
+                                <li><i class="ti ti-check"></i> Suporte prioritário 24/7</li>
+                            </ul>
+                            <button id="btn-plan-upgrade" class="plan-btn btn-upgrade-trigger">Fazer Upgrade</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Seção de Histórico Pessoal -->
+                <div class="panel-card history-panel">
+                    <div class="history-header">
+                        <h3>Seu Histórico de Atividade</h3>
+                        <div class="history-tabs">
+                            <button id="tab-btn-comments" class="history-tab active">Minhas Denúncias</button>
+                            <button id="tab-btn-analyses" class="history-tab">Minhas Verificações</button>
+                        </div>
+                    </div>
+
+                    <!-- Lista de Comentários / Notas -->
+                    <div id="history-comments-section" class="history-tab-content active">
+                        <div id="personal-denuncias-list" class="personal-activity-list">
+                            <p class="no-activity">Carregando denúncias...</p>
+                        </div>
+                    </div>
+
+                    <!-- Lista de Páginas Analisadas -->
+                    <div id="history-analyses-section" class="history-tab-content">
+                        <div id="personal-analises-list" class="personal-activity-list">
+                            <p class="no-activity">Carregando verificações...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </main>
+
+    <!-- Modal de Upgrade com Pix -->
+    <div id="upgrade-modal" class="modal-overlay hidden">
+        <div class="modal upgrade-pix-modal">
+            <button id="upgrade-modal-close" class="modal-close-btn">&times;</button>
+            <div class="modal-icon">
+                <i class="ti ti-crown"></i>
+            </div>
+            <h2>Ativação Veridion Premium</h2>
+            <p class="modal-desc">Escaneie o QR Code Pix abaixo para realizar o pagamento e ativar seu plano Premium instantaneamente com IA ilimitada!</p>
+            
+            <div class="qr-code-wrapper">
+                <img src="pix_qr_code.svg" alt="QR Code Pix Veridion" class="pix-qr-img">
+            </div>
+
+            <div class="pix-copy-wrapper">
+                <input type="text" id="pix-copy-input" readonly value="00020126580014br.gov.bcb.pix0136veridion-premium-pix-pagamento520400005303986540529.905802BR5919Veridion AI Premium6009SAO PAULO62070503***6304E2B1">
+                <button id="btn-copy-pix-key" class="btn-copy-pix"><i class="ti ti-copy"></i> Copiar Chave Pix</button>
+            </div>
+
+            <div id="upgrade-success-message" class="upgrade-success-box hidden">
+                <i class="ti ti-circle-check-filled"></i>
+                <span>Pagamento confirmado! Seu plano agora é <strong>Veridion Premium ⚡</strong></span>
+            </div>
+
+            <button id="upgrade-modal-pay-confirm" class="modal-ok-btn btn-confirm-pay"><i class="ti ti-check"></i> Já efetuei o pagamento</button>
+        </div>
+    </div>
+
+    <!-- Modal de Seleção de Avatar -->
+    <div id="avatar-modal" class="modal-overlay hidden">
+        <div class="modal avatar-selection-modal">
+            <button id="avatar-modal-close" class="modal-close-btn">&times;</button>
+            <h2>Selecione seu Avatar</h2>
+            <p class="modal-desc">Escolha uma imagem de perfil para representá-lo na comunidade.</p>
+            
+            <div class="avatars-grid">
+                <img class="avatar-select-item" src="avatars/avatar1.svg" data-avatar="avatar1.svg">
+                <img class="avatar-select-item" src="avatars/avatar2.svg" data-avatar="avatar2.svg">
+                <img class="avatar-select-item" src="avatars/avatar3.svg" data-avatar="avatar3.svg">
+                <img class="avatar-select-item" src="avatars/avatar4.svg" data-avatar="avatar4.svg">
+                <img class="avatar-select-item" src="avatars/avatar5.svg" data-avatar="avatar5.svg">
+                <img class="avatar-select-item" src="avatars/avatar6.svg" data-avatar="avatar6.svg">
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -7,7 +7,7 @@
 //    3. Gerenciar o token JWT no chrome.storage.local
 // ============================================================
 
-const BACKEND_URL = 'https://veridion-5tjh.onrender.com'; // Trocar pela URL real quando definida
+const BACKEND_URL = 'https://veridion-5tjh.onrender.com';
 
 // ------------------------------------------------------------
 //  Helpers
@@ -15,8 +15,12 @@ const BACKEND_URL = 'https://veridion-5tjh.onrender.com'; // Trocar pela URL rea
 
 /** Retorna true se houver token salvo no storage. */
 async function isLoggedIn() {
-  const { token } = await chrome.storage.local.get('token');
-  return !!token;
+  try {
+    const { token } = await chrome.storage.local.get('token');
+    return !!token;
+  } catch (e) {
+    return false;
+  }
 }
 
 /**
@@ -24,14 +28,64 @@ async function isLoggedIn() {
  * Se ela já estiver aberta, apenas foca nessa aba.
  */
 async function openLoginPage() {
-  const loginUrl = chrome.runtime.getURL('pages/login/login.html');
-  const existing = await chrome.tabs.query({ url: loginUrl });
+  try {
+    const loginUrl = chrome.runtime.getURL('pages/login/login.html');
+    const existing = await chrome.tabs.query({ url: loginUrl });
 
-  if (existing.length > 0) {
-    await chrome.tabs.update(existing[0].id, { active: true });
-    await chrome.windows.update(existing[0].windowId, { focused: true });
-  } else {
-    await chrome.tabs.create({ url: loginUrl });
+    if (existing && existing.length > 0) {
+      await chrome.tabs.update(existing[0].id, { active: true });
+      if (existing[0].windowId) {
+        await chrome.windows.update(existing[0].windowId, { focused: true });
+      }
+    } else {
+      await chrome.tabs.create({ url: loginUrl });
+    }
+  } catch (err) {
+    console.warn('[service_worker] Erro ao abrir página de login:', err);
+  }
+}
+
+// ------------------------------------------------------------
+//  Fila de Sincronização Offline (Veridion Trust Sync Queue)
+// ------------------------------------------------------------
+
+async function syncPendingReports() {
+  try {
+    const { pending_reports = [], token } = await chrome.storage.local.get(['pending_reports', 'token']);
+    if (!pending_reports || !pending_reports.length) return;
+
+    console.log(`[service_worker] Tentando sincronizar ${pending_reports.length} denúncia(s) pendente(s)...`);
+    const remaining = [];
+
+    for (const report of pending_reports) {
+      try {
+        const response = await fetch(`${BACKEND_URL}/report`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+          },
+          body: JSON.stringify({
+            url: report.url,
+            motivo: report.category || report.motivo || 'golpe',
+            estrelas: report.stars || 5,
+            comentario: report.comment || report.comentario || ''
+          })
+        });
+
+        if (!response.ok) {
+          remaining.push(report);
+        } else {
+          console.log(`[service_worker] Denúncia para ${report.domain || report.url} sincronizada com sucesso!`);
+        }
+      } catch (e) {
+        remaining.push(report);
+      }
+    }
+
+    await chrome.storage.local.set({ pending_reports: remaining });
+  } catch (err) {
+    console.warn('[service_worker] Erro na sincronização de denúncias:', err);
   }
 }
 
@@ -39,72 +93,92 @@ async function openLoginPage() {
 //  Gatilhos de instalação e ativação
 // ------------------------------------------------------------
 
-/** Na primeira instalação e em atualizações, verifica a sessão e recria o menu de contexto. */
-chrome.runtime.onInstalled.addListener(async () => {
-  // Remove antes de recriar para evitar erro de ID duplicado em atualizações
-  chrome.contextMenus.removeAll(() => {
-    chrome.contextMenus.create({
-      id:       'veridion-analisar-imagem',
-      title:    'Analisar imagem com IA (Veridion)',
-      contexts: ['image'],
+chrome.runtime.onInstalled.addListener((details) => {
+  try {
+    chrome.contextMenus.removeAll(() => {
+      if (chrome.runtime.lastError) {}
+      chrome.contextMenus.create({
+        id:       'veridion-analisar-imagem',
+        title:    'Analisar imagem com IA (Veridion)',
+        contexts: ['image'],
+      }, () => {
+        if (chrome.runtime.lastError) {}
+      });
     });
-  });
 
-  const loggedIn = await isLoggedIn();
-  if (!loggedIn) {
-    await openLoginPage();
+    isLoggedIn().then(loggedIn => {
+      if (!loggedIn) {
+        openLoginPage();
+      }
+    }).catch(err => console.warn('[service_worker] Erro ao checar login:', err));
+
+    syncPendingReports().catch(() => {});
+  } catch (err) {
+    console.warn('[service_worker] Erro onInstalled:', err);
   }
 });
 
-/**
- * Quando o usuário clica no ícone da extensão na barra do Chrome.
- * (Só funciona se o manifest.json NÃO tiver "default_popup" definido.)
- * Se tiver popup definido, remova este bloco.
- */
-chrome.action.onClicked.addListener(async () => {
-  const loggedIn = await isLoggedIn();
-  if (!loggedIn) {
-    await openLoginPage();
+chrome.runtime.onStartup.addListener(() => {
+  syncPendingReports().catch(err => console.warn('[service_worker] Erro onStartup:', err));
+});
+
+chrome.action.onClicked.addListener(async (tab) => {
+  try {
+    const loggedIn = await isLoggedIn();
+    if (!loggedIn) {
+      await openLoginPage();
+      return;
+    }
+    
+    if (tab && tab.id) {
+      chrome.tabs.sendMessage(tab.id, { type: 'TOGGLE_WIDGET' }, () => {
+        if (chrome.runtime.lastError) {}
+      });
+    }
+  } catch (err) {
+    console.warn('[service_worker] Erro ao clicar no ícone:', err);
   }
 });
 
 // ------------------------------------------------------------
 //  Central de mensagens
-//  scanner.js e popup.js se comunicam via chrome.runtime.sendMessage()
 // ------------------------------------------------------------
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (!message || !message.type) return false;
 
-  // --- Verifica se está logado (chamado pelo scanner antes de analisar) ---
-  if (message.type === 'CHECK_AUTH') {
-    isLoggedIn().then(loggedIn => {
-      sendResponse({ loggedIn });
-    });
-    return true; // Mantém o canal aberto para a resposta assíncrona
+  if (message.type === 'SYNC_REPORTS') {
+    syncPendingReports()
+      .then(() => sendResponse({ success: true }))
+      .catch(err => sendResponse({ success: false, error: err.message }));
+    return true;
   }
 
-  // --- Login bem-sucedido: salva o token vindo da página de login ---
+  if (message.type === 'CHECK_AUTH') {
+    isLoggedIn()
+      .then(loggedIn => sendResponse({ loggedIn }))
+      .catch(err => sendResponse({ loggedIn: false, error: err.message }));
+    return true;
+  }
+
   if (message.type === 'LOGIN_SUCCESS') {
     chrome.storage.local.set({ token: message.token, user: message.user }, () => {
-      // Fecha a aba de login após salvar
-      if (sender.tab) {
-        chrome.tabs.remove(sender.tab.id);
+      if (sender.tab && sender.tab.id) {
+        chrome.tabs.remove(sender.tab.id).catch(() => {});
       }
       sendResponse({ success: true });
     });
     return true;
   }
 
-  // --- Logout: limpa storage e reabre login ---
   if (message.type === 'LOGOUT') {
     chrome.storage.local.clear(() => {
-      openLoginPage();
+      openLoginPage().catch(() => {});
       sendResponse({ success: true });
     });
     return true;
   }
 
-  // --- Retorna o token para quem precisar (ex: scanner.js no fetch) ---
   if (message.type === 'GET_TOKEN') {
     chrome.storage.local.get('token', ({ token }) => {
       sendResponse({ token: token || null });
@@ -112,13 +186,47 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     return true;
   }
 
-  // --- Retorna os dados do usuário logado (ex: popup.js) ---
   if (message.type === 'GET_USER') {
     chrome.storage.local.get('user', ({ user }) => {
       sendResponse({ user: user || null });
     });
     return true;
   }
+
+  if (message.type === 'UPDATE_BADGE') {
+    const score = message.score;
+    if (score === null || score === undefined) {
+      chrome.action.setBadgeText({ text: '' });
+      sendResponse({ success: true });
+      return false;
+    }
+
+    let text = score.toString();
+    let color = '#3533cb';
+
+    if (message.isImage) {
+      if (message.isIa) {
+        text = 'IA';
+        color = '#d32f2f';
+      } else {
+        text = 'Real';
+        color = '#3533cb';
+      }
+    } else {
+      if (score <= 30) {
+        color = '#d32f2f';
+      } else if (score <= 60) {
+        color = '#f57c00';
+      }
+    }
+
+    chrome.action.setBadgeText({ text: text });
+    chrome.action.setBadgeBackgroundColor({ color: color });
+    sendResponse({ success: true });
+    return false;
+  }
+
+  return false;
 });
 
 // ------------------------------------------------------------
@@ -128,37 +236,49 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 chrome.contextMenus.onClicked.addListener(async (info, tab) => {
   if (info.menuItemId !== 'veridion-analisar-imagem') return;
 
-  const loggedIn = await isLoggedIn();
-  if (!loggedIn) {
-    openLoginPage();
-    return;
-  }
-
-  // Avisa o scanner para abrir o widget e mostrar carregando
-  chrome.tabs.sendMessage(tab.id, { type: 'ANALISANDO_IMAGEM', url: info.srcUrl });
-
-  const { token } = await chrome.storage.local.get('token');
-
   try {
+    const loggedIn = await isLoggedIn();
+    if (!loggedIn) {
+      openLoginPage();
+      return;
+    }
+
+    if (tab && tab.id) {
+      chrome.tabs.sendMessage(tab.id, { type: 'ANALISANDO_IMAGEM', url: info.srcUrl }, () => {
+        if (chrome.runtime.lastError) {}
+      });
+    }
+
+    const { token } = await chrome.storage.local.get('token');
+
     const response = await fetch(`${BACKEND_URL}/analisar-imagem`, {
       method: 'POST',
       headers: {
-        'Content-Type':  'application/json',
-        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        ...(token ? { 'Authorization': `Bearer ${token}` } : {})
       },
       body: JSON.stringify({ url_imagem: info.srcUrl }),
     });
 
     const dados = await response.json();
 
-    if (!response.ok) {
-      chrome.tabs.sendMessage(tab.id, { type: 'IMAGEM_ANALISADA', erro: dados.erro || 'Erro no servidor.' });
-      return;
+    if (tab && tab.id) {
+      if (!response.ok) {
+        chrome.tabs.sendMessage(tab.id, { type: 'IMAGEM_ANALISADA', erro: dados.erro || 'Erro no servidor.' }, () => {
+          if (chrome.runtime.lastError) {}
+        });
+        return;
+      }
+
+      chrome.tabs.sendMessage(tab.id, { type: 'IMAGEM_ANALISADA', dados }, () => {
+        if (chrome.runtime.lastError) {}
+      });
     }
-
-    chrome.tabs.sendMessage(tab.id, { type: 'IMAGEM_ANALISADA', dados });
-
   } catch (err) {
-    chrome.tabs.sendMessage(tab.id, { type: 'IMAGEM_ANALISADA', erro: 'Falha ao conectar ao servidor.' });
+    if (tab && tab.id) {
+      chrome.tabs.sendMessage(tab.id, { type: 'IMAGEM_ANALISADA', erro: 'Falha ao conectar ao servidor.' }, () => {
+        if (chrome.runtime.lastError) {}
+      });
+    }
   }
 });
