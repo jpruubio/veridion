@@ -55,7 +55,7 @@ async function cadastrar(req, res) {
     const senhaHash = await bcrypt.hash(senha, SALT_ROUNDS);
 
     const result = await db.query(
-      'INSERT INTO usuarios (nome_completo, email, senha) VALUES ($1, $2, $3) RETURNING id, nome_completo, email',
+      'INSERT INTO usuarios (nome, email, senha_hash) VALUES ($1, $2, $3) RETURNING id, nome, email',
       [nome, email, senhaHash]
     );
 
@@ -70,7 +70,7 @@ async function cadastrar(req, res) {
     return res.status(201).json({
       mensagem: 'Cadastro realizado com sucesso!',
       token,
-      usuario: { id: usuario.id, nome: usuario.nome_completo, nome_completo: usuario.nome_completo, email: usuario.email },
+      usuario: { id: usuario.id, nome: usuario.nome, email: usuario.email },
     });
 
   } catch (err) {
@@ -101,7 +101,7 @@ async function login(req, res) {
 
   try {
     const result = await db.query(
-      'SELECT id, nome_completo, email, senha, avatar_url FROM usuarios WHERE email = $1',
+      'SELECT id, nome, email, senha_hash FROM usuarios WHERE email = $1',
       [email]
     );
 
@@ -111,7 +111,7 @@ async function login(req, res) {
 
     const usuario = result.rows[0];
 
-    const senhaCorreta = await bcrypt.compare(senha, usuario.senha);
+    const senhaCorreta = await bcrypt.compare(senha, usuario.senha_hash);
     if (!senhaCorreta) {
       return res.status(401).json({ erro: 'E-mail ou senha incorretos.' });
     }
@@ -125,7 +125,7 @@ async function login(req, res) {
     return res.status(200).json({
       mensagem: 'Login realizado com sucesso!',
       token,
-      usuario: { id: usuario.id, nome: usuario.nome_completo, nome_completo: usuario.nome_completo, email: usuario.email, avatar_url: usuario.avatar_url },
+      usuario: { id: usuario.id, nome: usuario.nome, email: usuario.email },
     });
 
   } catch (err) {
@@ -164,7 +164,7 @@ async function esqueceuSenha(req, res) {
 
     // Invalida tokens anteriores ainda pendentes deste usuário
     await db.query(
-      'DELETE FROM reset_tokens WHERE usuario_id = $1',
+      'UPDATE reset_tokens SET usado = TRUE WHERE usuario_id = $1 AND usado = FALSE',
       [usuario.id]
     );
 
@@ -221,11 +221,11 @@ async function redefinirSenha(req, res) {
   }
 
   try {
+    // CORREÇÃO: Crase fechada corretamente e verificação de validade e uso do token no próprio banco
     const result = await db.query(
       `SELECT rt.id, rt.usuario_id, rt.expira_em
        FROM reset_tokens rt
-       WHERE rt.token = $1
-         AND rt.expira_em > NOW()`,
+       WHERE rt.token = $1 AND rt.usado = FALSE AND rt.expira_em > NOW()`,
       [token]
     );
 
@@ -240,12 +240,14 @@ async function redefinirSenha(req, res) {
     // Atualiza senha e marca token como usado em transação
     await db.query('BEGIN');
     try {
+      // CORREÇÃO: Array de parâmetros adicionado aqui
       await db.query(
-        'UPDATE usuarios SET senha = $1 WHERE id = $2',
+        'UPDATE usuarios SET senha_hash = $1 WHERE id = $2',
         [senhaHash, usuario_id]
       );
+      
       await db.query(
-        'DELETE FROM reset_tokens WHERE id = $1',
+        'UPDATE reset_tokens SET usado = TRUE WHERE id = $1',
         [tokenId]
       );
       await db.query('COMMIT');
