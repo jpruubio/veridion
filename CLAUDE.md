@@ -127,13 +127,10 @@ Chrome Manifest V3. Key pieces:
 
 ## Known issues / pending
 
-Found during a full-repo consistency pass (branch `fix/consistency-audit`, off `main` at `0f67592`). What's fixed is reflected in the sections above.
+Found during a full-repo consistency pass (branch `fix/consistency-audit`, off `main` at `0f67592`). All items resolved — kept here as a record, since none of this is derivable from the current code/schema alone.
 
-**Still open:**
-1. **`schema.sql` changes haven't been applied to the live Supabase database.** The file only affects a database when it's actually run against one (`psql "<DATABASE_URL>" -f backend/src/models/schema.sql`) — editing the file in the repo doesn't migrate production. Every `ALTER`/constraint addition in it is idempotent (`IF NOT EXISTS`, or a `pg_constraint` existence check for the one `CHECK` constraint retrofit), so it's safe to run against the existing Supabase database without touching current data.
-
-**Resolved:**
+- ~~`schema.sql` changes hadn't been applied to the live Supabase database~~ — run via the Supabase SQL Editor and verified (`nome_completo`/`avatar_url` on `usuarios`, `estrelas`/`comentario`/`nome_usuario`/`respondido`/`resposta_empresa` on `denuncias`, and the `denuncias_imagens_motivo_check` constraint all confirmed present).
 - ~~`POST /esqueci-senha` has no fallback if `RESEND_API_KEY` is missing/invalid~~ — fixed: the Resend call is now in its own try/catch; a send failure is logged but still returns the generic 200 (the response was already generic for anti-enumeration, and the reset token is already persisted regardless of email delivery).
-- ~~`denuncias_imagens.motivo` CHECK constraint only applies to a fresh table~~ — fixed: `schema.sql` now has a `DO $$ ... $$` block that adds the constraint by name (`denuncias_imagens_motivo_check`) if missing, so re-running the file retrofits it on an existing Supabase table too. Still needs the file to actually be run (see item 1).
+- ~~`denuncias_imagens.motivo` CHECK constraint only applies to a fresh table~~ — fixed: `schema.sql` now has a `DO $$ ... $$` block that adds the constraint by name (`denuncias_imagens_motivo_check`) if missing, retrofitting it on an existing table. Confirmed applied on Supabase.
 - Mock data in `communityController` (`obterRankings`, and the `nike.com.br`/`nike.com` branch in `obterDetalhesSite`) — confirmed intentional, kept for a demo. Not a bug.
 - `imageReportController`'s `MOTIVOS_VALIDOS` (`imagem_fake`, `conteudo_inadequado`, `direitos_autorais`, `outro`) — confirmed as the right categories.
