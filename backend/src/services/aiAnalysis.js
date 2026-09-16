@@ -1,9 +1,15 @@
-const { GoogleGenerativeAI } = require('@google/generative-ai');
+const { GoogleGenAI } = require('@google/genai');
 
 // Instanciado uma vez no carregamento do módulo — dotenv já está ativo via server.js
 const genAI = process.env.GEMINI_API_KEY
-  ? new GoogleGenerativeAI(process.env.GEMINI_API_KEY)
+  ? new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY })
   : null;
+
+// Cache em memória do resultado de analisarImagens, por URL de imagem.
+// Evita respostas inconsistentes ao reanalisar a mesma imagem repetidas vezes
+// e economiza chamadas à API do Gemini.
+const IMAGE_CACHE_TTL_MS = 24 * 60 * 60 * 1000;
+const imagemCache = new Map();
 
 function extrairJSON(text) {
   const start = text.indexOf('{');
@@ -61,15 +67,6 @@ async function analisarConteudo({ titulo, conteudo, dominio = '' }) {
   }
 
   try {
-    const model = genAI.getGenerativeModel({
-      model: 'gemini-2.5-flash',
-      systemInstruction: SYSTEM_PROMPT,
-      generationConfig: {
-        responseMimeType: 'application/json',
-        temperature: 0.2,
-      },
-    });
-
     const prompt = [
       dominio ? `Domínio: ${dominio}` : null,
       `Título: ${(titulo || '(sem título)').slice(0, 200)}`,
@@ -78,8 +75,16 @@ async function analisarConteudo({ titulo, conteudo, dominio = '' }) {
       (conteudo || '(sem conteúdo)').slice(0, 3000),
     ].filter(line => line !== null).join('\n');
 
-    const result = await model.generateContent(prompt);
-    const parsed = JSON.parse(extrairJSON(result.response.text()));
+    const result = await genAI.models.generateContent({
+      model: 'gemini-3.5-flash',
+      contents: prompt,
+      config: {
+        systemInstruction: SYSTEM_PROMPT,
+        responseMimeType: 'application/json',
+        temperature: 0.2,
+      },
+    });
+    const parsed = JSON.parse(extrairJSON(result.text));
 
     const score   = Math.max(0, Math.min(100, parseInt(parsed.score)));
     const fatores = Array.isArray(parsed.fatores) ? parsed.fatores : [];
@@ -105,6 +110,11 @@ async function analisarImagens(imagens) {
   const imageUrl = imagens.find(url => typeof url === 'string' && url.startsWith('http'));
   if (!imageUrl) return fallback;
 
+  const cached = imagemCache.get(imageUrl);
+  if (cached && Date.now() - cached.timestamp < IMAGE_CACHE_TTL_MS) {
+    return cached.resultado;
+  }
+
   try {
     const controller = new AbortController();
     const timeout    = setTimeout(() => controller.abort(), 5000);
@@ -117,23 +127,25 @@ async function analisarImagens(imagens) {
     const base64   = Buffer.from(buffer).toString('base64');
     const mimeType = (imgResponse.headers.get('content-type') || 'image/jpeg').split(';')[0];
 
-    const model = genAI.getGenerativeModel({
-      model: 'gemini-2.5-flash',
-      generationConfig: { responseMimeType: 'application/json', temperature: 0.1 },
-    });
-
-    const result = await model.generateContent([
-      { inlineData: { data: base64, mimeType } },
-      `Determine se esta imagem foi gerada por inteligência artificial.
+    const result = await genAI.models.generateContent({
+      model: 'gemini-3.5-flash',
+      contents: [
+        { inlineData: { data: base64, mimeType } },
+        `Determine se esta imagem foi gerada por inteligência artificial.
 Observe: irregularidades em mãos e dedos, olhos ou dentes inconsistentes, fundo incoerente, texto ilegível, texturas ou iluminação artificiais, padrões repetidos ou simétricos anormais.
 Responda SOMENTE com JSON válido: {"gerada_por_ia":BOOLEAN,"confianca":INTEGER_0_100}`,
-    ]);
+      ],
+      config: { responseMimeType: 'application/json', temperature: 0.1 },
+    });
 
-    const parsed = JSON.parse(extrairJSON(result.response.text()));
-    return {
+    const parsed = JSON.parse(extrairJSON(result.text));
+    const resultado = {
       imagem_ia:        Boolean(parsed.gerada_por_ia),
       imagem_confianca: Math.max(0, Math.min(100, parseInt(parsed.confianca) || 0)),
     };
+
+    imagemCache.set(imageUrl, { resultado, timestamp: Date.now() });
+    return resultado;
 
   } catch (err) {
     console.error('[aiAnalysis] Erro na análise de imagem:', err.message);
