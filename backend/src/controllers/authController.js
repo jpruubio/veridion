@@ -177,12 +177,19 @@ async function esqueceuSenha(req, res) {
       [usuario.id, token, expira]
     );
 
-    await resend.emails.send({
-      from: 'Veridion <onboarding@resend.dev>',
-      to: email,
-      subject: 'Redefinição de senha — Veridion',
-      html: `<div style="font-family:Inter,sans-serif;max-width:480px;margin:0 auto;padding:32px;background:#f4f5ff;border-radius:16px;"><h2 style="color:#171658;">Redefinição de senha</h2><p style="color:#6b6b9a;">Use o código abaixo para redefinir sua senha. Válido por <strong>1 hora</strong>.</p><div style="background:#fff;border-radius:10px;padding:20px;text-align:center;font-size:14px;font-weight:600;color:#3533cb;word-break:break-all;">${token}</div><p style="color:#6b6b9a;font-size:12px;margin-top:24px;">Se você não solicitou, ignore este e-mail.</p></div>`
-    });
+    // Falha de envio não deve derrubar a requisição com 500: o token já foi
+    // gravado, e a resposta é genérica de qualquer forma (anti-enumeração).
+    // Só logamos pra ficar visível em monitoramento/alerta.
+    try {
+      await resend.emails.send({
+        from: 'Veridion <onboarding@resend.dev>',
+        to: email,
+        subject: 'Redefinição de senha — Veridion',
+        html: `<div style="font-family:Inter,sans-serif;max-width:480px;margin:0 auto;padding:32px;background:#f4f5ff;border-radius:16px;"><h2 style="color:#171658;">Redefinição de senha</h2><p style="color:#6b6b9a;">Use o código abaixo para redefinir sua senha. Válido por <strong>1 hora</strong>.</p><div style="background:#fff;border-radius:10px;padding:20px;text-align:center;font-size:14px;font-weight:600;color:#3533cb;word-break:break-all;">${token}</div><p style="color:#6b6b9a;font-size:12px;margin-top:24px;">Se você não solicitou, ignore este e-mail.</p></div>`
+      });
+    } catch (emailErr) {
+      console.error('[authController] Falha ao enviar e-mail de redefinição (RESEND_API_KEY ausente/inválida?):', emailErr.message);
+    }
 
     return res.status(200).json({
       mensagem: 'Se este e-mail estiver cadastrado, você receberá o código em breve.',
@@ -220,9 +227,13 @@ async function redefinirSenha(req, res) {
     });
   }
 
+  // Transação real: um único client dedicado para BEGIN/COMMIT/ROLLBACK.
+  // db.query() (via Pool) devolveria uma conexão diferente a cada chamada,
+  // o que tornaria BEGIN/COMMIT/ROLLBACK não-atômicos entre si.
+  const client = await db.connect();
+
   try {
-    // CORREÇÃO: Crase fechada corretamente e verificação de validade e uso do token no próprio banco
-    const result = await db.query(
+    const result = await client.query(
       `SELECT rt.id, rt.usuario_id, rt.expira_em
        FROM reset_tokens rt
        WHERE rt.token = $1 AND rt.usado = FALSE AND rt.expira_em > NOW()`,
@@ -234,25 +245,23 @@ async function redefinirSenha(req, res) {
     }
 
     const { id: tokenId, usuario_id } = result.rows[0];
-
     const senhaHash = await bcrypt.hash(novaSenha, SALT_ROUNDS);
 
-    // Atualiza senha e marca token como usado em transação
-    await db.query('BEGIN');
+    await client.query('BEGIN');
     try {
-      // CORREÇÃO: Array de parâmetros adicionado aqui
-      await db.query(
+      await client.query(
         'UPDATE usuarios SET senha_hash = $1 WHERE id = $2',
         [senhaHash, usuario_id]
       );
-      
-      await db.query(
+
+      await client.query(
         'UPDATE reset_tokens SET usado = TRUE WHERE id = $1',
         [tokenId]
       );
-      await db.query('COMMIT');
+
+      await client.query('COMMIT');
     } catch (txErr) {
-      await db.query('ROLLBACK');
+      await client.query('ROLLBACK');
       throw txErr;
     }
 
@@ -261,6 +270,8 @@ async function redefinirSenha(req, res) {
   } catch (err) {
     console.error('[authController] Erro em redefinirSenha:', err.message);
     return res.status(500).json({ erro: 'Erro interno no servidor.' });
+  } finally {
+    client.release();
   }
 }
 

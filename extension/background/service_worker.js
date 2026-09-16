@@ -7,7 +7,7 @@
 //    3. Gerenciar o token JWT no chrome.storage.local
 // ============================================================
 
-const BACKEND_URL = 'https://veridion-5tjh.onrender.com';
+importScripts('../shared/config.js'); // define BACKEND_URL
 
 // ------------------------------------------------------------
 //  Helpers

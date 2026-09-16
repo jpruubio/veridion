@@ -1,4 +1,4 @@
-const BACKEND_URL = 'https://veridion-5tjh.onrender.com';
+// BACKEND_URL vem de shared/config.js, carregado antes deste arquivo no cadastro.html
 
 const botaoCriar = document.getElementById('criar');
 

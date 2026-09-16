@@ -18,7 +18,7 @@ Extensão → API → Análise (técnica + IA + comunidade) → Trust Score → 
 
 | Camada | O que analisa | Peso |
 |---|---|---|
-| IA (Gemini 2.5 Flash) | Linguagem, padrões de fake news, clickbait, manipulação | 45% |
+| IA (Gemini 3.5 Flash) | Linguagem, padrões de fake news, clickbait, manipulação | 45% |
 | Técnica | HTTPS, idade do domínio via WHOIS | 25% |
 | Comunidade | Votos de usuários: confiável, suspeito ou golpe | 30% |
 
@@ -28,7 +28,7 @@ Os votos da comunidade têm pesos diferentes conforme a gravidade: `confiável` 
 
 ### Análise de imagem
 
-O usuário pode clicar com o **botão direito em qualquer imagem** da página e selecionar "Analisar imagem com IA (Veridion)". O Gemini detecta se a imagem foi gerada por IA e exibe o resultado diretamente no widget.
+O usuário pode clicar com o **botão direito em qualquer imagem** da página e selecionar "Analisar imagem com IA (Veridion)". O Gemini detecta se a imagem foi gerada por IA e exibe o resultado diretamente no widget. O resultado fica em cache por 24h por URL de imagem, para que reanalisar a mesma imagem não gere respostas diferentes a cada clique.
 
 ### Veredictos
 
@@ -46,8 +46,9 @@ O usuário pode clicar com o **botão direito em qualquer imagem** da página e 
 **Backend**
 - Node.js + Express
 - PostgreSQL (Supabase)
-- Google Gemini 2.5 Flash (análise de conteúdo e imagens)
+- Google Gemini 3.5 Flash via `@google/genai` (análise de conteúdo e imagens)
 - JWT + bcrypt
+- Resend (e-mail de redefinição de senha)
 - Helmet + express-rate-limit
 
 **Extensão**
@@ -62,12 +63,20 @@ O usuário pode clicar com o **botão direito em qualquer imagem** da página e 
 |---|---|---|---|
 | `POST` | `/cadastro` | — | Cria novo usuário |
 | `POST` | `/login` | — | Autentica e retorna token JWT |
+| `POST` | `/esqueci-senha` | — | Gera token de redefinição de senha e envia por e-mail (Resend) |
+| `POST` | `/redefinir-senha` | — | Valida o token e salva a nova senha |
 | `POST` | `/analisar-pagina` | Opcional | Analisa página completa (usado pela extensão) |
 | `POST` | `/analisar-imagem` | Obrigatória | Detecta se uma imagem foi gerada por IA (botão direito) |
-| `POST` | `/vote` | Obrigatória | Registra voto da comunidade |
+| `POST` | `/vote` | Obrigatória | Registra voto da comunidade num domínio |
 | `POST` | `/report` | Obrigatória | Denuncia um site |
+| `POST` | `/report-image` | Obrigatória | Denuncia uma imagem específica |
 | `GET` | `/domain` | — | Consulta votos e score público de um domínio |
 | `GET` | `/analises` | Obrigatória | Histórico de análises do usuário |
+| `GET` | `/community/top` | — | Rankings da comunidade (atualmente mockado) |
+| `GET` | `/community/site` | — | Detalhes, votos e denúncias de um domínio (`?dominio=`) |
+| `POST` | `/community/responder` | Obrigatória | Empresa responde a uma denúncia |
+| `GET` | `/usuario/perfil` | Obrigatória | Dados do perfil + histórico do próprio usuário |
+| `POST` | `/usuario/perfil` | Obrigatória | Atualiza nome de exibição e avatar |
 | `GET` | `/ping` | — | Verifica se o servidor está ativo |
 
 ### Exemplo de resposta — POST /analisar-pagina
@@ -136,6 +145,7 @@ Veja o arquivo `.env.example` para a lista completa.
 | `JWT_EXPIRES_IN` | Tempo de expiração do token (ex: `7d`) |
 | `PORT` | Porta do servidor (padrão: `3000`) |
 | `GEMINI_API_KEY` | Chave da API do Google AI Studio |
+| `RESEND_API_KEY` | Chave da Resend, usada para enviar o e-mail de redefinição de senha |
 
 ---
 
@@ -152,6 +162,14 @@ backend/
 │   └── server/          # Entrada do servidor
 ├── .env.example
 └── package.json
+
+extension/
+├── manifest.json
+├── shared/              # BACKEND_URL — único ponto de configuração, usado por
+│                        # todo o resto (service worker, content script, páginas)
+├── background/          # Service worker: sessão, fila de sincronização, context menu
+├── content_scripts/     # Widget flutuante injetado em toda página + escudos de segurança
+└── pages/               # login, cadastro, portal, comunidade, config
 ```
 
 ---

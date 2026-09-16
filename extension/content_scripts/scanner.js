@@ -8,7 +8,7 @@
 //    4. Enviar dados ao back-end e exibir o resultado
 // ============================================================
 
-const BACKEND_URL = 'https://veridion-5tjh.onrender.com'; // Trocar pela URL real quando definida
+// BACKEND_URL vem de shared/config.js, carregado antes deste arquivo pelo manifest.json
 
 // ------------------------------------------------------------
 //  1. HTML do widget — injetado no final do <body>
@@ -374,15 +374,20 @@ function injetarEInicializarWidget() {
     try {
       // ------------------------------------------------------------
       //  FLUXO OBRIGATÓRIO DE VALIDAÇÃO DE DOMÍNIO (Cache-First Supabase)
+      //  TTL de 24h: depois disso, a análise é refeita (mesma janela usada
+      //  no cache de imagem do backend) em vez de reusar o score pra sempre.
       // ------------------------------------------------------------
-      
+      const CACHE_TTL_MS = 24 * 60 * 60 * 1000;
+      const dentroDoTTL = (isoTimestamp) =>
+        !!isoTimestamp && (Date.now() - new Date(isoTimestamp).getTime()) < CACHE_TTL_MS;
+
       // PASSO 1: Busca na Memória do Supabase / Banco
       let dadosResultado = null;
       try {
         const checkRes = await fetch(`${BACKEND_URL}/domain?url=${encodeURIComponent(url)}`);
         if (checkRes.ok) {
           const cachedData = await checkRes.json();
-          if (cachedData && cachedData.ultimoScore) {
+          if (cachedData && cachedData.ultimoScore && dentroDoTTL(cachedData.ultimoScore.criado_em)) {
             console.log(`[Veridion Cache-First] Domínio '${dominioAtual}' encontrado no Supabase! Exibindo em milissegundos.`);
             dadosResultado = {
               score: cachedData.ultimoScore.score,
@@ -398,9 +403,10 @@ function injetarEInicializarWidget() {
       // Verificação secundária no storage local
       if (!dadosResultado) {
         const { cached_domains = {} } = await chrome.storage.local.get('cached_domains');
-        if (cached_domains[dominioAtual]) {
+        const cacheLocal = cached_domains[dominioAtual];
+        if (cacheLocal && dentroDoTTL(cacheLocal.timestamp)) {
           console.log(`[Veridion Cache-First] Domínio '${dominioAtual}' encontrado no cache local! Exibindo instantaneamente.`);
-          dadosResultado = cached_domains[dominioAtual];
+          dadosResultado = cacheLocal;
         }
       }
 

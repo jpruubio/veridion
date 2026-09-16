@@ -1,5 +1,7 @@
 const db = require('../models/db');
 
+const MOTIVOS_VALIDOS = ['imagem_fake', 'conteudo_inadequado', 'direitos_autorais', 'outro'];
+
 // POST /report-image
 // Body: { url_imagem, motivo }
 // Requer autenticação.
@@ -8,6 +10,14 @@ async function reportarImagem(req, res) {
 
   if (!url_imagem || !motivo) {
     return res.status(400).json({ erro: 'Os campos "url_imagem" e "motivo" são obrigatórios.' });
+  }
+
+  if (typeof url_imagem !== 'string' || !url_imagem.startsWith('http')) {
+    return res.status(400).json({ erro: 'URL de imagem inválida.' });
+  }
+
+  if (!MOTIVOS_VALIDOS.includes(motivo)) {
+    return res.status(400).json({ erro: `Motivo inválido. Use: ${MOTIVOS_VALIDOS.join(', ')}.` });
   }
 
   try {

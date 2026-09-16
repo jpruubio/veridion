@@ -2,7 +2,7 @@
 //  Veridion Trust — Portal Web Logic & Supabase Integration
 // ============================================================
 
-const BACKEND_URL = 'https://veridion-5tjh.onrender.com';
+// BACKEND_URL vem de shared/config.js, carregado antes deste arquivo no portal.html
 
 // Mock de Rankings por Nicho para visualização rápida no Portal
 const RANKINGS_DATA = {
