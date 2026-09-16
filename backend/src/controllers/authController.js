@@ -177,12 +177,19 @@ async function esqueceuSenha(req, res) {
       [usuario.id, token, expira]
     );
 
-    await resend.emails.send({
-      from: 'Veridion <onboarding@resend.dev>',
-      to: email,
-      subject: 'Redefinição de senha — Veridion',
-      html: `<div style="font-family:Inter,sans-serif;max-width:480px;margin:0 auto;padding:32px;background:#f4f5ff;border-radius:16px;"><h2 style="color:#171658;">Redefinição de senha</h2><p style="color:#6b6b9a;">Use o código abaixo para redefinir sua senha. Válido por <strong>1 hora</strong>.</p><div style="background:#fff;border-radius:10px;padding:20px;text-align:center;font-size:14px;font-weight:600;color:#3533cb;word-break:break-all;">${token}</div><p style="color:#6b6b9a;font-size:12px;margin-top:24px;">Se você não solicitou, ignore este e-mail.</p></div>`
-    });
+    // Falha de envio não deve derrubar a requisição com 500: o token já foi
+    // gravado, e a resposta é genérica de qualquer forma (anti-enumeração).
+    // Só logamos pra ficar visível em monitoramento/alerta.
+    try {
+      await resend.emails.send({
+        from: 'Veridion <onboarding@resend.dev>',
+        to: email,
+        subject: 'Redefinição de senha — Veridion',
+        html: `<div style="font-family:Inter,sans-serif;max-width:480px;margin:0 auto;padding:32px;background:#f4f5ff;border-radius:16px;"><h2 style="color:#171658;">Redefinição de senha</h2><p style="color:#6b6b9a;">Use o código abaixo para redefinir sua senha. Válido por <strong>1 hora</strong>.</p><div style="background:#fff;border-radius:10px;padding:20px;text-align:center;font-size:14px;font-weight:600;color:#3533cb;word-break:break-all;">${token}</div><p style="color:#6b6b9a;font-size:12px;margin-top:24px;">Se você não solicitou, ignore este e-mail.</p></div>`
+      });
+    } catch (emailErr) {
+      console.error('[authController] Falha ao enviar e-mail de redefinição (RESEND_API_KEY ausente/inválida?):', emailErr.message);
+    }
 
     return res.status(200).json({
       mensagem: 'Se este e-mail estiver cadastrado, você receberá o código em breve.',

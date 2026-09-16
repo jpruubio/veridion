@@ -88,3 +88,19 @@ ALTER TABLE denuncias ADD COLUMN IF NOT EXISTS comentario       TEXT;
 ALTER TABLE denuncias ADD COLUMN IF NOT EXISTS nome_usuario     VARCHAR(100);
 ALTER TABLE denuncias ADD COLUMN IF NOT EXISTS respondido       BOOLEAN NOT NULL DEFAULT FALSE;
 ALTER TABLE denuncias ADD COLUMN IF NOT EXISTS resposta_empresa TEXT;
+
+-- denuncias_imagens.motivo: retrofit da CHECK constraint para bancos onde a
+-- tabela já existia antes desta constraint (CREATE TABLE IF NOT EXISTS não
+-- altera uma tabela já existente, então isso cobre esse caso). Usa o nome
+-- padrão que o Postgres dá à constraint inline da CREATE TABLE acima, então
+-- em bancos novos este bloco não faz nada (ela já existe com esse nome).
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_constraint WHERE conname = 'denuncias_imagens_motivo_check'
+  ) THEN
+    ALTER TABLE denuncias_imagens
+      ADD CONSTRAINT denuncias_imagens_motivo_check
+      CHECK (motivo IN ('imagem_fake', 'conteudo_inadequado', 'direitos_autorais', 'outro'));
+  END IF;
+END $$;

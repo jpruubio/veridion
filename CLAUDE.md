@@ -127,10 +127,13 @@ Chrome Manifest V3. Key pieces:
 
 ## Known issues / pending
 
-Found and fixed during a full-repo consistency pass (branch `fix/consistency-audit`, off `main` at `0f67592`). What's fixed is reflected in the sections above; what's still open:
+Found during a full-repo consistency pass (branch `fix/consistency-audit`, off `main` at `0f67592`). What's fixed is reflected in the sections above.
 
-1. **`schema.sql` changes haven't been applied to the live Supabase database.** The file was updated to add missing columns/tables (`ADD COLUMN IF NOT EXISTS` / `CREATE TABLE IF NOT EXISTS` — safe to re-run, won't touch existing data), but editing the file doesn't migrate production. Someone with `DATABASE_URL` needs to run `psql "<DATABASE_URL>" -f backend/src/models/schema.sql` for these to take effect.
-2. **`POST /esqueci-senha` has no fallback if `RESEND_API_KEY` is missing/invalid** — unlike `GEMINI_API_KEY`, which degrades gracefully (score 50), a missing Resend key makes password-reset requests fail with a 500.
-3. **Mock data in `communityController`** — `obterRankings` is fully hardcoded, and `obterDetalhesSite` has a hardcoded branch for `nike.com.br`/`nike.com`. Left alone since it's a product decision (may still be needed for a demo), not a bug.
-4. **`denuncias_imagens.motivo` CHECK constraint only applies to a fresh table.** `CREATE TABLE IF NOT EXISTS` is a no-op if the table already exists in Supabase without that constraint — it won't be retrofitted automatically.
-5. **`imageReportController`'s `MOTIVOS_VALIDOS`** (`imagem_fake`, `conteudo_inadequado`, `direitos_autorais`, `outro`) is a best-effort guess based on what the extension currently sends (`'imagem_fake'` only) — confirm these are the right categories for the product.
+**Still open:**
+1. **`schema.sql` changes haven't been applied to the live Supabase database.** The file only affects a database when it's actually run against one (`psql "<DATABASE_URL>" -f backend/src/models/schema.sql`) — editing the file in the repo doesn't migrate production. Every `ALTER`/constraint addition in it is idempotent (`IF NOT EXISTS`, or a `pg_constraint` existence check for the one `CHECK` constraint retrofit), so it's safe to run against the existing Supabase database without touching current data.
+
+**Resolved:**
+- ~~`POST /esqueci-senha` has no fallback if `RESEND_API_KEY` is missing/invalid~~ — fixed: the Resend call is now in its own try/catch; a send failure is logged but still returns the generic 200 (the response was already generic for anti-enumeration, and the reset token is already persisted regardless of email delivery).
+- ~~`denuncias_imagens.motivo` CHECK constraint only applies to a fresh table~~ — fixed: `schema.sql` now has a `DO $$ ... $$` block that adds the constraint by name (`denuncias_imagens_motivo_check`) if missing, so re-running the file retrofits it on an existing Supabase table too. Still needs the file to actually be run (see item 1).
+- Mock data in `communityController` (`obterRankings`, and the `nike.com.br`/`nike.com` branch in `obterDetalhesSite`) — confirmed intentional, kept for a demo. Not a bug.
+- `imageReportController`'s `MOTIVOS_VALIDOS` (`imagem_fake`, `conteudo_inadequado`, `direitos_autorais`, `outro`) — confirmed as the right categories.
