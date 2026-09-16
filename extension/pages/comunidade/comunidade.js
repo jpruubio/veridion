@@ -2,7 +2,7 @@
 //  Veridion AI — Reclame Aqui Light Mode SaaS Logic
 // ============================================================
 
-const BACKEND_URL = 'https://veridion-5tjh.onrender.com';
+// BACKEND_URL vem de shared/config.js, carregado antes deste arquivo no comunidade.html
 
 // Mock de Dados dos Top 10 por Nicho (Padrão Print 1)
 const TOP10_RANKINGS = {
@@ -794,7 +794,7 @@ async function loadVeridionTrustData(domainName) {
         let reports = [];
 
         try {
-            const res = await fetch(`${BACKEND_URL}/community/site?domain=${encodeURIComponent(currentDomainName)}`);
+            const res = await fetch(`${BACKEND_URL}/community/site?dominio=${encodeURIComponent(currentDomainName)}`);
             if (res.ok) {
                 const data = await res.json();
                 reports = data.denuncias || [];

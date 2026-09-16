@@ -38,24 +38,20 @@ async function analisarPagina(req, res) {
       temVotosComunidade: temVotos,
     });
 
-    if (req.usuario) {
-      await db.query(
-        `INSERT INTO analises (usuario_id, url, score, veredicto, detalhe, criado_em)
-         VALUES ($1, $2, $3, $4, $5, NOW())`,
-        [
-          req.usuario.id,
-          dominio,
-          resultado.score,
-          resultado.veredicto,
-          JSON.stringify(resultado.breakdown),
-        ]
-      );
-    }
-
-    // Converte breakdown[] para string legível (formato esperado pela extensão)
+    // Converte breakdown[] para string legível (formato esperado pela extensão).
+    // Persistido igual ao que é devolvido na resposta, para que consultas
+    // futuras (/domain, /community/site, /analises) leiam o mesmo texto.
     const detalhe = resultado.breakdown
       .map(f => `${f.fator} (${f.impacto})`)
       .join(' • ');
+
+    if (req.usuario) {
+      await db.query(
+        `INSERT INTO analises (usuario_id, url, score, veredicto, detalhe)
+         VALUES ($1, $2, $3, $4, $5)`,
+        [req.usuario.id, dominio, resultado.score, resultado.veredicto, detalhe]
+      );
+    }
 
     return res.json({
       score:     resultado.score,

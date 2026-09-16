@@ -10,10 +10,10 @@ async function obterPerfil(req, res) {
         [req.usuario.id]
       ),
       db.query(
-        `SELECT id, url AS dominio, score, veredicto, criado_em 
-         FROM analises 
-         WHERE usuario_id = $1 
-         ORDER BY criado_em DESC 
+        `SELECT id, url AS dominio, score, veredicto, analisado_em AS criado_em
+         FROM analises
+         WHERE usuario_id = $1
+         ORDER BY analisado_em DESC
          LIMIT 50`,
         [req.usuario.id]
       ),

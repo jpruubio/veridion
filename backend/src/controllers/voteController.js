@@ -24,25 +24,15 @@ async function votar(req, res) {
   }
 
   try {
-    // Verificar se o usuário já votou neste domínio
-    const votoExistente = await db.query(
-      'SELECT id FROM votos WHERE usuario_id = $1 AND dominio = $2',
-      [req.usuario.id, dominio]
+    // UPSERT atômico: depende de UNIQUE (usuario_id, dominio) em `votos`.
+    // Evita a race condition de um SELECT seguido de INSERT/UPDATE manual.
+    await db.query(
+      `INSERT INTO votos (usuario_id, dominio, voto, comentario)
+       VALUES ($1, $2, $3, $4)
+       ON CONFLICT (usuario_id, dominio)
+       DO UPDATE SET voto = EXCLUDED.voto, comentario = EXCLUDED.comentario, criado_em = NOW()`,
+      [req.usuario.id, dominio, voto, comentario]
     );
-
-    if (votoExistente.rows.length > 0) {
-      // Atualizar o voto existente
-      await db.query(
-        'UPDATE votos SET voto = $1, comentario = $2, criado_em = NOW() WHERE id = $3',
-        [voto, comentario, votoExistente.rows[0].id]
-      );
-    } else {
-      // Inserir novo voto
-      await db.query(
-        'INSERT INTO votos (usuario_id, dominio, voto, comentario) VALUES ($1, $2, $3, $4)',
-        [req.usuario.id, dominio, voto, comentario]
-      );
-    }
 
     const contagem = await db.query(
       `SELECT

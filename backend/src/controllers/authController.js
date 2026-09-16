@@ -220,9 +220,13 @@ async function redefinirSenha(req, res) {
     });
   }
 
+  // Transação real: um único client dedicado para BEGIN/COMMIT/ROLLBACK.
+  // db.query() (via Pool) devolveria uma conexão diferente a cada chamada,
+  // o que tornaria BEGIN/COMMIT/ROLLBACK não-atômicos entre si.
+  const client = await db.connect();
+
   try {
-    // CORREÇÃO: Crase fechada corretamente e verificação de validade e uso do token no próprio banco
-    const result = await db.query(
+    const result = await client.query(
       `SELECT rt.id, rt.usuario_id, rt.expira_em
        FROM reset_tokens rt
        WHERE rt.token = $1 AND rt.usado = FALSE AND rt.expira_em > NOW()`,
@@ -234,25 +238,23 @@ async function redefinirSenha(req, res) {
     }
 
     const { id: tokenId, usuario_id } = result.rows[0];
-
     const senhaHash = await bcrypt.hash(novaSenha, SALT_ROUNDS);
 
-    // Atualiza senha e marca token como usado em transação
-    await db.query('BEGIN');
+    await client.query('BEGIN');
     try {
-      // CORREÇÃO: Array de parâmetros adicionado aqui
-      await db.query(
+      await client.query(
         'UPDATE usuarios SET senha_hash = $1 WHERE id = $2',
         [senhaHash, usuario_id]
       );
-      
-      await db.query(
+
+      await client.query(
         'UPDATE reset_tokens SET usado = TRUE WHERE id = $1',
         [tokenId]
       );
-      await db.query('COMMIT');
+
+      await client.query('COMMIT');
     } catch (txErr) {
-      await db.query('ROLLBACK');
+      await client.query('ROLLBACK');
       throw txErr;
     }
 
@@ -261,6 +263,8 @@ async function redefinirSenha(req, res) {
   } catch (err) {
     console.error('[authController] Erro em redefinirSenha:', err.message);
     return res.status(500).json({ erro: 'Erro interno no servidor.' });
+  } finally {
+    client.release();
   }
 }
 

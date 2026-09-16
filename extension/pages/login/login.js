@@ -3,7 +3,7 @@
 //  Autenticação + fluxo completo de redefinição de senha
 // ============================================================
 
-const API = 'https://veridion-5tjh.onrender.com';
+// BACKEND_URL vem de shared/config.js, carregado antes deste arquivo no login.html
 
 // ──────────────────────────────────────────────────────────────
 //  Utilitários
@@ -46,7 +46,7 @@ botaoEntrar.addEventListener('click', async (event) => {
         return;
     }
     try {
-        const resposta = await fetch(`${API}/login`, {
+        const resposta = await fetch(`${BACKEND_URL}/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, senha })
@@ -141,7 +141,7 @@ document.getElementById('btn-solicitar-token').addEventListener('click', async (
 
     setLoading(btn, true);
     try {
-        const resp  = await fetch(`${API}/esqueci-senha`, {
+        const resp  = await fetch(`${BACKEND_URL}/esqueci-senha`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email })
@@ -228,7 +228,7 @@ document.getElementById('btn-redefinir-senha').addEventListener('click', async (
 
     setLoading(btn, true);
     try {
-        const resp  = await fetch(`${API}/redefinir-senha`, {
+        const resp  = await fetch(`${BACKEND_URL}/redefinir-senha`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ token, novaSenha })

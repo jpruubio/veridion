@@ -134,10 +134,10 @@ async function obterDetalhesSite(req, res) {
       ),
       // Último score de análise
       db.query(
-        `SELECT score, veredicto, criado_em 
-         FROM analises 
-         WHERE url = $1 
-         ORDER BY criado_em DESC 
+        `SELECT score, veredicto, analisado_em AS criado_em
+         FROM analises
+         WHERE url = $1
+         ORDER BY analisado_em DESC
          LIMIT 1`,
         [dominioLimpo]
       ),

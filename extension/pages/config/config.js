@@ -1,4 +1,4 @@
-const BACKEND_URL = 'https://veridion-5tjh.onrender.com';
+// BACKEND_URL vem de shared/config.js, carregado antes deste arquivo no config.html
 
 // Navegação para a Comunidade
 document.getElementById('nav-btn-comunidade').addEventListener('click', () => {

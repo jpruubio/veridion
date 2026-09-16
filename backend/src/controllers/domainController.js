@@ -27,10 +27,10 @@ async function consultarDominio(req, res) {
         [dominio]
       ),
       db.query(
-        `SELECT score, veredicto, criado_em
+        `SELECT score, veredicto, detalhe, analisado_em AS criado_em
          FROM analises
          WHERE url = $1
-         ORDER BY criado_em DESC
+         ORDER BY analisado_em DESC
          LIMIT 1`,
         [dominio]
       ),
